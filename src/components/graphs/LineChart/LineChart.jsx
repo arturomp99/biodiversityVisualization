@@ -18,15 +18,23 @@ export const LineChart = () => {
   });
 
   useEffect(() => {
-    console.log("dimensions changed !!!!!!!!!!!!!!");
-    console.log(`[${width},${height}]`);
+    const timeoutId = setTimeout(() => {
+      // So that it only happens after a time delay
+      console.log("dimensions changed !!!!!!!!!!!!!!");
+      console.log(`[${width},${height}]`);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [width, height]);
 
   useEffect(() => {
-    if (!node) return;
+    if (!node.current) return;
+    console.log("node has changed");
     drawAxes(node.current, xScale, yScale);
     observeResize(node.current, resizeEventHandler);
-  }, [node]);
+  }, [node.current]);
 
   return <StyledLineChartContainer ref={node} id="lineChart" />;
 };
