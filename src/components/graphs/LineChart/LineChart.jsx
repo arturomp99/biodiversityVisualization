@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { createRef, useCallback, useEffect, useState } from "react";
 import { StyledLineChartContainer } from "./styles";
-import { drawAxes } from "../shared/Axes/drawAxes";
+import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { useLineChartScales } from "./useLineChartScales";
 import { observeResize } from "../../../utils/observeResize";
 
@@ -22,6 +22,7 @@ export const LineChart = () => {
       // So that it only happens after a time delay
       console.log("dimensions changed !!!!!!!!!!!!!!");
       console.log(`[${width},${height}]`);
+      giveSizeToAxes(node.current, xScale, yScale, width, height);
     }, 1000);
 
     return () => {
@@ -32,7 +33,7 @@ export const LineChart = () => {
   useEffect(() => {
     if (!node.current) return;
     console.log("node has changed");
-    drawAxes(node.current, xScale, yScale);
+    createAxes(node.current, xScale, yScale);
     observeResize(node.current, resizeEventHandler);
   }, [node.current]);
 
