@@ -1,0 +1,4 @@
+--- ESTOY CON EL RESIZE ---
+Vamos a intentar crear un resizeObserver y asignarlo a los charts. De esta forma,
+cuando se detecte un evento de resize se vuelven a dibujar los ejes (de momento solo 
+esto)
