@@ -30,4 +30,5 @@ export const StyledFooter = styled.div`
 export const StyledGraphContainer = styled.div`
   background-color: white;
   border-radius: 5px;
+  padding: 1.5em;
 `;

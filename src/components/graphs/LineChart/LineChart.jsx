@@ -8,7 +8,7 @@ import { observeResize } from "../../../utils/observeResize";
 export const LineChart = () => {
   const node = createRef();
   let [[width, height], setDimensions] = useState([0, 0]);
-  let [xScale, yScale] = useLineChartScales();
+  const [xScale, yScale] = useLineChartScales();
 
   const resizeEventHandler = useCallback((resizedElement) => {
     setDimensions([
@@ -20,8 +20,6 @@ export const LineChart = () => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       // So that it only happens after a time delay
-      console.log("dimensions changed !!!!!!!!!!!!!!");
-      console.log(`[${width},${height}]`);
       giveSizeToAxes(node.current, xScale, yScale, width, height);
     }, 1000);
 
