@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "title": "Dendrogram",
+      "description": "This is a dendrogram."
+    },
+    {
+      "title": "Timeline",
+      "description": "This is a timeline."
+    },
+    {
+      "title": "Heat tree",
+      "description": "This is a heat tree."
+    },
+    {
+      "title": "Line chart",
+      "description": "This is a line plot."
+    }
+  ]
+}

@@ -1,31 +1,15 @@
-import styled from "styled-components";
-
-import Card from "../shared/Card";
+import GraphCard from "../shared/containers/Card/GraphCard";
+import { DashboardLayout } from "./styles";
+import { graphs } from "../../data";
 
 const Dashboard = () => {
   return (
     <DashboardLayout>
-      <Card>
-        <p>Dendrogram</p>
-      </Card>
-      <Card>
-        <p>HeatTree</p>
-      </Card>
-      <Card>
-        <p>Timeline</p>
-      </Card>
-      <Card>
-        <p>Lineplot</p>
-      </Card>
+      {graphs.data.map((elementGraph) => {
+        return <GraphCard graph={elementGraph} />;
+      })}
     </DashboardLayout>
   );
 };
-
-const DashboardLayout = styled.div`
-  height: 100vh;
-  display: grid;
-  grid-template: 1fr 1fr / 1fr 1fr;
-  grid-auto-flow: column;
-`;
 
 export default Dashboard;
