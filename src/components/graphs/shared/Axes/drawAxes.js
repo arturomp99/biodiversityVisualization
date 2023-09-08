@@ -33,3 +33,7 @@ export const giveSizeToAxes = (parentRef, xScale, yScale, width, height) => {
 
   d3.selectAll("#hAxis").attr("transform", `translate(0,${height})`);
 };
+
+export const translateAxes = (parentRef, trasform2CoordSys) => {
+  d3.select(parentRef).select("#hAxis").attr("transform", "translate(50,0)");
+};
