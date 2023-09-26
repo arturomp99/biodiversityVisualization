@@ -1,3 +1,8 @@
 export const cardResizeTimeout = 1000;
 export const fontSize = 10;
-export const graphMargin = { top: 10, bottom: 10, left: 10, right: 10 };
+export const graphMargin = {
+  top: fontSize,
+  bottom: 3 * fontSize,
+  left: 3 * fontSize,
+  right: fontSize,
+};

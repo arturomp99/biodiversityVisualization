@@ -1,17 +1,27 @@
 import * as d3 from "d3";
 import { createRef, useCallback, useEffect, useState } from "react";
 import { StyledLineChartContainer } from "./styles";
-import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
+import {
+  createAxes,
+  giveSizeToAxes,
+  translateAxes,
+} from "../shared/Axes/drawAxes";
 import { useLineChartScales } from "./useLineChartScales";
 import { observeResize } from "../../../utils/observeResize";
+import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
 
 export const LineChart = () => {
   const node = createRef();
-  let [[width, height], setDimensions] = useState([0, 0]);
+  let {
+    dimensions: [graphWidth, graphHeight],
+    setDimensions: setGraphDimensions,
+    transform: transform2GraphSpace,
+  } = useGetGraphCoordSys([0, 0]);
+
   const [xScale, yScale] = useLineChartScales();
 
   const resizeEventHandler = useCallback((resizedElement) => {
-    setDimensions([
+    setGraphDimensions([
       resizedElement[0].contentRect.width,
       resizedElement[0].contentRect.height,
     ]);
@@ -19,18 +29,17 @@ export const LineChart = () => {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      // So that it only happens after a time delay
-      giveSizeToAxes(node.current, xScale, yScale, width, height);
+      // It that it only happens after a time delay
+      giveSizeToAxes(node.current, xScale, yScale, graphWidth, graphHeight);
     }, 1000);
 
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [width, height]);
+  }, [graphWidth, graphHeight]);
 
   useEffect(() => {
     if (!node.current) return;
-    console.log("node has changed");
     createAxes(node.current, xScale, yScale);
     observeResize(node.current, resizeEventHandler);
   }, [node.current]);
