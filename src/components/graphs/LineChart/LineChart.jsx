@@ -17,7 +17,7 @@ export const LineChart = () => {
     setDimensions: setGraphDimensions,
     transform: transform2GraphSpace,
   } = useGetGraphCoordSys([0, 0]);
-  console.log("transform2GraphSpace", transform2GraphSpace);
+
   const [xScale, yScale] = useLineChartScales();
 
   const resizeEventHandler = useCallback((resizedElement) => {
@@ -39,12 +39,7 @@ export const LineChart = () => {
   }, [graphWidth, graphHeight]);
 
   useEffect(() => {
-    translateAxes(node.current, transform2GraphSpace);
-  }, transform2GraphSpace);
-
-  useEffect(() => {
     if (!node.current) return;
-    console.log("node has changed");
     createAxes(node.current, xScale, yScale);
     observeResize(node.current, resizeEventHandler);
   }, [node.current]);

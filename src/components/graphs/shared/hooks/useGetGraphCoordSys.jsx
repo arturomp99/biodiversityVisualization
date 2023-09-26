@@ -13,7 +13,7 @@ export const useGetGraphCoordSys = (initialDimensions) => {
   };
 
   const transform2GraphSpace = useCallback(
-    // This is assunming that the centre of coordinates is at the top left corner of the svg
+    // This is assuming that the centre of coordinates is at the top left corner of the svg
     ([xCoord, yCoord]) => {
       return [xCoord - graphMargin.left, yCoord + graphMargin.top + height];
     },
