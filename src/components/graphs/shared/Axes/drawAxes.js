@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import { graphMargin } from "../../../../data/constants";
 
 export const createAxes = (parentRef, xScale, yScale) => {
-  const xAxis = d3.axisBottom(xScale).ticks(4);
+  const xAxis = d3.axisBottom(xScale).ticks(4); // TODO: Define the ticks somehow
   d3.select(parentRef)
     .append("g")
     .attr("class", "axis")
