@@ -9,7 +9,6 @@ import {
 import { useLineChartScales } from "./useLineChartScales";
 import { observeResize } from "../../../utils/observeResize";
 import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
-import { createGrid } from "../shared/Grid/drawGrid";
 import { lineChartParameters } from "../../../data/constants";
 
 export const LineChart = () => {
@@ -48,7 +47,6 @@ export const LineChart = () => {
   useEffect(() => {
     if (!node.current) return;
     createAxes(node.current, [xScale, yScale]);
-    createGrid();
     observeResize(node.current, resizeEventHandler);
   }, [node.current]);
 
