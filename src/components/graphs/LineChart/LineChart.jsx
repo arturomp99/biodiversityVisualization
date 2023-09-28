@@ -9,6 +9,7 @@ import {
 import { useLineChartScales } from "./useLineChartScales";
 import { observeResize } from "../../../utils/observeResize";
 import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
+import { lineChartParameters } from "../../../data/constants";
 
 export const LineChart = () => {
   const node = createRef();
@@ -30,7 +31,12 @@ export const LineChart = () => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       // It that it only happens after a time delay
-      giveSizeToAxes(node.current, xScale, yScale, graphWidth, graphHeight);
+      giveSizeToAxes(
+        node.current,
+        [xScale, yScale],
+        [graphWidth, graphHeight],
+        lineChartParameters.axesParameters
+      );
     }, 1000);
 
     return () => {
@@ -40,7 +46,7 @@ export const LineChart = () => {
 
   useEffect(() => {
     if (!node.current) return;
-    createAxes(node.current, xScale, yScale);
+    createAxes(node.current, [xScale, yScale]);
     observeResize(node.current, resizeEventHandler);
   }, [node.current]);
 
