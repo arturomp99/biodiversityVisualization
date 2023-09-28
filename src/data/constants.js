@@ -6,3 +6,16 @@ export const graphMargin = {
   left: 3 * fontSize,
   right: fontSize,
 };
+export const lineChartParameters = {
+  axesParameters: {
+    ticks: {
+      x: 4,
+      y: 4,
+    },
+    labels: {
+      x: "Time (s)",
+      y: "--",
+    },
+    grid: true,
+  },
+};
