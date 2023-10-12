@@ -17,13 +17,11 @@ export const LineChart = () => {
 
   useEffect(() => {
     d3.csv(sampleSound, (soundData) => {
-      console.log("soundData", soundData);
       return {
         timeStamp: soundData.TimeStamp,
         soundMax: soundData.soundMax,
       };
     }).then((d) => {
-      console.log("data", d);
       setLoading(false);
       setData(d);
     });
@@ -35,7 +33,7 @@ export const LineChart = () => {
     }
     createLines(node.current, data);
   }, [data]);
-  // -----------------------------------------------------------------
+  // TODO -----------------------------------------------------------------
 
   const node = createRef();
   let {
@@ -44,7 +42,7 @@ export const LineChart = () => {
     transform: transform2GraphSpace,
   } = useGetGraphCoordSys([0, 0]);
 
-  const [xScale, yScale] = useLineChartScales(data);
+  const scales = useLineChartScales(data);
 
   const resizeEventHandler = useCallback((resizedElement) => {
     setGraphDimensions([
@@ -61,7 +59,7 @@ export const LineChart = () => {
       // It that it only happens after a time delay
       giveSizeToAxes(
         node.current,
-        [xScale, yScale],
+        scales,
         [graphWidth, graphHeight],
         lineChartParameters.axesParameters
       );
@@ -70,11 +68,11 @@ export const LineChart = () => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [graphWidth, graphHeight, loading]);
+  }, [graphWidth, graphHeight, scales, loading]);
 
   useEffect(() => {
     if (!node.current) return;
-    createAxes(node.current, [xScale, yScale]);
+    createAxes(node.current, scales);
     observeResize(node.current, resizeEventHandler);
   }, [node.current]);
 
