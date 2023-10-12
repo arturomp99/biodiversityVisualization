@@ -2,17 +2,13 @@ import React from "react";
 import * as d3 from "d3";
 import { createRef, useCallback, useEffect, useState } from "react";
 import { StyledLineChartContainer } from "./styles";
-import {
-  createAxes,
-  giveSizeToAxes,
-  translateAxes,
-} from "../shared/Axes/drawAxes";
+import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { useLineChartScales } from "./useLineChartScales";
+import { createLines } from "./drawLines";
 import { observeResize } from "../../../utils/observeResize";
 import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
 import { lineChartParameters } from "../../../data/constants";
 import sampleSound from "../../../data/sampleData/sampleSoundData.csv";
-import { createLines } from "./drawLines.js";
 
 export const LineChart = () => {
   // TODO: CLEANUP - This is only added to read the sample data quickly
@@ -21,11 +17,13 @@ export const LineChart = () => {
 
   useEffect(() => {
     d3.csv(sampleSound, (soundData) => {
+      console.log("soundData", soundData);
       return {
         timeStamp: soundData.TimeStamp,
-        soundMax: soundData.SoundMax,
+        soundMax: soundData.soundMax,
       };
     }).then((d) => {
+      console.log("data", d);
       setLoading(false);
       setData(d);
     });

@@ -11,14 +11,13 @@ export const useLineChartScales = (data) => {
       xScale.domain([0, 10]);
       yScale.domain([10, 0]);
     } else {
-      console.log("data", data);
       xScale.domain([
         d3.min(data, (dataInstance) => dataInstance.timeStamp),
         d3.max(data, (dataInstance) => dataInstance.timeStamp),
       ]);
       yScale.domain([
-        d3.min(data, (dataInstance) => dataInstance.soundMax),
         d3.max(data, (dataInstance) => dataInstance.soundMax),
+        d3.min(data, (dataInstance) => dataInstance.soundMax),
       ]);
     }
   }, [data]);
