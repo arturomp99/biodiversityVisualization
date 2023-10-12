@@ -16,8 +16,8 @@ export const useLineChartScales = (data) => {
         d3.max(data, (dataInstance) => dataInstance.timeStamp),
       ]);
       yScale.domain([
-        d3.min(data, (dataInstance) => dataInstance.soundMax),
         d3.max(data, (dataInstance) => dataInstance.soundMax),
+        d3.min(data, (dataInstance) => dataInstance.soundMax),
       ]);
     }
   }, [data]);
