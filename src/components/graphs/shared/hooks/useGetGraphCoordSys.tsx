@@ -3,7 +3,7 @@ import { useState, useCallback } from "react";
 import { graphMargin } from "../../../../data/constants";
 
 export const useGetGraphCoordSys = (initialDimensions: number[]) => {
-  let [[width, height], setDimensions] = useState(initialDimensions);
+  const [[width, height], setDimensions] = useState(initialDimensions);
 
   const setDimensionsFromBoundingBox = ([
     boundingWidth,
