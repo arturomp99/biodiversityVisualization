@@ -1,14 +1,21 @@
 import * as d3 from "d3";
-import { graphMargin, lineChartParameters } from "../../../../data/constants";
+import {
+  graphMargin,
+  lineChartParameters,
+  timeLineParameters,
+} from "../../../../data/constants";
 
 type AxisScaleTypes =
   | d3.ScaleTime<number, number, never>
-  | d3.ScaleLinear<number, number, never>;
+  | d3.ScaleLinear<number, number, never>
+  | d3.ScaleBand<string>;
 
 export function createAxes(parentRef: SVGSVGElement, scales: AxisScaleTypes[]) {
   const [xScale, yScale] = scales;
-  const xAxis = d3.axisBottom(xScale);
-  const yAxis = d3.axisLeft(yScale);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const xAxis = d3.axisBottom(xScale as any);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const yAxis = d3.axisLeft(yScale as any);
 
   d3.select(parentRef)
     .append("g")
@@ -26,15 +33,19 @@ export const giveSizeToAxes = (
   parentRef: SVGSVGElement,
   scales: AxisScaleTypes[],
   size: number[],
-  axesParameters: typeof lineChartParameters.axesParameters
+  axesParameters:
+    | typeof lineChartParameters.axesParameters
+    | typeof timeLineParameters.axesParameters
 ) => {
   const [xScale, yScale] = scales;
   const [width, height] = size;
   xScale.range([0, width]);
   yScale.range([0, height]);
 
-  const xAxis = d3.axisBottom(xScale);
-  const yAxis = d3.axisLeft(yScale);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const xAxis = d3.axisBottom(xScale as any);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const yAxis = d3.axisLeft(yScale as any);
 
   if (axesParameters?.ticks) {
     xAxis.ticks(axesParameters.ticks.x);
