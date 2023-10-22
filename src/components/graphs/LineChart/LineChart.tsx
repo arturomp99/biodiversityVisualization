@@ -4,26 +4,31 @@ import { createRef, useCallback, useEffect, useState } from "react";
 import { StyledLineChartContainer } from "./styles";
 import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { useLineChartScales } from "./useLineChartScales";
-import { createLines } from "./drawLines";
+import { drawLines } from "./drawLines";
 import { observeResize } from "../../../utils/observeResize";
 import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
 import { lineChartParameters } from "../../../data/constants";
-import sampleSound from "../../../data/sampleData/sampleSoundData.csv";
+import { SoundChartDataType } from "./lineChart.types";
+import { SoundHeaders } from "../../../data/sampleData/sampleData.types";
+import { DSVRowString } from "d3";
 
 export const LineChart = () => {
   // TODO: CLEANUP - This is only added to read the sample data quickly
-  const [data, setData] = useState(undefined);
+  const [data, setData] = useState<SoundChartDataType[] | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    d3.csv(sampleSound, (soundData) => {
-      return {
-        timeStamp: soundData.TimeStamp,
-        soundMax: soundData.soundMax,
-      };
-    }).then((d) => {
+    d3.csv(
+      "./sampleData/sampleSoundData.csv",
+      (soundData: DSVRowString<SoundHeaders>) => {
+        return {
+          timeStamp: Number(soundData.timeStamp),
+          soundMax: Number(soundData.soundMax),
+        };
+      }
+    ).then((d) => {
       setLoading(false);
-      setData(d);
+      setData(Array.from(d));
     });
   }, []);
 
@@ -31,38 +36,59 @@ export const LineChart = () => {
     if (!data) {
       return;
     }
-    createLines(node.current, data);
+    const [xScale, yScale] = scales;
+    const scaledData = data.map((dataPoint: SoundChartDataType) => {
+      return {
+        key: dataPoint.timeStamp,
+        scaledX: xScale(dataPoint.timeStamp),
+        scaledY: yScale(dataPoint.soundMax),
+      };
+    });
+    drawLines(node.current, scaledData);
   }, [data]);
   // TODO -----------------------------------------------------------------
 
-  const node = createRef();
-  let {
+  const node = createRef<SVGSVGElement>();
+  const {
     dimensions: [graphWidth, graphHeight],
     setDimensions: setGraphDimensions,
-    transform: transform2GraphSpace,
   } = useGetGraphCoordSys([0, 0]);
 
   const scales = useLineChartScales(data);
 
-  const resizeEventHandler = useCallback((resizedElement) => {
-    setGraphDimensions([
-      resizedElement[0].contentRect.width,
-      resizedElement[0].contentRect.height,
-    ]);
-  });
+  const resizeEventHandler = useCallback(
+    (resizedElement: ResizeObserverEntry[]) => {
+      setGraphDimensions([
+        resizedElement[0].contentRect.width,
+        resizedElement[0].contentRect.height,
+      ]);
+    },
+    []
+  );
 
   useEffect(() => {
-    if (loading) {
+    if (loading || !data) {
       return;
     }
     const timeoutId = setTimeout(() => {
-      // It that it only happens after a time delay
+      if (!node.current) return;
+      // So that it only happens after a time delay
       giveSizeToAxes(
         node.current,
         scales,
         [graphWidth, graphHeight],
         lineChartParameters.axesParameters
       );
+
+      const [xScale, yScale] = scales;
+      const scaledData = data.map((dataPoint) => {
+        return {
+          key: dataPoint.timeStamp,
+          scaledX: xScale(dataPoint.timeStamp),
+          scaledY: yScale(dataPoint.soundMax),
+        };
+      });
+      drawLines(node.current, scaledData);
     }, 1000);
 
     return () => {
