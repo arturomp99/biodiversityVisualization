@@ -1,7 +1,11 @@
 import * as d3 from "d3";
-import { graphMargin } from "../../../../data/constants";
+import { graphMargin, lineChartParameters } from "../../../../data/constants";
 
-export const createAxes = (parentRef, scales) => {
+type AxisScaleTypes =
+  | d3.ScaleTime<number, number, never>
+  | d3.ScaleLinear<number, number, never>;
+
+export function createAxes(parentRef: SVGSVGElement, scales: AxisScaleTypes[]) {
   const [xScale, yScale] = scales;
   const xAxis = d3.axisBottom(xScale);
   const yAxis = d3.axisLeft(yScale);
@@ -16,9 +20,14 @@ export const createAxes = (parentRef, scales) => {
     .attr("class", "axis")
     .attr("id", "vAxis")
     .call(yAxis);
-};
+}
 
-export const giveSizeToAxes = (parentRef, scales, size, axesParameters) => {
+export const giveSizeToAxes = (
+  parentRef: SVGSVGElement,
+  scales: AxisScaleTypes[],
+  size: number[],
+  axesParameters: typeof lineChartParameters.axesParameters
+) => {
   const [xScale, yScale] = scales;
   const [width, height] = size;
   xScale.range([0, width]);
@@ -37,8 +46,8 @@ export const giveSizeToAxes = (parentRef, scales, size, axesParameters) => {
     yAxis.tickSize(-width);
   }
 
-  d3.select(parentRef).select("#hAxis").call(xAxis);
-  d3.select(parentRef).select("#vAxis").call(yAxis);
+  d3.select(parentRef).select<SVGSVGElement>("#hAxis").call(xAxis);
+  d3.select(parentRef).select<SVGSVGElement>("#vAxis").call(yAxis);
 
   d3.selectAll("#hAxis").attr(
     "transform",
