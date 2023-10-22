@@ -31,6 +31,7 @@ export const LineChart = () => {
       setData(Array.from(d));
     });
   }, []);
+  // TODO -----------------------------------------------------------------
 
   useEffect(() => {
     if (!data) {
@@ -46,7 +47,6 @@ export const LineChart = () => {
     });
     drawLines(node.current, scaledData);
   }, [data]);
-  // TODO -----------------------------------------------------------------
 
   const node = createRef<SVGSVGElement>();
   const {

@@ -19,3 +19,17 @@ export const lineChartParameters = {
     grid: true,
   },
 };
+
+export const timeLineParameters = {
+  axesParameters: {
+    ticks: {
+      x: 4,
+      y: 4,
+    },
+    labels: {
+      x: "Time (s)",
+      y: "--",
+    },
+    grid: false,
+  },
+};
