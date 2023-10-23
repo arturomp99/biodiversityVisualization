@@ -3,7 +3,7 @@ export const fontSize = 10;
 export const graphMargin = {
   top: fontSize,
   bottom: 3 * fontSize,
-  left: 3 * fontSize,
+  left: 6 * fontSize,
   right: fontSize,
 };
 export const lineChartParameters = {
