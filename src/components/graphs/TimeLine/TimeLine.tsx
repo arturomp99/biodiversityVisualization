@@ -2,27 +2,26 @@ import React, { createRef, useState, useEffect, useCallback } from "react";
 import { StyledTimeLineContainer } from "./styles";
 // import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
 import { detectedAnimals } from "src/data";
-// import { TimeLineDataType } from "./timeLine.types";
 import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
 import { useTimeLineScales } from "./useTimeLineScales";
 import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { timeLineParameters } from "src/data/constants";
-import { TimeLineDataType } from "./timeLine.types";
+import { TemporalDataType } from "./timeLine.types";
 import { observeResize } from "src/utils/observeResize";
+import { drawMarkers } from "./drawMarkers";
 
 export const TimeLine = () => {
   // TODO: CLEANUP - This is only added to read the sample data quickly
-  const [data, setData] = useState<TimeLineDataType[] | undefined>(undefined);
+  const [data, setData] = useState<TemporalDataType[] | undefined>(undefined);
   const [loading, setLoading] = useState(true);
-  // TODO -----------------------------------------------------------------
-
   useEffect(() => {
     if (!detectedAnimals) {
       return;
     }
     setLoading(false);
-    setData(detectedAnimals["detected animals"] as TimeLineDataType[]);
+    setData(detectedAnimals["detected animals"] as TemporalDataType[]);
   }, [detectedAnimals]);
+  // TODO -----------------------------------------------------------------
 
   const node = createRef<SVGSVGElement>();
   const {
@@ -30,7 +29,18 @@ export const TimeLine = () => {
     setDimensions: setGraphDimensions,
   } = useGetGraphCoordSys([0, 0]);
 
-  const scales = useTimeLineScales(data);
+  const { scales, scaleData } = useTimeLineScales(data);
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    const scaledData = scaleData(data);
+    if (!scaledData) {
+      return;
+    }
+    drawMarkers(node.current, scaledData, graphHeight);
+  }, [data, scaleData]);
 
   const resizeEventHandler = useCallback(
     (resizedElement: ResizeObserverEntry[]) => {
@@ -43,6 +53,7 @@ export const TimeLine = () => {
   );
 
   useEffect(() => {
+    // TODO: Redraw markers
     if (loading || !data) {
       return;
     }
@@ -55,6 +66,11 @@ export const TimeLine = () => {
         [graphWidth, graphHeight],
         timeLineParameters.axesParameters
       );
+      const scaledData = scaleData(data);
+      if (!scaledData) {
+        return;
+      }
+      drawMarkers(node.current, scaledData, graphHeight);
     }, 1000);
 
     return () => {
