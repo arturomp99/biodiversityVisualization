@@ -29,8 +29,6 @@ export const useTimeLineScales = (data: TemporalDataType[] | undefined) => {
       : (data: TemporalDataType[]) => {
           const scaledData = data.map(
             (dataPoint: TemporalDataType): TimeLineChartDataType => {
-              console.log("xScale", xScale.domain());
-              console.log("yScale", yScale.domain());
               const scaledX = xScale(new Date(dataPoint.start_time));
               const scaledY = yScale(dataPoint.name);
               const width =
@@ -51,6 +49,5 @@ export const useTimeLineScales = (data: TemporalDataType[] | undefined) => {
         },
     [xScale.domain()]
   );
-  console.log(scaleData);
   return { scales: [xScale, yScale], scaleData };
 };

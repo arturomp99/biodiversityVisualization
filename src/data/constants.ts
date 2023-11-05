@@ -33,3 +33,9 @@ export const timeLineParameters = {
     grid: false,
   },
 };
+
+export const dendrogramParameters = {
+  nodeParameters: {
+    radius: 7,
+  },
+};
