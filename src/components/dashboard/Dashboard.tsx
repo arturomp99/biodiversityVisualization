@@ -1,18 +1,26 @@
 import React from "react";
 
-import GraphCard from "../shared/containers/Card/GraphCard";
 import { DashboardLayout } from "./styles";
 import { graphs } from "../../data";
 import { GraphDataType } from "../../data/graphs.types";
+import { useGetGraph } from "./useGetGraph";
+import {
+  GraphContainer,
+  CardFooter,
+  StyledGraphCard,
+} from "../shared/containers/Card";
 
-const Dashboard = () => {
+export const Dashboard = () => {
   return (
     <DashboardLayout>
       {graphs.data.map((elementGraph: GraphDataType, i: number) => {
-        return <GraphCard graph={elementGraph} key={i} />;
+        return (
+          <StyledGraphCard key={i}>
+            <GraphContainer>{useGetGraph(elementGraph.title)}</GraphContainer>
+            <CardFooter graphData={elementGraph} />
+          </StyledGraphCard>
+        );
       })}
     </DashboardLayout>
   );
 };
-
-export default Dashboard;
