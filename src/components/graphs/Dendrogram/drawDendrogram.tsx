@@ -1,22 +1,26 @@
 import * as d3 from "d3";
-import { DendrogramDataType } from "./dendrogram.types";
+import { DendrogramChartDataType, TreeDataType } from "./dendrogram.types";
 import { dendrogramParameters, graphMargin } from "src/data/constants";
 import { dendrogramClassNames } from "src/data/idClassNames";
+import { Point, verticalDiagonalLine } from "src/utils/lineEquations";
 
-export const scaleData = (
-  data: DendrogramDataType,
-  dimensions: [number, number]
-) => {
+export const scaleData = (data: TreeDataType, dimensions: [number, number]) => {
   const [dendrogramWidth, dendrogramHeight] = dimensions;
-  const root = d3.hierarchy(data);
+  const root = d3.hierarchy({
+    ...data,
+    initialPosition: {
+      x: 0,
+      y: 0,
+    },
+  });
   return d3
-    .tree<DendrogramDataType>()
+    .tree<DendrogramChartDataType>()
     .nodeSize([12, 12])
     .size([dendrogramWidth, dendrogramHeight])(root);
 };
 
 export const drawDendrogram = (
-  data: d3.HierarchyPointNode<DendrogramDataType>,
+  data: d3.HierarchyPointNode<DendrogramChartDataType>,
   parentRef: SVGSVGElement
 ) => {
   const dendrogramMarkers = d3
@@ -47,11 +51,17 @@ export const drawDendrogram = (
     .text((dataPoint) => dataPoint.data.name)
     .attr("class", `.${dendrogramClassNames.markerLabel}`);
 
-  // dendrogramMarkers
-  //   .selectAll(".markerLink")
-  //   .data(data.descendants().slice(1))
-  //   .join("path")
-  //   .attr("d", (dataPoint)=>);
+  d3.select(parentRef)
+    .selectAll(".markerLink")
+    .data(data.descendants().slice(1))
+    .join("path")
+    .attr("d", (dataPoint) =>
+      verticalDiagonalLine(dataPoint.parent as Point, dataPoint)
+    )
+    .attr("transform", `translate(${graphMargin.left}, ${graphMargin.top})`)
+    .attr("class", "markerLink")
+    .attr("fill", "none")
+    .attr("stroke", "black");
 
   dendrogramMarkers.join("circle");
   return;

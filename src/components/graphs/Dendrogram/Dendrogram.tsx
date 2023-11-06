@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createRef, useCallback } from "react";
 import { dendrogramData } from "src/data";
-import { DendrogramDataType } from "./dendrogram.types";
+import { TreeDataType } from "./dendrogram.types";
 import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
 import { StyledDendrogramContainer } from "./styles";
 import { observeResize } from "src/utils/observeResize";
@@ -9,7 +9,7 @@ import { drawDendrogram, scaleData } from "./drawDendrogram";
 
 export const Dendrogram = () => {
   // TODO: CLEANUP - This is only added to read the sample data quickly
-  const [data, setData] = useState<DendrogramDataType | undefined>(undefined);
+  const [data, setData] = useState<TreeDataType | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [shouldDrawDendrogram, setShouldDrawDendrogram] = useState(false);
   useEffect(() => {
@@ -17,7 +17,7 @@ export const Dendrogram = () => {
       return;
     }
     setLoading(false);
-    setData(dendrogramData as DendrogramDataType);
+    setData(dendrogramData as TreeDataType);
     // setData(dendrogramData as DendrogramDataType);
   });
   // TODO -----------------------------------------------------------------
