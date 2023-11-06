@@ -49,10 +49,9 @@ export const LineChart = () => {
   }, [data]);
 
   const node = createRef<SVGSVGElement>();
-  const {
-    dimensions: [graphWidth, graphHeight],
-    setDimensions: setGraphDimensions,
-  } = useGetGraphCoordSys([0, 0]);
+  const { dimensions, setDimensions: setGraphDimensions } = useGetGraphCoordSys(
+    [0, 0]
+  );
 
   const scales = useLineChartScales(data);
 
@@ -67,16 +66,15 @@ export const LineChart = () => {
   );
 
   useEffect(() => {
-    if (loading || !data) {
-      return;
-    }
     const timeoutId = setTimeout(() => {
-      if (!node.current) return;
+      if (loading || !data || !node.current) {
+        return;
+      }
       // So that it only happens after a time delay
       giveSizeToAxes(
         node.current,
         scales,
-        [graphWidth, graphHeight],
+        dimensions,
         lineChartParameters.axesParameters
       );
 
@@ -94,7 +92,7 @@ export const LineChart = () => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [graphWidth, graphHeight, scales, loading]);
+  }, [dimensions, scales, loading]);
 
   useEffect(() => {
     if (!node.current) return;
