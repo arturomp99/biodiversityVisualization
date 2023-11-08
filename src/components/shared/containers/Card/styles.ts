@@ -1,13 +1,14 @@
 import styled from "styled-components";
+import { themeColors, themeSizes } from "src/data/theme";
 
 export const StyledGraphCard = styled.div`
   margin: 1rem 2rem;
   padding: 0.5rem 1rem;
-  background-color: #014751;
-  border: 5px solid #014751;
-  color: black;
-  box-shadow: 5px 5px 5px black;
-  border-radius: 5px;
+  background-color: ${themeColors.card.background};
+  border: ${themeSizes.border.normal} solid ${themeColors.card.border};
+  color: ${themeColors.card.font};
+  box-shadow: 5px 5px 5px ${themeColors.card.shadow};
+  border-radius: ${themeSizes.borderRadius};
   display: grid;
   grid-template-columns: auto;
   grid-template-rows: auto 20%;
