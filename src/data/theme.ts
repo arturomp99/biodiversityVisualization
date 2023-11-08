@@ -1,5 +1,5 @@
 export const themeColors = {
-  background: "#014751",
+  background: "#9dc5cc",
   card: {
     background: "lightGrey",
     border: "black",
@@ -12,5 +12,5 @@ export const themeSizes = {
   border: {
     normal: "2px",
   },
-  borderRadius: "5px",
+  borderRadius: "10px",
 };

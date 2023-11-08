@@ -1,10 +1,10 @@
 import React from "react";
-import { Dashboard } from "./components/dashboard/Dashboard";
+import { DashboardPage } from "./pages/DashboardPage";
 
 function App() {
   return (
     <div className="app">
-      <Dashboard />
+      <DashboardPage />
     </div>
   );
 }
