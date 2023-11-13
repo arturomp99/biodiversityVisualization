@@ -38,4 +38,8 @@ export const dendrogramParameters = {
   nodeParameters: {
     radius: 7,
   },
+  zoom: {
+    min: 0.2,
+    max: 10,
+  },
 };

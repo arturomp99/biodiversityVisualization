@@ -8,4 +8,6 @@ export const dendrogramClassNames = {
 
 export const dendrogramIdNames = {
   container: "dendrogram",
+  zoomContainer: "zoom",
+  chartContainer: "chartContainer",
 };
