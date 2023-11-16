@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { themeColors } from "src/data/theme";
 
-export const DashboardLayout = styled.div`
+export const StyledDashboardLayout = styled.div`
   height: 100vh;
   display: grid;
   grid-template: 1fr 1fr / 1fr 1fr;

@@ -1,9 +1,9 @@
 import React from "react";
 
-import { DashboardLayout } from "./styles";
-import { graphs } from "../../data";
-import { GraphDataType } from "../../data/graphs.types";
-import { useGetGraph } from "./useGetGraph";
+import { StyledDashboardLayout } from "./styles";
+import { graphsMetadata } from "../../data";
+import { GraphMetadataType } from "../../data/graphs.types";
+import { useGetGraph } from "../shared/hooks/useGetGraph";
 import {
   GraphContainer,
   CardFooter,
@@ -12,8 +12,8 @@ import {
 
 export const Dashboard = () => {
   return (
-    <DashboardLayout>
-      {graphs.data.map((elementGraph: GraphDataType, i: number) => {
+    <StyledDashboardLayout>
+      {graphsMetadata.data.map((elementGraph: GraphMetadataType, i: number) => {
         return (
           <StyledGraphCard key={i}>
             <GraphContainer>{useGetGraph(elementGraph.title)}</GraphContainer>
@@ -21,6 +21,6 @@ export const Dashboard = () => {
           </StyledGraphCard>
         );
       })}
-    </DashboardLayout>
+    </StyledDashboardLayout>
   );
 };
