@@ -23,8 +23,24 @@ export const Detail = () => {
     setMetadata(defaultMetadata);
   }, []);
   // TODO:
-
   const { expandedGraphs, optionGraphs } = useGetExpandedGraphs(metaData);
+
+  const OptionClickHandler = (clickedGraphName: string) => {
+    setMetadata((prevMetaData) => {
+      const newMetaData = prevMetaData.map((itemData) => {
+        return {
+          ...itemData,
+          expanded:
+            itemData.title === clickedGraphName
+              ? true
+              : itemData.title === expandedGraphs[0]
+              ? false
+              : itemData.expanded,
+        };
+      });
+      return newMetaData;
+    });
+  };
 
   return (
     <DetailLayout>
@@ -37,7 +53,12 @@ export const Detail = () => {
       </StyledExpandedLayout>
       <StyledOptionLayout>
         {optionGraphs.map((graphName, i) => (
-          <OptionView key={`option${i}`}>{useGetGraph(graphName)}</OptionView>
+          <OptionView
+            key={`option${i}`}
+            onClick={() => OptionClickHandler(graphName)}
+          >
+            {useGetGraph(graphName)}
+          </OptionView>
         ))}
       </StyledOptionLayout>
     </DetailLayout>
