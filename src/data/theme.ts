@@ -1,10 +1,14 @@
 export const themeColors = {
-  background: "#9dc5cc",
+  background: "#fff",
   card: {
-    background: "lightGrey",
+    background: "#F8F9FA",
     border: "black",
     font: "black",
     shadow: "black",
+    footer: {
+      background: "#fff",
+      font: "inherit",
+    },
   },
 };
 
@@ -13,4 +17,7 @@ export const themeSizes = {
     normal: "2px",
   },
   borderRadius: "10px",
+  cardFooter: {
+    maxHeight: "20%",
+  },
 };
