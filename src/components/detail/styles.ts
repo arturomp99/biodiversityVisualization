@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { GraphContainer } from "../shared/containers/Card";
 import { detailGridAreas } from "src/data/layoutsConstants";
 
 export const DetailLayout = styled.div`
@@ -12,18 +11,26 @@ export const DetailLayout = styled.div`
     "${detailGridAreas.detail} ${detailGridAreas.kpi}";
 `;
 
-export const ExpandedLayout = styled.div`
+export const StyledExpandedLayout = styled.div`
   grid-area: ${detailGridAreas.expanded};
   display: flex;
-`;
-
-export const OptionLayout = styled.div`
-  grid-area: ${detailGridAreas.options};
-  display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: stretch;
 `;
 
-export const ExpandedView = styled(GraphContainer)``;
+export const StyledOptionLayout = styled.div`
+  grid-area: ${detailGridAreas.options};
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(1fr, 3);
+  grid-template-areas:
+    "${detailGridAreas.options}1"
+    "${detailGridAreas.options}2"
+    "${detailGridAreas.options}3";
+`;
 
-export const OptionView = styled(GraphContainer)``;
+export const ExpandedView = styled.div`
+  height: 100%;
+`;
+
+export const OptionView = styled.div``;

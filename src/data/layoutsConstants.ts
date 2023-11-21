@@ -1,5 +1,5 @@
 export const detailGridAreas = {
-  expanded: "det",
+  expanded: "exp",
   options: "opt",
   detail: "det",
   kpi: "kpi",

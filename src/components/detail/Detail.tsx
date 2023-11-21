@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 
-import { ExpandedView, OptionView } from "./styles";
+import {
+  ExpandedView,
+  OptionView,
+  StyledExpandedLayout,
+  StyledOptionLayout,
+} from "./styles";
 import { graphsMetadata } from "../../data";
 import { GraphDataType } from "../../data/graphs.types";
 import { useGetGraph } from "../shared/hooks/useGetGraph";
 import { useGetExpandedGraphs } from "./useGetExpandedGraphs";
-import { DetailLayout, ExpandedLayout, OptionLayout } from "./styles";
+import { DetailLayout } from "./styles";
 
 export const Detail = () => {
   // TODO: BY DEFAULT, FIRST ITEM IS SELECTED. DELETE WHEN ROUTING IS IMPLEMENTED
@@ -23,18 +28,18 @@ export const Detail = () => {
 
   return (
     <DetailLayout>
-      <ExpandedLayout>
+      <StyledExpandedLayout>
         {expandedGraphs.map((graphName, i) => (
           <ExpandedView key={`expanded${i}`}>
             {useGetGraph(graphName)}
           </ExpandedView>
         ))}
-      </ExpandedLayout>
-      <OptionLayout>
+      </StyledExpandedLayout>
+      <StyledOptionLayout>
         {optionGraphs.map((graphName, i) => (
           <OptionView key={`option${i}`}>{useGetGraph(graphName)}</OptionView>
         ))}
-      </OptionLayout>
+      </StyledOptionLayout>
     </DetailLayout>
   );
 };
