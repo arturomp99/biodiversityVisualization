@@ -1,8 +1,8 @@
 import React from "react";
 import { StyledFooter } from "./styles";
-import { GraphDataType } from "../../../../data/graphs.types";
+import { GraphMetadataType } from "../../../../data/graphs.types";
 
-export const CardFooter = ({ graphData }: { graphData: GraphDataType }) => {
+export const CardFooter = ({ graphData }: { graphData: GraphMetadataType }) => {
   return (
     <StyledFooter>
       <p>{graphData.title}</p>

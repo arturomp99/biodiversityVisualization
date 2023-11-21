@@ -1,5 +1,5 @@
 import React from "react";
-import { Dendrogram, TimeLine, Map, LineChart } from "../graphs";
+import { Dendrogram, TimeLine, Map, LineChart } from "../../graphs";
 
 export const useGetGraph = (graphName: string) => {
   return (
