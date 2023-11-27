@@ -1,8 +1,5 @@
 import { Point } from "src/utils/lineEquations";
-
-export interface DendrogramProps {
-  isBasicInteractive: boolean;
-}
+import { GraphProps } from "../graphs.types";
 
 export interface TreeDataType {
   name: string;

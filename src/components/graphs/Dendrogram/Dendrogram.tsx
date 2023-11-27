@@ -1,14 +1,15 @@
 import React, { useState, useEffect, createRef, useCallback, FC } from "react";
 import { dendrogramData } from "src/data";
-import { DendrogramProps, TreeDataType } from "./dendrogram.types";
+import { TreeDataType } from "./dendrogram.types";
 import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
 import { StyledDendrogramContainer } from "./styles";
 import { observeResize } from "src/utils/observeResize";
 import { dendrogramIdNames } from "src/data/idClassNames";
 import { drawDendrogram, scaleData } from "./drawDendrogram";
 import { addZoom } from "../shared/Interactivity/zoom";
+import { GraphProps } from "../graphs.types";
 
-export const Dendrogram: FC<DendrogramProps> = ({ isBasicInteractive }) => {
+export const Dendrogram: FC<GraphProps> = ({ isBasicInteractive }) => {
   // TODO: CLEANUP - This is only added to read the sample data quickly
   const [data, setData] = useState<TreeDataType | undefined>(undefined);
   const [loading, setLoading] = useState(true);
