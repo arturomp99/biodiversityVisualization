@@ -4,7 +4,14 @@ export interface MapProps {
 
 export interface GeoJSONDataType {
   type: string;
-  properties?: object;
-  coordinates?: Array<Array<Array<number[]>>>;
-  geometry?: GeoJSONDataType;
+  features: GeoJSONDataFeature[];
+}
+
+export interface GeoJSONDataFeature {
+  type: string;
+  properties: object;
+  geometry: {
+    type: string;
+    coordinates?: Array<Array<Array<number[]>>>;
+  };
 }
