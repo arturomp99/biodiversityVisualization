@@ -8,10 +8,10 @@ export interface GeoJSONDataType {
 }
 
 export interface GeoJSONDataFeature {
-  type: string;
+  type: "Feature";
   properties: object;
   geometry: {
-    type: string;
-    coordinates?: Array<Array<Array<number[]>>>;
+    type: "MultiPolygon";
+    coordinates: Array<Array<Array<number[]>>>;
   };
 }

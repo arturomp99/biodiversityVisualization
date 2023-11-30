@@ -43,3 +43,10 @@ export const dendrogramParameters = {
     max: 10,
   },
 };
+
+export const mapChartParameters = {
+  zoom: {
+    min: 0.5,
+    max: 10000,
+  },
+};

@@ -8,6 +8,7 @@ import { dendrogramIdNames } from "src/data/idClassNames";
 import { drawDendrogram, scaleData } from "./drawDendrogram";
 import { addZoom } from "../shared/Interactivity/zoom";
 import { GraphProps } from "../graphs.types";
+import { dendrogramParameters } from "src/data/constants";
 
 export const Dendrogram: FC<GraphProps> = ({ isBasicInteractive }) => {
   // TODO: CLEANUP - This is only added to read the sample data quickly
@@ -57,7 +58,10 @@ export const Dendrogram: FC<GraphProps> = ({ isBasicInteractive }) => {
       return;
     }
     if (isBasicInteractive) {
-      addZoom(node.current, zoomContainer.current);
+      addZoom(node.current, zoomContainer.current, [
+        dendrogramParameters.zoom.min,
+        dendrogramParameters.zoom.max,
+      ]);
     }
     observeResize(node.current, resizeEventHandler);
   }, [node.current]);

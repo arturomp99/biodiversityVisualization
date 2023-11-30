@@ -1,5 +1,4 @@
 import { Point } from "src/utils/lineEquations";
-import { GraphProps } from "../graphs.types";
 
 export interface TreeDataType {
   name: string;
