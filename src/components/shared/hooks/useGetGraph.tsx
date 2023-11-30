@@ -5,7 +5,7 @@ export const useGetGraph = (graphName: string) => {
   return (
     (graphName === "Dendrogram" && <Dendrogram isBasicInteractive />) ||
     (graphName === "Timeline" && <TimeLine />) ||
-    (graphName === "Map" && <Map />) ||
+    (graphName === "Map" && <Map isBasicInteractive />) ||
     (graphName === "Line chart" && <LineChart />) || <div>GRAPH NOT FOUND</div>
   );
 };
