@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState, createRef, useCallback } from "react";
-import { json } from "d3";
+import { ExtendedFeatureCollection, json } from "d3";
 import { GraphProps } from "../graphs.types";
-import { GeoJSONDataFeature } from "./map.types";
 import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
 import { drawMap } from "./drawMap";
 import { StyledMapContainer } from "./styles";
@@ -12,14 +11,16 @@ import { mapChartParameters } from "src/data/constants";
 
 export const Map: FC<GraphProps> = ({ isBasicInteractive }) => {
   // TODO: CLEANUP - This is only added to read the sample data quickly
-  const [data, setData] = useState<GeoJSONDataFeature | undefined>(undefined);
+  const [data, setData] = useState<ExtendedFeatureCollection | undefined>(
+    undefined
+  );
   const [loading, setLoading] = useState(true);
   const [shouldDrawMap, setShouldDrawMap] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const mapData: GeoJSONDataFeature | undefined = await json(
-          "sampleData/singaporeBoundary.geo.json"
+        const mapData: ExtendedFeatureCollection | undefined = await json(
+          "sampleData/0-country.geojson"
         );
         if (!mapData) throw "empty data";
         setData(mapData);
