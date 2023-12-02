@@ -20,7 +20,7 @@ export const Map: FC<GraphProps> = ({ isBasicInteractive }) => {
     const fetchData = async () => {
       try {
         const mapData: ExtendedFeatureCollection | undefined = await json(
-          "sampleData/singaporeBoundary.geo.json"
+          "sampleData/0-country.geojson"
         );
         if (!mapData) throw "empty data";
         setData(mapData);
