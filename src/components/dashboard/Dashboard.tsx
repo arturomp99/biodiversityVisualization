@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 import { StyledDashboardLayout } from "./styles";
 import { graphsMetadata } from "../../data";
 import { GraphMetadataType } from "../../data/graphs.types";
@@ -12,7 +12,11 @@ export const Dashboard = () => {
       {graphsMetadata.data.map((elementGraph: GraphMetadataType, i: number) => {
         return (
           <GraphCard key={i}>
-            <GraphContainer>{useGetGraph(elementGraph.title)}</GraphContainer>
+            <GraphContainer>
+              <Link to={`detail/${elementGraph.title}`}>
+                {useGetGraph(elementGraph.title)}
+              </Link>
+            </GraphContainer>
           </GraphCard>
         );
       })}
