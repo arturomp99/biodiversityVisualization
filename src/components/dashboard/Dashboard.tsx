@@ -13,8 +13,8 @@ export const Dashboard = () => {
         return (
           <GraphCard key={i}>
             <GraphContainer>
-              <Link to={`detail/${elementGraph.title}`}>
-                {useGetGraph(elementGraph.title)}
+              <Link to={`detail/${elementGraph.id}`}>
+                {useGetGraph(elementGraph.id)}
               </Link>
             </GraphContainer>
           </GraphCard>
