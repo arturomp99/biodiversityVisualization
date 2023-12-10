@@ -1,11 +1,11 @@
 import React from "react";
-// import { DashboardPage } from "./pages/DashboardPage";
-import { DetailPage } from "./pages/DetailPage";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./pages/routes/router";
 
 function App() {
   return (
     <div className="app">
-      <DetailPage />
+      <RouterProvider router={router} />
     </div>
   );
 }

@@ -1,18 +1,22 @@
 {
   "data": [
     {
+      "id": "Dendrogram",
       "title": "Dendrogram",
       "description": "This is a dendrogram."
     },
     {
+      "id": "Map",
       "title": "Map",
       "description": "This is a Map."
     },
     {
+      "id": "Timeline",
       "title": "Timeline",
       "description": "This is a timeline."
     },
     {
+      "id": "LineChart",
       "title": "Line chart",
       "description": "This is a line plot."
     }
