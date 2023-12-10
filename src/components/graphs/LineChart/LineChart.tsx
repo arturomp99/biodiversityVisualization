@@ -1,5 +1,6 @@
 import React from "react";
-import * as d3 from "d3";
+import { DSVRowString, csv } from "d3";
+
 import { createRef, useCallback, useEffect, useState } from "react";
 import { StyledLineChartContainer } from "./styles";
 import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
@@ -10,7 +11,6 @@ import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
 import { lineChartParameters } from "../../../data/constants";
 import { SoundChartDataType } from "./lineChart.types";
 import { SoundHeaders } from "../../../data/sampleData/sampleData.types";
-import { DSVRowString } from "d3";
 
 export const LineChart = () => {
   // TODO: CLEANUP - This is only added to read the sample data quickly
@@ -18,18 +18,27 @@ export const LineChart = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    d3.csv(
-      "./sampleData/sampleSoundData.csv",
-      (soundData: DSVRowString<SoundHeaders>) => {
-        return {
-          timeStamp: Number(soundData.timeStamp),
-          soundMax: Number(soundData.soundMax),
-        };
+    const fetchData = async () => {
+      try {
+        const readData = await csv(
+          "/sampleData/sampleSoundData.csv",
+          (soundData: DSVRowString<SoundHeaders>) => {
+            console.log(soundData);
+            return {
+              timeStamp: Number(soundData.timeStamp),
+              soundMax: Number(soundData.soundMax),
+            };
+          }
+        );
+        if (!readData) throw "empty data";
+        setLoading(false);
+        setData(Array.from(readData));
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        return console.log("Error loading the data\n", error);
       }
-    ).then((d) => {
-      setLoading(false);
-      setData(Array.from(d));
-    });
+    };
+    fetchData();
   }, []);
   // TODO -----------------------------------------------------------------
 
