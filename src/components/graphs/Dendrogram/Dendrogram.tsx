@@ -1,6 +1,4 @@
 import React, { useState, useEffect, createRef, useCallback, FC } from "react";
-import { dendrogramData } from "src/data";
-import { TreeDataType } from "./dendrogram.types";
 import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
 import { StyledDendrogramContainer } from "./styles";
 import { observeResize } from "src/utils/observeResize";
@@ -9,21 +7,13 @@ import { drawDendrogram, scaleData } from "./drawDendrogram";
 import { addZoom } from "../shared/Interactivity/zoom";
 import { GraphProps } from "../graphs.types";
 import { dendrogramParameters } from "src/data/constants";
+import { useDataContext } from "src/contexts/dataContext";
 
 export const Dendrogram: FC<GraphProps> = ({ isBasicInteractive }) => {
-  // TODO: CLEANUP - This is only added to read the sample data quickly
-  const [data, setData] = useState<TreeDataType | undefined>(undefined);
-  const [loading, setLoading] = useState(true);
+  const {
+    dendrogramData: { data, loading },
+  } = useDataContext();
   const [shouldDrawDendrogram, setShouldDrawDendrogram] = useState(false);
-  useEffect(() => {
-    if (!dendrogramData) {
-      return;
-    }
-    setLoading(false);
-    setData(dendrogramData as TreeDataType);
-    // setData(dendrogramData as DendrogramDataType);
-  });
-  // TODO -----------------------------------------------------------------
 
   const node = createRef<SVGSVGElement>();
   const zoomContainer = createRef<SVGSVGElement>();

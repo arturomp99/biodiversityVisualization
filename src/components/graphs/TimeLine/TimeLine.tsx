@@ -1,27 +1,18 @@
-import React, { createRef, useState, useEffect, useCallback } from "react";
+import React, { createRef, useEffect, useCallback } from "react";
 import { StyledTimeLineContainer } from "./styles";
 // import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
-import { detectedAnimals } from "src/data";
 import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
 import { useTimeLineScales } from "./useTimeLineScales";
 import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { timeLineParameters } from "src/data/constants";
-import { TemporalDataType } from "./timeLine.types";
 import { observeResize } from "src/utils/observeResize";
 import { drawMarkers } from "./drawMarkers";
+import { useDataContext } from "src/contexts/dataContext";
 
 export const TimeLine = () => {
-  // TODO: CLEANUP - This is only added to read the sample data quickly
-  const [data, setData] = useState<TemporalDataType[] | undefined>(undefined);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    if (!detectedAnimals) {
-      return;
-    }
-    setLoading(false);
-    setData(detectedAnimals["detected animals"] as TemporalDataType[]);
-  }, [detectedAnimals]);
-  // TODO -----------------------------------------------------------------
+  const {
+    timeLineData: { data, loading },
+  } = useDataContext();
 
   const node = createRef<SVGSVGElement>();
   const { dimensions, setDimensions: setGraphDimensions } = useGetGraphCoordSys(

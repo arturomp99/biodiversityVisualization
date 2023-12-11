@@ -1,6 +1,5 @@
 import React from "react";
-import * as d3 from "d3";
-import { createRef, useCallback, useEffect, useState } from "react";
+import { createRef, useCallback, useEffect } from "react";
 import { StyledLineChartContainer } from "./styles";
 import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { useLineChartScales } from "./useLineChartScales";
@@ -9,29 +8,12 @@ import { observeResize } from "../../../utils/observeResize";
 import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
 import { lineChartParameters } from "../../../data/constants";
 import { SoundChartDataType } from "./lineChart.types";
-import { SoundHeaders } from "../../../data/sampleData/sampleData.types";
-import { DSVRowString } from "d3";
+import { useDataContext } from "src/contexts/dataContext";
 
 export const LineChart = () => {
-  // TODO: CLEANUP - This is only added to read the sample data quickly
-  const [data, setData] = useState<SoundChartDataType[] | undefined>(undefined);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    d3.csv(
-      "./sampleData/sampleSoundData.csv",
-      (soundData: DSVRowString<SoundHeaders>) => {
-        return {
-          timeStamp: Number(soundData.timeStamp),
-          soundMax: Number(soundData.soundMax),
-        };
-      }
-    ).then((d) => {
-      setLoading(false);
-      setData(Array.from(d));
-    });
-  }, []);
-  // TODO -----------------------------------------------------------------
+  const {
+    lineChartData: { data, loading },
+  } = useDataContext();
 
   useEffect(() => {
     if (!data) {
