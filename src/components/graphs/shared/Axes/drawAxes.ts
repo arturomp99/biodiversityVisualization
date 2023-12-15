@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import {
   graphMargin,
   lineChartParameters,
+  resizeTransitionDuration,
   timeLineParameters,
 } from "../../../../data/constants";
 
@@ -90,8 +91,16 @@ export const giveSizeToAxes = (
     yAxis.tickSize(-width);
   }
 
-  d3.select(parentRef).select<SVGSVGElement>("#hAxis").call(xAxis);
-  d3.select(parentRef).select<SVGSVGElement>("#vAxis").call(yAxis);
+  d3.select(parentRef)
+    .select<SVGSVGElement>("#hAxis")
+    .transition()
+    .duration(resizeTransitionDuration)
+    .call(xAxis);
+  d3.select(parentRef)
+    .select<SVGSVGElement>("#vAxis")
+    .transition()
+    .duration(resizeTransitionDuration)
+    .call(yAxis);
 
   d3.selectAll("#hAxis").attr(
     "transform",

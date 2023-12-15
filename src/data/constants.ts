@@ -1,4 +1,5 @@
 export const cardResizeTimeout = 1000;
+export const resizeTransitionDuration = 2000;
 export const fontSize = 10;
 export const graphMargin = {
   top: fontSize,
