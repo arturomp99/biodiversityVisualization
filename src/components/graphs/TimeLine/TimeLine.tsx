@@ -54,7 +54,12 @@ export const TimeLine: FC<GraphProps> = ({ dimensions }) => {
 
   useEffect(() => {
     if (!node.current) return;
-    createAxes(node.current, scales, dimensions);
+    createAxes(
+      node.current,
+      scales,
+      dimensions,
+      timeLineParameters.axesParameters
+    );
   }, [node.current]);
 
   return <StyledTimeLineContainer ref={node} id="lineChart" />;
