@@ -108,8 +108,6 @@ const useReadTimeLineData = () => {
 };
 
 export const useReadData = () => {
-  console.log("loadData");
-
   const dendrogramData = useReadDendrogramData();
   const lineChartData = useReadLineChartData();
   const mapData = useReadMapData();

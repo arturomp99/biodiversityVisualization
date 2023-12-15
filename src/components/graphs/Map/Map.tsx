@@ -1,15 +1,13 @@
-import React, { FC, useEffect, useState, createRef, useCallback } from "react";
+import React, { FC, useEffect, useState, createRef } from "react";
 import { GraphProps } from "../graphs.types";
-import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
 import { drawMap } from "./drawMap";
 import { StyledMapContainer } from "./styles";
 import { mapIdNames } from "src/data/idClassNames";
-import { observeResize } from "src/utils/observeResize";
 import { addZoom } from "../shared/Interactivity/zoom";
 import { mapChartParameters } from "src/data/constants";
 import { useDataContext } from "src/contexts/dataContext";
 
-export const Map: FC<GraphProps> = ({ isBasicInteractive }) => {
+export const Map: FC<GraphProps> = ({ isBasicInteractive, dimensions }) => {
   const {
     mapData: { data, loading },
   } = useDataContext();
@@ -17,19 +15,6 @@ export const Map: FC<GraphProps> = ({ isBasicInteractive }) => {
 
   const node = createRef<SVGSVGElement>();
   const zoomContainer = createRef<SVGSVGElement>();
-  const { dimensions, setDimensions: setGraphDimensions } = useGetGraphCoordSys(
-    [0, 0]
-  );
-
-  const resizeEventHandler = useCallback(
-    (resizedElement: ResizeObserverEntry[]) => {
-      setGraphDimensions([
-        resizedElement[0].contentRect.width,
-        resizedElement[0].contentRect.height,
-      ]);
-    },
-    []
-  );
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -53,7 +38,6 @@ export const Map: FC<GraphProps> = ({ isBasicInteractive }) => {
         mapChartParameters.zoom.max,
       ]);
     }
-    observeResize(node.current, resizeEventHandler);
   }, [node.current]);
 
   useEffect(() => {

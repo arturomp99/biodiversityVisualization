@@ -1,3 +1,4 @@
 export interface GraphProps {
-  isBasicInteractive: boolean;
+  dimensions: [number, number];
+  isBasicInteractive?: boolean;
 }

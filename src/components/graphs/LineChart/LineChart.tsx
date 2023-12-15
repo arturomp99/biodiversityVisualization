@@ -1,19 +1,21 @@
-import React from "react";
-import { createRef, useCallback, useEffect } from "react";
+import React, { FC } from "react";
+import { createRef, useEffect } from "react";
 import { StyledLineChartContainer } from "./styles";
 import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { useLineChartScales } from "./useLineChartScales";
 import { drawLines } from "./drawLines";
-import { observeResize } from "../../../utils/observeResize";
-import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
 import { lineChartParameters } from "../../../data/constants";
 import { SoundChartDataType } from "./lineChart.types";
 import { useDataContext } from "src/contexts/dataContext";
+import { GraphProps } from "../graphs.types";
 
-export const LineChart = () => {
+export const LineChart: FC<GraphProps> = ({ dimensions }) => {
   const {
     lineChartData: { data, loading },
   } = useDataContext();
+
+  const node = createRef<SVGSVGElement>();
+  const scales = useLineChartScales(data);
 
   useEffect(() => {
     if (!data) {
@@ -29,23 +31,6 @@ export const LineChart = () => {
     });
     drawLines(node.current, scaledData);
   }, [data]);
-
-  const node = createRef<SVGSVGElement>();
-  const { dimensions, setDimensions: setGraphDimensions } = useGetGraphCoordSys(
-    [0, 0]
-  );
-
-  const scales = useLineChartScales(data);
-
-  const resizeEventHandler = useCallback(
-    (resizedElement: ResizeObserverEntry[]) => {
-      setGraphDimensions([
-        resizedElement[0].contentRect.width,
-        resizedElement[0].contentRect.height,
-      ]);
-    },
-    []
-  );
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -78,8 +63,7 @@ export const LineChart = () => {
 
   useEffect(() => {
     if (!node.current) return;
-    createAxes(node.current, scales);
-    observeResize(node.current, resizeEventHandler);
+    createAxes(node.current, scales, dimensions);
   }, [node.current]);
 
   return <StyledLineChartContainer ref={node} id="lineChart" />;
