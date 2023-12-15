@@ -63,7 +63,12 @@ export const LineChart: FC<GraphProps> = ({ dimensions }) => {
 
   useEffect(() => {
     if (!node.current) return;
-    createAxes(node.current, scales, dimensions);
+    createAxes(
+      node.current,
+      scales,
+      dimensions,
+      lineChartParameters.axesParameters
+    );
   }, [node.current]);
 
   return <StyledLineChartContainer ref={node} id="lineChart" />;
