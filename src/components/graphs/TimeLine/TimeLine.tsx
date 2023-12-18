@@ -1,87 +1,66 @@
-import React, { createRef, useState, useEffect, useCallback } from "react";
+import React, { createRef, useEffect, FC, useRef } from "react";
 import { StyledTimeLineContainer } from "./styles";
-// import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
-import { detectedAnimals } from "src/data";
-import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
-import { useTimeLineScales } from "./useTimeLineScales";
+import { getTimeLineScales } from "./getTimeLineScales";
 import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { timeLineParameters } from "src/data/constants";
-import { TemporalDataType } from "./timeLine.types";
-import { observeResize } from "src/utils/observeResize";
 import { drawMarkers } from "./drawMarkers";
+import { useDataContext } from "src/contexts/dataContext";
+import { GraphProps } from "../graphs.types";
+import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
 
-export const TimeLine = () => {
-  // TODO: CLEANUP - This is only added to read the sample data quickly
-  const [data, setData] = useState<TemporalDataType[] | undefined>(undefined);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    if (!detectedAnimals) {
-      return;
-    }
-    setLoading(false);
-    setData(detectedAnimals["detected animals"] as TemporalDataType[]);
-  }, [detectedAnimals]);
-  // TODO -----------------------------------------------------------------
-
+export const TimeLine: FC<GraphProps> = ({ dimensions }) => {
+  const {
+    timeLineData: { data, loading },
+  } = useDataContext();
   const node = createRef<SVGSVGElement>();
-  const { dimensions, setDimensions: setGraphDimensions } = useGetGraphCoordSys(
-    [0, 0]
-  );
+  const scaling = useRef(getTimeLineScales(data));
 
-  const { scales, scaleData } = useTimeLineScales(data);
+  const realDimensions = getDimensionsWithoutMargin(dimensions);
 
   useEffect(() => {
-    if (!data) {
+    if (!data || !node.current) {
       return;
     }
-    const scaledData = scaleData(data);
+    scaling.current = getTimeLineScales(data, realDimensions);
+    if (!scaling.current?.scales) return;
+    const scaledData = scaling.current.scaleData(data);
     if (!scaledData) {
       return;
     }
-    const [, graphHeight] = dimensions;
+    const [, graphHeight] = realDimensions;
+    createAxes(
+      node.current,
+      scaling.current.scales,
+      realDimensions,
+      timeLineParameters.axesParameters
+    );
     drawMarkers(node.current, scaledData, graphHeight);
-  }, [data, scaleData]);
-
-  const resizeEventHandler = useCallback(
-    (resizedElement: ResizeObserverEntry[]) => {
-      setGraphDimensions([
-        resizedElement[0].contentRect.width,
-        resizedElement[0].contentRect.height,
-      ]);
-    },
-    []
-  );
+  }, [data]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (loading || !data || !node.current) {
+      if (loading || !data || !node.current || !scaling.current?.scales) {
         return;
       }
       // So that it only happens after a time delay
       giveSizeToAxes(
         node.current,
-        scales,
-        dimensions,
+        scaling.current.scales,
+        realDimensions,
         timeLineParameters.axesParameters
       );
-      const scaledData = scaleData(data);
+      const scaledData = scaling.current.scaleData(data);
       if (!scaledData) {
         return;
       }
-      const [, graphHeight] = dimensions;
+      const [, graphHeight] = realDimensions;
       drawMarkers(node.current, scaledData, graphHeight);
     }, 1000);
 
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [dimensions, scales, loading]);
-
-  useEffect(() => {
-    if (!node.current) return;
-    createAxes(node.current, scales);
-    observeResize(node.current, resizeEventHandler);
-  }, [node.current]);
+  }, [realDimensions]);
 
   return <StyledTimeLineContainer ref={node} id="lineChart" />;
 };

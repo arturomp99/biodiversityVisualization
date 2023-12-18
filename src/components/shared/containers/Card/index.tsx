@@ -1,4 +1,4 @@
 export { CardFooter } from "./CardFooter";
-export { GraphCard } from "./GraphCard";
+export { Graph } from "./Graph";
 export { GraphContainer } from "./GraphContainer";
 export { StyledGraphCard } from "./styles";

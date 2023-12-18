@@ -1,29 +1,22 @@
-import { useState, useEffect, useCallback } from "react";
 import * as d3 from "d3";
 import { TemporalDataType, TimeLineChartDataType } from "./timeLine.types";
 
-export const useTimeLineScales = (data: TemporalDataType[] | undefined) => {
-  const [[xScale, yScale], setScales] = useState([
-    d3.scaleTime().domain([]),
-    d3.scaleBand().domain([]),
-  ]);
+export const getTimeLineScales = (
+  data: TemporalDataType[] | undefined,
+  dimensions?: [number, number]
+) => {
+  if (!data) {
+    return;
+  }
+  const xMin = d3.min(data, (dataPoint) => new Date(dataPoint.start_time));
+  const xMax = d3.max(data, (dataPoint) => new Date(dataPoint.finish_time));
+  if (!xMin || !xMax) return;
+  const xExtent = [xMin, xMax];
+  const animalsValues = data.map((dataPoint) => dataPoint.name);
+  const xScale = d3.scaleTime().domain(xExtent);
+  const yScale = d3.scaleBand().domain(animalsValues);
 
-  useEffect(() => {
-    if (!data) {
-      return;
-    }
-    const xMin = d3.min(data, (dataPoint) => new Date(dataPoint.start_time));
-    const xMax = d3.max(data, (dataPoint) => new Date(dataPoint.finish_time));
-    if (!xMin || !xMax) return;
-    const xExtent = [xMin, xMax];
-    const animalsValues = data.map((dataPoint) => dataPoint.name);
-    setScales(([prevXScale, prevYScale]) => [
-      prevXScale.domain(xExtent),
-      prevYScale.domain(animalsValues),
-    ]);
-  }, [data]);
-
-  const scaleData = useCallback(
+  const scaleData =
     !xScale.domain().length || !yScale.domain().length
       ? () => undefined
       : (data: TemporalDataType[]) => {
@@ -46,8 +39,13 @@ export const useTimeLineScales = (data: TemporalDataType[] | undefined) => {
             }
           );
           return scaledData;
-        },
-    [xScale.domain()]
-  );
+        };
+
+  if (dimensions) {
+    const [width, height] = dimensions;
+    xScale.range([0, width]);
+    yScale.range([0, height]);
+  }
+
   return { scales: [xScale, yScale], scaleData };
 };

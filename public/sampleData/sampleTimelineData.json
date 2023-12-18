@@ -1,0 +1,37 @@
+[
+  {
+    "name": "ZORRO",
+    "start_time": "2023-03-28T08:45:00",
+    "finish_time": "2023-03-28T08:47:00"
+  },
+  {
+    "name": "PALOMA",
+    "start_time": "2023-03-28T08:56:20",
+    "finish_time": "2023-03-28T08:59:47"
+  },
+  {
+    "name": "COLIBRÍ",
+    "start_time": "2023-03-28T09:10:11",
+    "finish_time": "2023-03-28T09:15:57"
+  },
+  {
+    "name": "JABALÍ",
+    "start_time": "2023-03-28T09:13:08",
+    "finish_time": "2023-03-28T09:14:00"
+  },
+  {
+    "name": "ZORRO",
+    "start_time": "2023-03-28T09:20:39",
+    "finish_time": "2023-03-28T09:21:56"
+  },
+  {
+    "name": "PALOMA",
+    "start_time": "2023-03-28T08:45:00",
+    "finish_time": "2023-03-28T08:47:00"
+  },
+  {
+    "name": "HORMIGA",
+    "start_time": "2023-03-28T09:00:10",
+    "finish_time": "2023-03-28T09:15:45"
+  }
+]

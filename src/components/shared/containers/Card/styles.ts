@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { themeColors, themeSizes } from "src/data/theme";
 
 export const StyledGraphCard = styled.div`
-  margin: 1rem 2rem;
+  height: 100%;
   padding: 0.5rem 1rem;
   background-color: ${themeColors.card.background};
   color: ${themeColors.card.font};

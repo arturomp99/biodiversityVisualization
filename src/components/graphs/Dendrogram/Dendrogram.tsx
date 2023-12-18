@@ -1,78 +1,55 @@
-import React, { useState, useEffect, createRef, useCallback, FC } from "react";
-import { dendrogramData } from "src/data";
-import { TreeDataType } from "./dendrogram.types";
-import { useGetGraphCoordSys } from "../shared/hooks/useGetGraphCoordSys";
+import React, { useEffect, createRef, FC } from "react";
 import { StyledDendrogramContainer } from "./styles";
-import { observeResize } from "src/utils/observeResize";
 import { dendrogramIdNames } from "src/data/idClassNames";
 import { drawDendrogram, scaleData } from "./drawDendrogram";
 import { addZoom } from "../shared/Interactivity/zoom";
 import { GraphProps } from "../graphs.types";
 import { dendrogramParameters } from "src/data/constants";
+import { useDataContext } from "src/contexts/dataContext";
+import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
 
-export const Dendrogram: FC<GraphProps> = ({ isBasicInteractive }) => {
-  // TODO: CLEANUP - This is only added to read the sample data quickly
-  const [data, setData] = useState<TreeDataType | undefined>(undefined);
-  const [loading, setLoading] = useState(true);
-  const [shouldDrawDendrogram, setShouldDrawDendrogram] = useState(false);
-  useEffect(() => {
-    if (!dendrogramData) {
-      return;
-    }
-    setLoading(false);
-    setData(dendrogramData as TreeDataType);
-    // setData(dendrogramData as DendrogramDataType);
-  });
-  // TODO -----------------------------------------------------------------
-
+export const Dendrogram: FC<GraphProps> = ({
+  isBasicInteractive,
+  dimensions,
+}) => {
+  const {
+    dendrogramData: { data, loading },
+  } = useDataContext();
   const node = createRef<SVGSVGElement>();
   const zoomContainer = createRef<SVGSVGElement>();
-  const { dimensions, setDimensions: setGraphDimensions } = useGetGraphCoordSys(
-    [0, 0]
-  );
 
-  const resizeEventHandler = useCallback(
-    (resizedElement: ResizeObserverEntry[]) => {
-      setGraphDimensions([
-        resizedElement[0].contentRect.width,
-        resizedElement[0].contentRect.height,
-      ]);
-    },
-    []
-  );
+  const realDimensions = getDimensionsWithoutMargin(dimensions);
+
+  useEffect(() => {
+    if (!data || !zoomContainer.current) return;
+    const scaledData = scaleData(data, realDimensions);
+    drawDendrogram(scaledData, zoomContainer.current);
+  }, [data]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      setShouldDrawDendrogram(
-        !loading && !!dimensions[0] && !!dimensions[1] && !!node.current
-      );
+      if (loading || !realDimensions || !node.current) return;
+      // TODO: TRANSLATE DENDROGRAM
     }, 1000);
 
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [dimensions, loading]);
+  }, [realDimensions]);
 
   useEffect(() => {
-    if (!node.current || !zoomContainer.current) {
-      return;
-    }
+    if (!node.current || !zoomContainer.current) return;
     if (isBasicInteractive) {
       addZoom(node.current, zoomContainer.current, [
         dendrogramParameters.zoom.min,
         dendrogramParameters.zoom.max,
       ]);
     }
-    observeResize(node.current, resizeEventHandler);
-  }, [node.current]);
+  }, []);
 
-  useEffect(() => {
-    if (!shouldDrawDendrogram || !data || !zoomContainer.current) {
-      return;
-    }
-    const scaledData = scaleData(data, dimensions);
-    drawDendrogram(scaledData, zoomContainer.current);
-  }, [shouldDrawDendrogram]);
+  if (loading) {
+    return <div>LOADING DENDROGRAM DATA...</div>;
+  }
 
   return (
     <StyledDendrogramContainer ref={node} id={`${dendrogramIdNames.container}`}>
