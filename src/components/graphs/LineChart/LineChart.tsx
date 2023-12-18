@@ -14,7 +14,6 @@ export const LineChart: FC<GraphProps> = ({ dimensions }) => {
   const {
     lineChartData: { data, loading },
   } = useDataContext();
-
   const node = createRef<SVGSVGElement>();
   const scales = useRef(getLineChartScales(data));
 
