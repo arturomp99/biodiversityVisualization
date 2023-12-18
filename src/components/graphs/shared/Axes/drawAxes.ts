@@ -15,14 +15,6 @@ type AxesParametersTypes =
   | typeof lineChartParameters.axesParameters
   | typeof timeLineParameters.axesParameters;
 
-export const getDimensionsWithoutMargin = (dimensions: [number, number]) => {
-  const realDimensions = [
-    dimensions[0] - graphMargin.left - graphMargin.right,
-    dimensions[1] - graphMargin.top - graphMargin.bottom,
-  ];
-  return realDimensions;
-};
-
 export function createAxes(
   parentRef: SVGSVGElement,
   scales: AxisScaleTypes[],
@@ -30,7 +22,7 @@ export function createAxes(
   axesParameters: AxesParametersTypes
 ) {
   const [xScale, yScale] = scales;
-  const [width, height] = getDimensionsWithoutMargin(dimensions);
+  const [width, height] = dimensions;
   xScale.range([0, width]);
   yScale.range([0, height]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -74,7 +66,7 @@ export const giveSizeToAxes = (
   axesParameters: AxesParametersTypes
 ) => {
   const [xScale, yScale] = scales;
-  const [width, height] = getDimensionsWithoutMargin(dimensions);
+  const [width, height] = dimensions;
   xScale.range([0, width]);
   yScale.range([0, height]);
 

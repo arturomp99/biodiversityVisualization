@@ -1,6 +1,5 @@
 import * as d3 from "d3";
 import { SoundChartDataType } from "./lineChart.types";
-import { getDimensionsWithoutMargin } from "../shared/Axes/drawAxes";
 
 export const getLineChartScales = (
   data: SoundChartDataType[] | undefined,
@@ -21,7 +20,7 @@ export const getLineChartScales = (
   const yScale = d3.scaleLinear().domain(yExtent.reverse());
 
   if (dimensions) {
-    const [width, height] = getDimensionsWithoutMargin(dimensions);
+    const [width, height] = dimensions;
     xScale.range([0, width]);
     yScale.range([0, height]);
   }

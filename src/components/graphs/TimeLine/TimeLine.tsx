@@ -6,30 +6,32 @@ import { timeLineParameters } from "src/data/constants";
 import { drawMarkers } from "./drawMarkers";
 import { useDataContext } from "src/contexts/dataContext";
 import { GraphProps } from "../graphs.types";
+import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
 
 export const TimeLine: FC<GraphProps> = ({ dimensions }) => {
   const {
     timeLineData: { data, loading },
   } = useDataContext();
-
   const node = createRef<SVGSVGElement>();
   const scaling = useRef(getTimeLineScales(data));
+
+  const realDimensions = getDimensionsWithoutMargin(dimensions);
 
   useEffect(() => {
     if (!data || !node.current) {
       return;
     }
-    scaling.current = getTimeLineScales(data, dimensions);
+    scaling.current = getTimeLineScales(data, realDimensions);
     if (!scaling.current?.scales) return;
     const scaledData = scaling.current.scaleData(data);
     if (!scaledData) {
       return;
     }
-    const [, graphHeight] = dimensions;
+    const [, graphHeight] = realDimensions;
     createAxes(
       node.current,
       scaling.current.scales,
-      dimensions,
+      realDimensions,
       timeLineParameters.axesParameters
     );
     drawMarkers(node.current, scaledData, graphHeight);
@@ -44,21 +46,21 @@ export const TimeLine: FC<GraphProps> = ({ dimensions }) => {
       giveSizeToAxes(
         node.current,
         scaling.current.scales,
-        dimensions,
+        realDimensions,
         timeLineParameters.axesParameters
       );
       const scaledData = scaling.current.scaleData(data);
       if (!scaledData) {
         return;
       }
-      const [, graphHeight] = dimensions;
+      const [, graphHeight] = realDimensions;
       drawMarkers(node.current, scaledData, graphHeight);
     }, 1000);
 
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [dimensions]);
+  }, [realDimensions]);
 
   return <StyledTimeLineContainer ref={node} id="lineChart" />;
 };

@@ -8,6 +8,7 @@ import { lineChartParameters } from "../../../data/constants";
 import { SoundChartDataType } from "./lineChart.types";
 import { useDataContext } from "src/contexts/dataContext";
 import { GraphProps } from "../graphs.types";
+import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
 
 export const LineChart: FC<GraphProps> = ({ dimensions }) => {
   const {
@@ -17,11 +18,13 @@ export const LineChart: FC<GraphProps> = ({ dimensions }) => {
   const node = createRef<SVGSVGElement>();
   const scales = useRef(getLineChartScales(data));
 
+  const realDimensions = getDimensionsWithoutMargin(dimensions);
+
   useEffect(() => {
     if (!data || !node.current) {
       return;
     }
-    scales.current = getLineChartScales(data, dimensions);
+    scales.current = getLineChartScales(data, realDimensions);
     if (!scales.current) return;
     const [xScale, yScale] = scales.current;
     const scaledData = data.map((dataPoint: SoundChartDataType) => {
@@ -34,7 +37,7 @@ export const LineChart: FC<GraphProps> = ({ dimensions }) => {
     createAxes(
       node.current,
       scales.current,
-      dimensions,
+      realDimensions,
       lineChartParameters.axesParameters
     );
     drawLines(node.current, scaledData);
@@ -49,7 +52,7 @@ export const LineChart: FC<GraphProps> = ({ dimensions }) => {
       giveSizeToAxes(
         node.current,
         scales.current,
-        dimensions,
+        realDimensions,
         lineChartParameters.axesParameters
       );
 
@@ -67,7 +70,7 @@ export const LineChart: FC<GraphProps> = ({ dimensions }) => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [dimensions]);
+  }, [realDimensions]);
 
   if (loading) {
     return <div>LOADING LINE CHART DATA...</div>;

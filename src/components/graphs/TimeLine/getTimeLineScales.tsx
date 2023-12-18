@@ -1,6 +1,5 @@
 import * as d3 from "d3";
 import { TemporalDataType, TimeLineChartDataType } from "./timeLine.types";
-import { getDimensionsWithoutMargin } from "../shared/Axes/drawAxes";
 
 export const getTimeLineScales = (
   data: TemporalDataType[] | undefined,
@@ -43,7 +42,7 @@ export const getTimeLineScales = (
         };
 
   if (dimensions) {
-    const [width, height] = getDimensionsWithoutMargin(dimensions);
+    const [width, height] = dimensions;
     xScale.range([0, width]);
     yScale.range([0, height]);
   }
