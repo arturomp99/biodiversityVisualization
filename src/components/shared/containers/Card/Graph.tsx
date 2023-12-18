@@ -4,9 +4,10 @@ import { StyledGraphCard } from "./styles";
 import { useObserveResize } from "../../hooks/useObserveResize";
 import { useGetGraph } from "../../hooks/useGetGraph";
 
-export const Graph = (props: { graphName: string }) => {
+export const Graph = (props: { graphName: string; to?: string }) => {
+  const { graphName, to } = props;
+
   const { containerRef, dimensions } = useObserveResize();
-  const { graphName } = props;
 
   if (!dimensions) {
     return (
@@ -19,9 +20,11 @@ export const Graph = (props: { graphName: string }) => {
   const graphProps = { dimensions };
   return (
     <StyledGraphCard ref={containerRef}>
-      <Link to={`detail/${graphName}`}>
-        {useGetGraph(graphName, graphProps)}
-      </Link>
+      {to ? (
+        <Link to={to}>{useGetGraph(graphName, graphProps)}</Link>
+      ) : (
+        useGetGraph(graphName, graphProps)
+      )}
     </StyledGraphCard>
   );
 };

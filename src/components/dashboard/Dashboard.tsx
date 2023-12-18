@@ -8,7 +8,13 @@ export const Dashboard = () => {
   return (
     <StyledDashboardLayout>
       {graphsMetadata.data.map((elementGraph: GraphMetadataType, i: number) => {
-        return <Graph key={i} graphName={elementGraph.id} />;
+        return (
+          <Graph
+            key={i}
+            graphName={elementGraph.id}
+            to={`detail/${elementGraph.id}`}
+          />
+        );
       })}
     </StyledDashboardLayout>
   );

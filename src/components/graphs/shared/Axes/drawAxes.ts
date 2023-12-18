@@ -15,7 +15,7 @@ type AxesParametersTypes =
   | typeof lineChartParameters.axesParameters
   | typeof timeLineParameters.axesParameters;
 
-const getDimensionsWithoutMargin = (dimensions: [number, number]) => {
+export const getDimensionsWithoutMargin = (dimensions: [number, number]) => {
   const realDimensions = [
     dimensions[0] - graphMargin.left - graphMargin.right,
     dimensions[1] - graphMargin.top - graphMargin.bottom,
@@ -48,6 +48,8 @@ export function createAxes(
     yAxis.tickSize(-width);
   }
 
+  d3.select(parentRef).select<SVGSVGElement>("#hAxis").remove();
+  d3.select(parentRef).select<SVGSVGElement>("#vAxis").remove();
   d3.select(parentRef)
     .append("g")
     .attr("class", "axis")
