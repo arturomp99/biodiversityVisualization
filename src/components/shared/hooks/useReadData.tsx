@@ -67,7 +67,7 @@ const useReadMapData = () => {
     const fetchData = async () => {
       try {
         const readData: ExtendedFeatureCollection | undefined = await json(
-          "/sampleData/0-country.geojson"
+          "/sampleData/sampleMap.geojson"
         );
         if (!readData) throw "empty data";
         setData(readData);
