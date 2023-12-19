@@ -4,3 +4,8 @@ export const detailGridAreas = {
   detail: "det",
   kpi: "kpi",
 };
+
+export const audioPlayerAreas = {
+  spectrogram: "spec",
+  displayTrack: "disp",
+};
