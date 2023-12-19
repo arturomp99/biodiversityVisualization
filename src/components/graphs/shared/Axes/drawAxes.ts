@@ -19,7 +19,8 @@ export function createAxes(
   parentRef: SVGSVGElement,
   scales: AxisScaleTypes[],
   dimensions: [number, number],
-  axesParameters: AxesParametersTypes
+  axesParameters: AxesParametersTypes,
+  axesTitles?: [string, string]
 ) {
   const [xScale, yScale] = scales;
   const [width, height] = dimensions;
@@ -40,9 +41,10 @@ export function createAxes(
     yAxis.tickSize(-width);
   }
 
-  d3.select(parentRef).select<SVGSVGElement>("#hAxis").remove();
-  d3.select(parentRef).select<SVGSVGElement>("#vAxis").remove();
-  d3.select(parentRef)
+  const parent = d3.select(parentRef);
+  parent.select<SVGSVGElement>("#hAxis").remove();
+  parent.select<SVGSVGElement>("#vAxis").remove();
+  parent
     .append("g")
     .attr("class", "axis")
     .attr("id", "hAxis")
@@ -51,12 +53,39 @@ export function createAxes(
       "transform",
       `translate(${graphMargin.left},${height + graphMargin.top})`
     );
-  d3.select(parentRef)
+  parent
     .append("g")
     .attr("class", "axis")
     .attr("id", "vAxis")
     .call(yAxis)
     .attr("transform", `translate(${graphMargin.left},${graphMargin.top})`);
+
+  if (axesTitles) {
+    const [xAxisTitle, yAxisTitle] = axesTitles;
+    parent
+      .selectAll("#hAxis")
+      .append("text")
+      .attr("class", "axisTitle")
+      .attr("id", "xAxisTitle")
+      .attr("text-anchor", "end")
+      .attr("x", width - graphMargin.right)
+      .attr("y", graphMargin.bottom / 2)
+      .attr("fill", "black")
+      .attr("font-size", "1rem")
+      .text(xAxisTitle);
+    parent
+      .selectAll("#vAxis")
+      .append("text")
+      .attr("class", "axisTitle")
+      .attr("id", "yAxisTitle")
+      .attr("text-anchor", "middle")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -height / 2)
+      .attr("y", -graphMargin.left / 2)
+      .attr("fill", "black")
+      .attr("font-size", "1rem")
+      .text(yAxisTitle);
+  }
 }
 
 export const giveSizeToAxes = (
@@ -85,23 +114,41 @@ export const giveSizeToAxes = (
     yAxis.tickSize(-width);
   }
 
-  d3.select(parentRef)
+  const parent = d3.select(parentRef);
+  parent
     .select<SVGSVGElement>("#hAxis")
     .transition()
     .duration(resizeTransitionDuration)
     .call(xAxis);
-  d3.select(parentRef)
+  parent
     .select<SVGSVGElement>("#vAxis")
     .transition()
     .duration(resizeTransitionDuration)
     .call(yAxis);
 
-  d3.selectAll("#hAxis").attr(
-    "transform",
-    `translate(${graphMargin.left},${height + graphMargin.top})`
-  );
-  d3.selectAll("#vAxis").attr(
-    "transform",
-    `translate(${graphMargin.left},${graphMargin.top})`
-  );
+  parent
+    .selectAll("#hAxis")
+    .transition()
+    .duration(resizeTransitionDuration)
+    .attr(
+      "transform",
+      `translate(${graphMargin.left},${height + graphMargin.top})`
+    );
+  parent
+    .selectAll("#vAxis")
+    .transition()
+    .duration(resizeTransitionDuration)
+    .attr("transform", `translate(${graphMargin.left},${graphMargin.top})`);
+  parent
+    .selectAll("#xAxisTitle")
+    .transition()
+    .duration(resizeTransitionDuration)
+    .attr("x", width - graphMargin.right)
+    .attr("y", graphMargin.bottom / 2);
+  parent
+    .selectAll("#yAxisTitle")
+    .transition()
+    .duration(resizeTransitionDuration)
+    .attr("x", -height / 2)
+    .attr("y", -graphMargin.left / 2);
 };

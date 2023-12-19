@@ -37,7 +37,8 @@ export const LineChart: FC<GraphProps> = ({ dimensions }) => {
       node.current,
       scales.current,
       realDimensions,
-      lineChartParameters.axesParameters
+      lineChartParameters.axesParameters,
+      ["time (s)", "sound"]
     );
     drawLines(node.current, scaledData);
   }, [data]);

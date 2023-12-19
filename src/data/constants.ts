@@ -3,7 +3,7 @@ export const resizeTransitionDuration = 2000;
 export const fontSize = 10;
 export const graphMargin = {
   top: fontSize,
-  bottom: 3 * fontSize,
+  bottom: 4 * fontSize,
   left: 6 * fontSize,
   right: fontSize,
 };
