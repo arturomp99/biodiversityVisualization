@@ -32,7 +32,8 @@ export const TimeLine: FC<GraphProps> = ({ dimensions }) => {
       node.current,
       scaling.current.scales,
       realDimensions,
-      timeLineParameters.axesParameters
+      timeLineParameters.axesParameters,
+      ["Time", ""]
     );
     drawMarkers(node.current, scaledData, graphHeight);
   }, [data]);
