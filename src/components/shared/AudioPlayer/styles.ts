@@ -30,4 +30,5 @@ export const Audio = styled.audio`
 export const Image = styled.img`
   width: 100%;
   height: 100%;
+  max-height: 150px;
 `;
