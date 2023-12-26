@@ -31,6 +31,7 @@ export const LineChart: FC<GraphProps> = ({ dimensions }) => {
         key: dataPoint.timeStamp,
         scaledX: xScale(dataPoint.timeStamp),
         scaledY: yScale(dataPoint.soundMax),
+        id: dataPoint.sensorID,
       };
     });
     createAxes(
@@ -62,6 +63,7 @@ export const LineChart: FC<GraphProps> = ({ dimensions }) => {
           key: dataPoint.timeStamp,
           scaledX: xScale(dataPoint.timeStamp),
           scaledY: yScale(dataPoint.soundMax),
+          id: dataPoint.sensorID,
         };
       });
       drawLines(node.current, scaledData);

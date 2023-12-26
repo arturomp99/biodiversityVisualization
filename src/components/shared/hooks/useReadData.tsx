@@ -41,6 +41,7 @@ const useReadLineChartData = () => {
             return {
               timeStamp: Number(soundData.timeStamp),
               soundMax: Number(soundData.soundMax),
+              sensorID: soundData.sensorID,
             };
           }
         );
