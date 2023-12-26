@@ -8,6 +8,7 @@ export const getLineChartScales = (
   if (!data) {
     return;
   }
+
   const xExtent = d3.extent(data, (dataInstance) => dataInstance.timeStamp) as [
     number,
     number

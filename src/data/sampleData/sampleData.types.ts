@@ -7,4 +7,5 @@ export type SoundHeaders =
   | "hour"
   | "minute"
   | "second"
-  | "soundMax";
+  | "soundMax"
+  | "sensorID";
