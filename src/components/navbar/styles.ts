@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { navBar } from "src/data/constants";
+import { appPaddings, navBar } from "src/data/constants";
 
 export const StyledNavBarContainer = styled.div`
   height: ${navBar.height};
+  padding: 0px ${appPaddings.lg};
   display: flex;
   justify-content: space-between;
   align-items: center;

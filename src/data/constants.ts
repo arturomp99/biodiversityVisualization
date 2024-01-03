@@ -1,15 +1,24 @@
 export const cardResizeTimeout = 1000;
+
 export const resizeTransitionDuration = 2000;
+
 export const fontSize = 10;
+
 export const navBar = {
   height: "72px",
 };
+
+export const appPaddings = {
+  lg: "90px",
+};
+
 export const graphMargin = {
   top: fontSize,
   bottom: 4 * fontSize,
   left: 6 * fontSize,
   right: fontSize,
 };
+
 export const lineChartParameters = {
   axesParameters: {
     ticks: {
