@@ -1,6 +1,9 @@
 export const cardResizeTimeout = 1000;
 export const resizeTransitionDuration = 2000;
 export const fontSize = 10;
+export const navBar = {
+  height: "72px",
+};
 export const graphMargin = {
   top: fontSize,
   bottom: 4 * fontSize,
@@ -23,7 +26,7 @@ export const lineChartParameters = {
   legend: {
     isPresent: true,
     fontSize: 8,
-    gap: 20,
+    gap: 24,
     separation: 10,
   },
 };
