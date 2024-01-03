@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { detailGridAreas } from "src/data/layoutsConstants";
+import { navBar } from "src/data/constants";
 
 export const DetailLayout = styled.div`
-  height: 100vh;
+  height: calc(100vh - ${navBar.height});
   display: grid;
   grid-template-columns: 9fr 3fr;
   grid-template-rows: 9fr 3fr;

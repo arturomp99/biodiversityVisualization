@@ -6,16 +6,8 @@ export const DetailPage = () => {
   const { chartId } = useParams();
 
   if (!chartId) {
-    return (
-      <main>
-        <h1>WRONG URL, GO BACK TO DASHBOARD</h1>
-      </main>
-    );
+    return <h1>WRONG URL, GO BACK TO DASHBOARD</h1>;
   }
 
-  return (
-    <main>
-      <Detail graphName={chartId} />
-    </main>
-  );
+  return <Detail graphName={chartId} />;
 };

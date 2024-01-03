@@ -1,17 +1,23 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-import { Dashboard } from "src/components/dashboard/Dashboard";
-import { ErrorPage } from "../ErrorPage";
-import { DetailPage } from "../DetailPage";
+import { DashboardPage, ErrorPage, DetailPage, MainPage, RootPage } from "..";
+//TODO: Add loader
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Dashboard />,
+    element: <RootPage />,
     errorElement: <ErrorPage />,
-  },
-  {
-    path: "detail/:chartId",
-    element: <DetailPage />,
+    children: [
+      { path: "/", element: <MainPage /> },
+      {
+        path: "/Dashboard",
+        element: <DashboardPage />,
+      },
+      {
+        path: "Detail/:chartId",
+        element: <DetailPage />,
+      },
+    ],
   },
 ]);
