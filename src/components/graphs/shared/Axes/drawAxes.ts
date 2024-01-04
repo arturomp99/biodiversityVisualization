@@ -52,15 +52,13 @@ export function createAxes(
     .attr(
       "transform",
       `translate(${graphMargin.left},${height + graphMargin.top})`
-    )
-    .style("z-index", 10);
+    );
   parent
     .append("g")
     .attr("class", "axis")
     .attr("id", "vAxis")
     .call(yAxis)
-    .attr("transform", `translate(${graphMargin.left},${graphMargin.top})`)
-    .style("z-index", 10);
+    .attr("transform", `translate(${graphMargin.left},${graphMargin.top})`);
 
   if (axesTitles) {
     const [xAxisTitle, yAxisTitle] = axesTitles;
@@ -135,8 +133,7 @@ export const giveSizeToAxes = (
     .attr(
       "transform",
       `translate(${graphMargin.left},${height + graphMargin.top})`
-    )
-    .style("z-index", 10);
+    );
   parent
     .selectAll("#vAxis")
     .transition()
@@ -147,8 +144,7 @@ export const giveSizeToAxes = (
     .transition()
     .duration(resizeTransitionDuration)
     .attr("x", width - graphMargin.right)
-    .attr("y", graphMargin.bottom / 2)
-    .style("z-index", 10);
+    .attr("y", graphMargin.bottom / 2);
   parent
     .selectAll("#yAxisTitle")
     .transition()

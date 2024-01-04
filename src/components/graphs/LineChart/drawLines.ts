@@ -24,6 +24,7 @@ export const drawLines = (
     .attr("class", "dataLine")
     .attr("fill", "none")
     .attr("stroke", (dataLine) => colors(dataLine[0]))
-    .attr("stroke-width", "2px")
-    .attr("transform", `translate(${graphMargin.left},${graphMargin.top})`);
+    .attr("stroke-width", "1px")
+    .attr("transform", `translate(${graphMargin.left},${graphMargin.top})`)
+    .lower();
 };
