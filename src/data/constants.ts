@@ -12,6 +12,8 @@ export const appPaddings = {
   lg: "90px",
 };
 
+export const paragraphMargin = "16px";
+
 export const graphMargin = {
   top: fontSize,
   bottom: 4 * fontSize,
