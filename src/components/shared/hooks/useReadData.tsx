@@ -36,7 +36,7 @@ const useReadLineChartData = () => {
     const fetchData = async () => {
       try {
         const readData = await csv(
-          "/sampleData/sampleSoundData.csv",
+          "/sampleData/testBioacustic.csv",
           (soundData: DSVRowString<SoundHeaders>) => {
             return {
               timeStamp: Number(soundData.timeStamp),

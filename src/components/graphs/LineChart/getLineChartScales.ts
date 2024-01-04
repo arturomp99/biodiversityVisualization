@@ -20,10 +20,15 @@ export const getLineChartScales = (
     number,
     number
   ];
-  const yExtent = d3.extent(data, (dataInstance) => dataInstance.soundMax) as [
-    number,
-    number
-  ];
+  const yExtent = lineChartParameters.startAtZero
+    ? ([0, d3.max(data, (dataInstance) => dataInstance.soundMax)] as [
+        number,
+        number
+      ])
+    : (d3.extent(data, (dataInstance) => dataInstance.soundMax) as [
+        number,
+        number
+      ]);
   const xScale = d3.scaleTime().domain(xExtent);
   const yScale = d3.scaleLinear().domain(yExtent.reverse());
 

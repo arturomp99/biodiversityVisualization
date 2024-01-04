@@ -1,3 +1,4 @@
+import { lineChartParameters } from "src/data/constants";
 import styled from "styled-components";
 
 export const StyledContainer = styled.div`
@@ -10,6 +11,9 @@ export const StyledLegendContainer = styled.svg`
   position: absolute;
   top: 2rem;
   right: 3rem;
+  padding: ${lineChartParameters.legend.margin}px;
+  border-radius: 8px;
+  background-color: ${lineChartParameters.legend.backgroundColor};
 `;
 
 export const StyledLineChartContainer = styled.svg`
