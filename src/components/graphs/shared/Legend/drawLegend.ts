@@ -56,5 +56,7 @@ export const drawLegend = (
     .style("alignment-baseline", "middle");
 
   const bbox = node.getBBox();
-  d3.select(node).attr("width", bbox.width).attr("height", bbox.height);
+  d3.select(node)
+    .attr("width", bbox.width + 2 * lineChartParameters.legend.margin)
+    .attr("height", bbox.height + 2 * lineChartParameters.legend.margin);
 };
