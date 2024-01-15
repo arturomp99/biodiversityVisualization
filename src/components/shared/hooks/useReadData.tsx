@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { DSVRowString, ExtendedFeatureCollection, csv, json, dsv } from "d3";
+import {
+  DSVRowString,
+  ExtendedFeatureCollection,
+  csv,
+  json,
+  dsv,
+  group,
+} from "d3";
 import { TreeDataType } from "src/components/graphs/Dendrogram/dendrogram.types";
 import { SoundChartDataType } from "src/components/graphs/LineChart/lineChart.types";
 import { SoundHeaders } from "src/data/sampleData/sampleData.types";
@@ -170,8 +177,30 @@ export const useReadData = () => {
   const mapData = useReadMapData();
   const timeLineData = useReadTimeLineData();
   const complexData = useReadComplexData();
+  // TODO: FILTER THE DATA HERE ??
 
-  console.log("complexData", complexData);
+  const taxonomicClassification = !complexData.data
+    ? undefined
+    : group(
+        complexData.data,
+        (specimen) => specimen.scientificName,
+        (specimen) => specimen.species,
+        (specimen) => specimen.phylum,
+        (specimen) => specimen.class,
+        (specimen) => specimen.order,
+        (specimen) => specimen.family,
+        (specimen) => specimen.genus
+      );
 
-  return { dendrogramData, lineChartData, mapData, timeLineData, complexData };
+  return {
+    dendrogramData,
+    lineChartData,
+    mapData,
+    timeLineData,
+    complexData,
+    taxonomicClassification: {
+      data: taxonomicClassification,
+      loading: complexData.loading,
+    },
+  };
 };

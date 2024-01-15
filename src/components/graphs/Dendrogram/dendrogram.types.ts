@@ -1,11 +1,30 @@
-import { Point } from "src/utils/lineEquations";
+import { InternMap } from "d3";
+import { CleanDataFileHeaders } from "src/data/data.types";
 
-export interface TreeDataType {
-  name: string;
-  children?: TreeDataType[];
-  colname?: string;
-}
+export type TreeDataType = InternMap<
+  string | string[],
+  InternMap<
+    string | string[],
+    InternMap<
+      string | string[],
+      InternMap<
+        string | string[],
+        InternMap<
+          string | string[],
+          InternMap<
+            string | string[],
+            InternMap<
+              string | string[],
+              Record<CleanDataFileHeaders, string | string[]>[]
+              // TODO: THIS IS HARDCODED
+            >
+          >
+        >
+      >
+    >
+  >
+>;
 
-export interface DendrogramChartDataType extends TreeDataType {
-  initialPosition: Point;
-}
+// export interface DendrogramChartDataType extends TreeDataType {
+//   initialPosition: Point;
+// }
