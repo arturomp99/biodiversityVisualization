@@ -1,26 +1,27 @@
 import * as d3 from "d3";
-import { DendrogramChartDataType, TreeDataType } from "./dendrogram.types";
+import { TreeDataType } from "./dendrogram.types";
 import { dendrogramParameters, graphMargin } from "src/data/constants";
 import { dendrogramClassNames } from "src/data/idClassNames";
 import { Point, verticalDiagonalLine } from "src/utils/lineEquations";
 
 export const scaleData = (data: TreeDataType, dimensions: [number, number]) => {
   const [dendrogramWidth, dendrogramHeight] = dimensions;
-  const root = d3.hierarchy({
-    ...data,
-    initialPosition: {
-      x: 0,
-      y: 0,
-    },
-  });
+  // const root = d3.hierarchy({
+  //   ...data,
+  //   initialPosition: {
+  //     x: 0,
+  //     y: 0,
+  //   },
+  // });
+  const root = d3.hierarchy(data);
   return d3
-    .tree<DendrogramChartDataType>()
+    .tree<TreeDataType>()
     .nodeSize([12, 12])
     .size([dendrogramWidth, dendrogramHeight])(root);
 };
 
 export const drawDendrogram = (
-  data: d3.HierarchyPointNode<DendrogramChartDataType>,
+  data: d3.HierarchyPointNode<TreeDataType>,
   parentRef: SVGSVGElement
 ) => {
   const dendrogramMarkers = d3
@@ -48,7 +49,11 @@ export const drawDendrogram = (
     .selectAll(`.${dendrogramClassNames.markerLabel}`)
     .data((singleData) => [singleData])
     .join("text")
-    .text((dataPoint) => dataPoint.data.name)
+    .text((dataPoint) => {
+      return typeof dataPoint.data === "object"
+        ? dataPoint.name
+        : dataPoint.data[0] || "";
+    })
     .attr("class", `.${dendrogramClassNames.markerLabel}`);
 
   d3.select(parentRef)

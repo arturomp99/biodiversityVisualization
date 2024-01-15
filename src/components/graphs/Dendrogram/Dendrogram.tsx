@@ -13,7 +13,7 @@ export const Dendrogram: FC<GraphProps> = ({
   dimensions,
 }) => {
   const {
-    dendrogramData: { data, loading },
+    taxonomicClassification: { data, loading },
   } = useDataContext();
   const node = createRef<SVGSVGElement>();
   const zoomContainer = createRef<SVGSVGElement>();
