@@ -24,7 +24,6 @@ export const TimeLine: FC<GraphProps> = ({ dimensions }) => {
     scaling.current = getTimeLineScales(data, realDimensions);
     if (!scaling.current?.scales) return;
     const scaledData = scaling.current.scaleData(data);
-    console.log("scaledData", scaledData);
     if (!scaledData) {
       return;
     }
