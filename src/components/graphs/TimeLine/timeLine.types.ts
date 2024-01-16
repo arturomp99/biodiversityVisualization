@@ -1,8 +1,10 @@
-export interface TemporalDataType {
-  name: string;
-  start_time: string;
-  finish_time: string;
-}
+export type TemporalDataType = {
+  species: string | string[];
+  // species?: string;
+  // start_time: string;
+  // finish_time: string;
+  eventDate: string | string[];
+};
 
 export interface TimeLineChartDataType {
   key: string;
