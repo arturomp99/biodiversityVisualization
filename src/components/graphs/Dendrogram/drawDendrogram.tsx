@@ -4,19 +4,18 @@ import { dendrogramParameters, graphMargin } from "src/data/constants";
 import { dendrogramClassNames } from "src/data/idClassNames";
 import { Point, verticalDiagonalLine } from "src/utils/lineEquations";
 
-const setInitialState = (root: TreeNode<TreeDataType>) => {
+const setInitialState = (
+  root: TreeNode<TreeDataType>,
+  parentCoordinates?: { x?: number; y?: number }
+) => {
+  root.x0 = parentCoordinates?.x ?? root.x;
+  root.y0 = parentCoordinates?.y ?? root.y;
   if (!root.children) return;
-  root.x0 = root.x;
-  root.y0 = root.y;
-  root.expanded = true;
-  root.children.forEach((descendantNode) => {
-    if (descendantNode.expanded) {
-      setInitialState(descendantNode);
-    } else {
-      descendantNode.x0 = root.x0;
-      descendantNode.y0 = root.y0;
-    }
-  });
+  root.expanded
+    ? root.children.forEach((childNode) => setInitialState(childNode))
+    : root.children.forEach((childNode) =>
+        setInitialState(childNode, { x: root.x0, y: root.y0 })
+      );
 };
 
 const collapseTransition = (
@@ -105,8 +104,8 @@ export const scaleData = (data: TreeDataType, dimensions: [number, number]) => {
     .nodeSize([12, 12])
     .size([dendrogramWidth, dendrogramHeight])(root) as TreeNode<TreeDataType>;
 
-  setInitialState(treeStructure);
-  console.log("treeStructure", treeStructure);
+  treeStructure.expanded = true; // Expand  1st level
+  setInitialState(treeStructure); // TODO: Memoize => Expensive operation
   return treeStructure;
 };
 
@@ -132,13 +131,15 @@ export const drawDendrogram = (
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (dataPoint: any) => dataPoint.data.species || dataPoint.data[0] || "root"
     )
-    .attr(
-      "transform",
-      (dataPoint) =>
-        `translate(${dataPoint.x + graphMargin.left}, ${
-          dataPoint.y + graphMargin.top
-        })`
-    )
+    .attr("transform", (dataPoint) => {
+      const position = {
+        x: dataPoint.x0 ?? dataPoint.x,
+        y: dataPoint.y0 ?? dataPoint.y,
+      };
+      return `translate(${position.x + graphMargin.left}, ${
+        position.y + graphMargin.top
+      })`;
+    })
     .each((dataPoint, index, nodesGroup) => {
       if (!dataPoint.parent) return;
       dataPoint.parent.childrenNodes = [
