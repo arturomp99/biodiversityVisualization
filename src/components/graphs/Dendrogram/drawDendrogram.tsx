@@ -27,19 +27,20 @@ const collapseTransition = (
   >,
   parentCoordinates: [number, number]
 ) => {
-  console.log("collapse, parentCoordinates", parentCoordinates.toString());
   const transition = selection
     .filter((dataPoint) => dataPoint.action === "collapse")
     .each((dataPoint) => (dataPoint.action = undefined))
     .transition()
-    .duration(2000)
+    .duration(dendrogramParameters.transitions.collapseDuration)
     .attr(
       "transform",
       `translate(${parentCoordinates.toString()}) translate(${
         graphMargin.left
       } ${graphMargin.top})`
     );
-  transition.selectAll(`.${dendrogramClassNames.markerNode}`).attr("r", 1e-5);
+  transition
+    .selectAll(`.${dendrogramClassNames.markerNode}`)
+    .attr("r", dendrogramParameters.nodeParameters.radiusCollapsed);
 };
 
 const expandTransition = (
@@ -50,12 +51,11 @@ const expandTransition = (
     unknown
   >
 ) => {
-  console.log("EXPAND", selection);
   const transition = selection
     .filter((dataPoint) => dataPoint.action === "expand")
     .each((dataPoint) => (dataPoint.action = undefined))
     .transition()
-    .duration(500)
+    .duration(dendrogramParameters.transitions.collapseDuration)
     .attr(
       "transform",
       (dataPoint) =>
@@ -151,6 +151,7 @@ export const drawDendrogram = (
       })`;
     })
     .each((dataPoint, index, nodesGroup) => {
+      // We point to each child svg node from parent
       if (!dataPoint.parent) return;
       dataPoint.parent.childrenNodes = [
         ...(dataPoint.parent?.childrenNodes || []),
@@ -159,7 +160,7 @@ export const drawDendrogram = (
     });
   dendrogramMarkers.on("click", (_, dataPoint) => {
     if (!dataPoint.children) {
-      console.log("CLICKED A LEAF");
+      console.log("CLICKED A LEAF"); // TODO: TRIGGER AN ACTION
       return;
     }
     if (dataPoint.expanded) {
@@ -181,19 +182,16 @@ export const drawDendrogram = (
     .attr("r", (dataPoint) =>
       dataPoint.expanded || (dataPoint.parent && dataPoint.parent.expanded)
         ? dendrogramParameters.nodeParameters.radius
-        : 1e-5
+        : dendrogramParameters.nodeParameters.radiusCollapsed
     );
 
-  dendrogramMarkers
-    .selectAll(`.${dendrogramClassNames.markerLabel}`)
-    .data((singleData) => [singleData])
-    .join("text")
-    .text((dataPoint) => {
-      return typeof dataPoint.data === "object"
-        ? dataPoint.name
-        : dataPoint.data[0] || "";
-    })
-    .attr("class", `${dendrogramClassNames.markerLabel}`);
+  // dendrogramMarkers
+  //   .selectAll(`.${dendrogramClassNames.markerLabel}`)
+  //   .data((singleData) => [singleData])
+  //   .join("text")
+  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //   .text((dataPoint: any) => dataPoint.name || dataPoint.data[0] || "")
+  //   .attr("class", `${dendrogramClassNames.markerLabel}`);
 
   d3.select(parentRef)
     .selectAll(".markerLink")
