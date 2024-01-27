@@ -27,30 +27,44 @@ const collapseTransition = (
   >,
   parentCoordinates: [number, number]
 ) => {
-  console.log("parentCoordinates", parentCoordinates.toString());
-  selection
+  console.log("collapse, parentCoordinates", parentCoordinates.toString());
+  const transition = selection
     .filter((dataPoint) => dataPoint.action === "collapse")
     .each((dataPoint) => (dataPoint.action = undefined))
     .transition()
-    .duration(500)
-    .attr("transform", `translate(${parentCoordinates.toString()})`);
+    .duration(2000)
+    .attr(
+      "transform",
+      `translate(${parentCoordinates.toString()}) translate(${
+        graphMargin.left
+      } ${graphMargin.top})`
+    );
+  transition.selectAll(`.${dendrogramClassNames.markerNode}`).attr("r", 1e-5);
 };
 
-// const expandTransition = (
-//   selection: d3.Selection<
-//     SVGGElement,
-//     TreeNode<TreeDataType>,
-//     SVGSVGElement,
-//     unknown
-//   >
-// ) => {
-//   selection
-//     .filter((dataPoint) => dataPoint.action === "expand")
-//     .each((dataPoint) => (dataPoint.action = undefined))
-//     .transition()
-//     .duration(500)
-//     .attr("transform", "translate(150,150)");
-// };
+const expandTransition = (
+  selection: d3.Selection<
+    SVGGElement,
+    TreeNode<TreeDataType>,
+    SVGSVGElement,
+    unknown
+  >
+) => {
+  console.log("EXPAND", selection);
+  const transition = selection
+    .filter((dataPoint) => dataPoint.action === "expand")
+    .each((dataPoint) => (dataPoint.action = undefined))
+    .transition()
+    .duration(500)
+    .attr(
+      "transform",
+      (dataPoint) =>
+        `translate(${dataPoint.x},${dataPoint.y}) translate(${graphMargin.left} ${graphMargin.top})`
+    );
+  transition
+    .selectAll(`.${dendrogramClassNames.markerNode}`)
+    .attr("r", dendrogramParameters.nodeParameters.radius);
+};
 
 /**
  *
@@ -66,7 +80,6 @@ const collapseNode = (node: TreeNode<TreeDataType>): void => {
       childNode.action = "collapse";
       childNode.children && collapseNode(childNode);
     });
-  return;
 };
 
 /**
@@ -79,17 +92,12 @@ const collapseNode = (node: TreeNode<TreeDataType>): void => {
  * - If they were collapsed they remain collapsed
  * - If they were expanded, they remain expanded
  */
-const expandNode = (
-  node: TreeNode<TreeDataType>,
-  nodeElement?: SVGSVGElement
-): void => {
-  if (nodeElement) console.log("ELEMENT CLICKED", nodeElement);
-  if (!node.childrenNodes || !node.children || !node.expanded) return;
-
-  node.children.forEach((childNode) => expandNode(childNode));
-  node.childrenNodes.forEach((childNode) => {
-    d3.select(childNode).attr("fill", "blue");
-  });
+const expandNode = (node: TreeNode<TreeDataType>): void => {
+  node.children &&
+    node.children.forEach((childNode) => {
+      childNode.action = "expand";
+      childNode.expanded && expandNode(childNode);
+    });
   return;
 };
 
@@ -104,7 +112,9 @@ export const scaleData = (data: TreeDataType, dimensions: [number, number]) => {
     .nodeSize([12, 12])
     .size([dendrogramWidth, dendrogramHeight])(root) as TreeNode<TreeDataType>;
 
-  treeStructure.expanded = true; // Expand  1st level
+  // Expand  1st level
+  treeStructure.expanded = true;
+
   setInitialState(treeStructure); // TODO: Memoize => Expensive operation
   return treeStructure;
 };
@@ -147,7 +157,7 @@ export const drawDendrogram = (
         nodesGroup[index],
       ];
     });
-  dendrogramMarkers.on("click", (event, dataPoint) => {
+  dendrogramMarkers.on("click", (_, dataPoint) => {
     if (!dataPoint.children) {
       console.log("CLICKED A LEAF");
       return;
@@ -159,15 +169,20 @@ export const drawDendrogram = (
       return;
     }
     dataPoint.expanded = true;
-    expandNode(dataPoint, event.target);
+    expandNode(dataPoint);
+    expandTransition(dendrogramMarkers);
   });
 
   dendrogramMarkers
     .selectAll(`.${dendrogramClassNames.markerNode}`)
     .data((singleData) => [singleData])
     .join("circle")
-    .attr("class", `.${dendrogramClassNames.markerNode}`)
-    .attr("r", dendrogramParameters.nodeParameters.radius);
+    .attr("class", `${dendrogramClassNames.markerNode}`)
+    .attr("r", (dataPoint) =>
+      dataPoint.expanded || (dataPoint.parent && dataPoint.parent.expanded)
+        ? dendrogramParameters.nodeParameters.radius
+        : 1e-5
+    );
 
   dendrogramMarkers
     .selectAll(`.${dendrogramClassNames.markerLabel}`)
@@ -178,7 +193,7 @@ export const drawDendrogram = (
         ? dataPoint.name
         : dataPoint.data[0] || "";
     })
-    .attr("class", `.${dendrogramClassNames.markerLabel}`);
+    .attr("class", `${dendrogramClassNames.markerLabel}`);
 
   d3.select(parentRef)
     .selectAll(".markerLink")
