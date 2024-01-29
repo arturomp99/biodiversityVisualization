@@ -187,7 +187,21 @@ export const drawDendrogram = (
         nodesGroup[index],
       ];
     });
-  dendrogramMarkers.on("click", (_, dataPoint) => {
+
+  const dendrogramNodes = dendrogramMarkers
+    .selectAll<SVGSVGElement, TreeNode<TreeDataType>>(
+      `.${dendrogramClassNames.markerNode}`
+    )
+    .data((singleData) => [singleData])
+    .join("circle")
+    .attr("class", `${dendrogramClassNames.markerNode}`)
+    .attr("r", (dataPoint) =>
+      dataPoint.expanded || (dataPoint.parent && dataPoint.parent.expanded)
+        ? dendrogramParameters.nodeParameters.radius
+        : dendrogramParameters.nodeParameters.radiusCollapsed
+    );
+
+  dendrogramNodes.on("click", (_, dataPoint) => {
     if (!dataPoint.children) {
       console.log("CLICKED A LEAF"); // TODO: TRIGGER AN ACTION
       return;
@@ -202,20 +216,6 @@ export const drawDendrogram = (
     expandNode(dataPoint);
     expandTransition(dendrogramMarkers);
   });
-
-  dendrogramMarkers
-    .selectAll<SVGSVGElement, TreeNode<TreeDataType>>(
-      `.${dendrogramClassNames.markerNode}`
-    )
-    .data((singleData) => [singleData])
-    .join("circle")
-    .attr("class", `${dendrogramClassNames.markerNode}`)
-    .attr("r", (dataPoint) =>
-      dataPoint.expanded || (dataPoint.parent && dataPoint.parent.expanded)
-        ? dendrogramParameters.nodeParameters.radius
-        : dendrogramParameters.nodeParameters.radiusCollapsed
-    );
-
   // dendrogramMarkers
   //   .selectAll(`.${dendrogramClassNames.markerLabel}`)
   //   .data((singleData) => [singleData])
