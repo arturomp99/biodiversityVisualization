@@ -42,6 +42,21 @@ const collapseTransition = (
   transition
     .selectChild(`.${dendrogramClassNames.markerNode}`)
     .attr("r", dendrogramParameters.nodeParameters.radiusCollapsed);
+
+  transition
+    .selectChild<SVGSVGElement, TreeNode<TreeDataType>>(
+      `.${dendrogramClassNames.markerLink}`
+    )
+    .attr("d", (dataPoint) => {
+      if (!dataPoint.parent) return null;
+      return verticalDiagonalLine(
+        { x: 0, y: 0 },
+        {
+          x: 0,
+          y: 0,
+        }
+      );
+    });
 };
 
 const expandTransition = (
