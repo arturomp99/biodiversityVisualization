@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import { TreeDataType, TreeNode } from "./dendrogram.types";
 import { dendrogramParameters, graphMargin } from "src/data/constants";
 import { dendrogramClassNames } from "src/data/idClassNames";
-import { Point, verticalDiagonalLine } from "src/utils/lineEquations";
+import { verticalDiagonalLine } from "src/utils/lineEquations";
 
 const setInitialState = (
   root: TreeNode<TreeDataType>,
@@ -38,8 +38,9 @@ const collapseTransition = (
         graphMargin.left
       } ${graphMargin.top})`
     );
+
   transition
-    .selectAll(`.${dendrogramClassNames.markerNode}`)
+    .selectChild(`.${dendrogramClassNames.markerNode}`)
     .attr("r", dendrogramParameters.nodeParameters.radiusCollapsed);
 };
 
@@ -61,9 +62,37 @@ const expandTransition = (
       (dataPoint) =>
         `translate(${dataPoint.x},${dataPoint.y}) translate(${graphMargin.left} ${graphMargin.top})`
     );
+
   transition
-    .selectAll(`.${dendrogramClassNames.markerNode}`)
+    .selectChild(`.${dendrogramClassNames.markerNode}`)
     .attr("r", dendrogramParameters.nodeParameters.radius);
+
+  transition
+    .selectChild<SVGSVGElement, TreeNode<TreeDataType>>(
+      `.${dendrogramClassNames.markerLink}`
+    )
+    .attr("d", (dataPoint) => {
+      if (!dataPoint.parent) return null;
+      return verticalDiagonalLine(
+        { x: 0, y: 0 },
+        {
+          x: dataPoint.parent.x - dataPoint.x,
+          y: dataPoint.parent.y - dataPoint.y,
+        }
+      );
+    });
+
+  transition.on(
+    "end",
+    (dataPoint) =>
+      dataPoint.childrenNodes &&
+      dataPoint.childrenNodes.forEach((childNode) => {
+        d3.select(childNode).attr(
+          "transform",
+          `translate(${dataPoint.x},${dataPoint.y}) translate(${graphMargin.left} ${graphMargin.top})`
+        );
+      })
+  );
 };
 
 /**
@@ -175,7 +204,9 @@ export const drawDendrogram = (
   });
 
   dendrogramMarkers
-    .selectAll(`.${dendrogramClassNames.markerNode}`)
+    .selectAll<SVGSVGElement, TreeNode<TreeDataType>>(
+      `.${dendrogramClassNames.markerNode}`
+    )
     .data((singleData) => [singleData])
     .join("circle")
     .attr("class", `${dendrogramClassNames.markerNode}`)
@@ -193,18 +224,27 @@ export const drawDendrogram = (
   //   .text((dataPoint: any) => dataPoint.name || dataPoint.data[0] || "")
   //   .attr("class", `${dendrogramClassNames.markerLabel}`);
 
-  d3.select(parentRef)
-    .selectAll(".markerLink")
-    .data(data.descendants().slice(1))
-    .join("path")
-    .attr("d", (dataPoint) =>
-      verticalDiagonalLine(dataPoint.parent as Point, dataPoint)
+  dendrogramMarkers
+    .selectAll<SVGSVGElement, TreeNode<TreeDataType>>(
+      `.${dendrogramClassNames.markerLink}`
     )
-    .attr("transform", `translate(${graphMargin.left}, ${graphMargin.top})`)
-    .attr("class", "markerLink")
+    .data((singleData) => [singleData])
+    .join("path")
+    .attr("class", `${dendrogramClassNames.markerLink}`)
+    .attr("d", (dataPoint) => {
+      if (!dataPoint.parent) return null;
+      return dataPoint.parent.expanded
+        ? verticalDiagonalLine(
+            { x: 0, y: 0 },
+            {
+              x: dataPoint.parent.x - dataPoint.x,
+              y: dataPoint.parent.y - dataPoint.y,
+            }
+          )
+        : verticalDiagonalLine({ x: 0, y: 0 }, { x: 0, y: 0 });
+    })
     .attr("fill", "none")
     .attr("stroke", "black");
 
-  dendrogramMarkers.join("circle");
   return;
 };
