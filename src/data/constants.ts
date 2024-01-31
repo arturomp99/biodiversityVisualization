@@ -62,10 +62,14 @@ export const timeLineParameters = {
 export const dendrogramParameters = {
   nodeParameters: {
     radius: 7,
+    radiusCollapsed: 1e-5,
   },
   zoom: {
     min: 0.2,
     max: 10,
+  },
+  transitions: {
+    collapseDuration: 1000,
   },
 };
 

@@ -12,7 +12,7 @@ export const horizontalDiagonalLine = (point0: Point, point1: Point) => {
   return path;
 };
 
-export const verticalDiagonalLine = (point0: Point, point1: Point) => {
+export const verticalDiagonalLine = (point1: Point, point0: Point) => {
   const path = `M${point0.x} ${point0.y}
     C ${point0.x} ${(point0.y + point1.y) / 2},
     ${point1.x} ${(point0.y + point1.y) / 2},
