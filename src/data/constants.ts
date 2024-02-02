@@ -32,6 +32,11 @@ export const lineChartParameters = {
       y: "--",
     },
     grid: true,
+    title: {
+      anchor: { hAxis: "end", vAxis: "middle" },
+      fontColor: "black",
+      fontSize: "1rem",
+    },
   },
   lines: {
     strokeWidth: "1px",
@@ -59,6 +64,11 @@ export const timeLineParameters = {
       y: "--",
     },
     grid: false,
+    title: {
+      anchor: { hAxis: "end", vAxis: "middle" },
+      fontColor: "black",
+      fontSize: "1rem",
+    },
   },
 };
 

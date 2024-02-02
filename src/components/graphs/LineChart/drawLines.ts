@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import { LineChartDataType } from "./lineChart.types";
 import { graphMargin, lineChartParameters } from "../../../data/constants";
 import { lineChartClassNames } from "src/data/idClassNames";
+import { raiseGrid } from "src/utils/raiseGrid";
 
 export const drawLines = (
   parentRef: SVGSVGElement | null,
@@ -31,6 +32,7 @@ export const drawLines = (
     .attr("fill", "none")
     .attr("stroke", (dataLine) => colors(dataLine[0]))
     .attr("stroke-width", lineChartParameters.lines.strokeWidth)
-    .attr("transform", `translate(${graphMargin.left},${graphMargin.top})`)
-    .lower();
+    .attr("transform", `translate(${graphMargin.left},${graphMargin.top})`);
+
+  raiseGrid();
 };
