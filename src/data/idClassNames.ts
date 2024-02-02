@@ -17,3 +17,8 @@ export const mapIdNames = {
   zoomContainer: "mapZoom",
   chartContainer: "mapChartContainer",
 };
+
+export const lineChartClassNames = {
+  linesGroup: "dataLineGroup",
+  line: "dataLine",
+};

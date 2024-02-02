@@ -14,6 +14,7 @@ import { useDataContext } from "src/contexts/dataContext";
 import { GraphProps } from "../graphs.types";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
 import { drawLegend } from "../shared/Legend/drawLegend";
+import { addBrush } from "../shared/Interactivity/brush";
 
 export const LineChart: FC<GraphProps> = ({ dimensions }) => {
   const {
@@ -76,6 +77,7 @@ export const LineChart: FC<GraphProps> = ({ dimensions }) => {
         };
       });
       drawLines(node.current, scaledData, colorScale);
+      addBrush(node.current);
     }, 1000);
 
     return () => {
