@@ -5,6 +5,7 @@ import {
   resizeTransitionDuration,
   timeLineParameters,
 } from "../../../../data/constants";
+import { axes } from "src/data/idClassNames";
 
 type AxisScaleTypes =
   | d3.ScaleTime<number, number, never>
@@ -46,8 +47,8 @@ export function createAxes(
   parent.select<SVGSVGElement>("#vAxis").remove();
   parent
     .append("g")
-    .attr("class", "axis")
-    .attr("id", "hAxis")
+    .attr("class", axes.class)
+    .attr("id", axes.id.hAxis)
     .call(xAxis)
     .attr(
       "transform",
@@ -55,35 +56,35 @@ export function createAxes(
     );
   parent
     .append("g")
-    .attr("class", "axis")
-    .attr("id", "vAxis")
+    .attr("class", axes.class)
+    .attr("id", axes.id.vAxis)
     .call(yAxis)
     .attr("transform", `translate(${graphMargin.left},${graphMargin.top})`);
 
   if (axesTitles) {
     const [xAxisTitle, yAxisTitle] = axesTitles;
     parent
-      .selectAll("#hAxis")
+      .selectAll(`#${axes.id.hAxis}`)
       .append("text")
-      .attr("class", "axisTitle")
-      .attr("id", "xAxisTitle")
-      .attr("text-anchor", "end")
+      .attr("class", axes.title.class)
+      .attr("id", axes.title.id.hAxis)
+      .attr("text-anchor", axesParameters.title.anchor.hAxis)
       .attr("x", width - graphMargin.right)
       .attr("y", graphMargin.bottom / 2)
-      .attr("fill", "black")
-      .attr("font-size", "1rem")
+      .attr("fill", axesParameters.title.fontColor)
+      .attr("font-size", axesParameters.title.fontSize)
       .text(xAxisTitle);
     parent
-      .selectAll("#vAxis")
+      .selectAll(`#${axes.id.vAxis}`)
       .append("text")
-      .attr("class", "axisTitle")
-      .attr("id", "yAxisTitle")
-      .attr("text-anchor", "middle")
+      .attr("class", axes.title.class)
+      .attr("id", axes.title.id.vAxis)
+      .attr("text-anchor", axesParameters.title.anchor.vAxis)
       .attr("transform", "rotate(-90)")
       .attr("x", -height / 2)
       .attr("y", -graphMargin.left / 2)
-      .attr("fill", "black")
-      .attr("font-size", "1rem")
+      .attr("fill", axesParameters.title.fontColor)
+      .attr("font-size", axesParameters.title.fontSize)
       .text(yAxisTitle);
   }
 }

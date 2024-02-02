@@ -22,3 +22,15 @@ export const lineChartClassNames = {
   linesGroup: "dataLineGroup",
   line: "dataLine",
 };
+
+export const axes = {
+  class: "axis",
+  id: {
+    hAxis: "hAxis",
+    vAxis: "vAxis",
+  },
+  title: {
+    class: "axisTitle",
+    id: { hAxis: "xAxisTitle", vAxis: "vAxisTitle" },
+  },
+};
