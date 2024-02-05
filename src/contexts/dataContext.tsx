@@ -7,6 +7,7 @@ const dataContext = createContext<ReturnType<typeof useReadData>>({
   lineChartData: defaultData,
   mapData: defaultData,
   timeLineData: defaultData,
+  sensorsData: defaultData,
   complexData: defaultData,
   taxonomicClassification: defaultData,
 });

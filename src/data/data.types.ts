@@ -23,8 +23,8 @@ export type CleanDataFileHeaders =
   | "decimalLongitude"
   | "geodeticDatum"
   | "coordinateUncertaintyInMeters"
-  | "verbatimCoordinates"
-  | "verbatimCoordinateSystem"
+  | "latitude"
+  | "longitude"
   | "higherGeography"
   | "continent"
   | "country"
@@ -36,4 +36,11 @@ export type CleanDataFileHeaders =
   | "occurrenceRemarks"
   | "references"
   | "organismQuantityType"
+  | "sensorID"
+  | "observationsNum";
+
+export type SensorsFileHeaders =
+  | "sensorId"
+  | "latitude"
+  | "longitude"
   | "observationsNum";

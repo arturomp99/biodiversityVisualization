@@ -12,6 +12,11 @@ export const dendrogramIdNames = {
   chartContainer: "dendrogramChartContainer",
 };
 
+export const mapClassNames = {
+  sensorMarkersGroup: "sensorMarkersGroup",
+  sensorMarker: "sensorMarker",
+};
+
 export const mapIdNames = {
   container: "map",
   zoomContainer: "mapZoom",

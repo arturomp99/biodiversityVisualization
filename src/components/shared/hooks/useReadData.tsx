@@ -11,7 +11,8 @@ import { TreeDataType } from "src/components/graphs/Dendrogram/dendrogram.types"
 import { SoundChartDataType } from "src/components/graphs/LineChart/lineChart.types";
 import { SoundHeaders } from "src/data/sampleData/sampleData.types";
 import { TemporalDataType } from "src/components/graphs/TimeLine/timeLine.types";
-import { CleanDataFileHeaders } from "src/data/data.types";
+import { CleanDataFileHeaders, SensorsFileHeaders } from "src/data/data.types";
+import { MapChartDataType } from "src/components/graphs/Map/map.types";
 
 const useReadDendrogramData = () => {
   const [data, setData] = useState<TreeDataType | undefined>(undefined);
@@ -92,6 +93,38 @@ const useReadMapData = () => {
   return { data, loading };
 };
 
+const useReadSensorsData = () => {
+  const [data, setData] = useState<MapChartDataType[] | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const readData = await dsv(
+          ";",
+          "/sampleData/sensors.csv",
+          (sensorData: DSVRowString<SensorsFileHeaders>) => {
+            return {
+              sensorId: sensorData.sensorId,
+              latitude: Number(sensorData.latitude),
+              longitude: Number(sensorData.longitude),
+              observationsNum: Number(sensorData.observationsNum),
+            };
+          }
+        );
+        if (!readData) throw "empty data";
+        setLoading(false);
+        setData(Array.from(readData));
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        return console.log("Error loading the data\n", error);
+      }
+    };
+    fetchData();
+  }, []);
+  return { data, loading };
+};
+
 const useReadTimeLineData = () => {
   const [data, setData] = useState<TemporalDataType[] | undefined>(undefined);
   const [loading, setLoading] = useState(true);
@@ -131,8 +164,8 @@ const arrayProperties: Array<CleanDataFileHeaders> = [
   "decimalLongitude",
   "geodeticDatum",
   "coordinateUncertaintyInMeters",
-  "verbatimCoordinates",
-  "verbatimCoordinateSystem",
+  "latitude",
+  "longitude",
   "occurrenceRemarks",
   "references",
 ];
@@ -175,6 +208,7 @@ export const useReadData = () => {
   const dendrogramData = useReadDendrogramData();
   const lineChartData = useReadLineChartData();
   const mapData = useReadMapData();
+  const sensorsData = useReadSensorsData();
   const timeLineData = useReadTimeLineData();
   const complexData = useReadComplexData();
   // TODO: FILTER THE DATA HERE ??
@@ -197,6 +231,7 @@ export const useReadData = () => {
     lineChartData,
     mapData,
     timeLineData,
+    sensorsData,
     complexData,
     taxonomicClassification: {
       data: taxonomicClassification,

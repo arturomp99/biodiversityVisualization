@@ -91,4 +91,8 @@ export const mapChartParameters = {
     min: 0.5,
     max: 10000,
   },
+  markerCircles: {
+    radius: "10px",
+    fill: "black",
+  },
 };
