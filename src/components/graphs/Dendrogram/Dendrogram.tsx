@@ -7,6 +7,7 @@ import { GraphProps } from "../graphs.types";
 import { dendrogramParameters } from "src/data/constants";
 import { useDataContext } from "src/contexts/dataContext";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
+import { makeNodesCollapsible } from "./interactivtiy/nodesInteractivity";
 
 export const Dendrogram: FC<GraphProps> = ({
   isBasicInteractive,
@@ -24,6 +25,9 @@ export const Dendrogram: FC<GraphProps> = ({
     if (!data || !zoomContainer.current) return;
     const scaledData = scaleData(data, realDimensions);
     drawDendrogram(scaledData, zoomContainer.current);
+    if (isBasicInteractive) {
+      makeNodesCollapsible(zoomContainer.current);
+    }
   }, [data]);
 
   useEffect(() => {
