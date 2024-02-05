@@ -1,6 +1,6 @@
-import React, { FC, useEffect, createRef } from "react";
+import React, { FC, useEffect, createRef, useState } from "react";
 import { GraphProps } from "../graphs.types";
-import { drawMap } from "./drawMap";
+import { drawMapMarkers, drawMap } from "./drawMap";
 import { StyledMapContainer } from "./styles";
 import { mapIdNames } from "src/data/idClassNames";
 import { addZoom } from "../shared/Interactivity/zoom";
@@ -10,23 +10,34 @@ import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin
 
 export const Map: FC<GraphProps> = ({ isBasicInteractive, dimensions }) => {
   const {
-    mapData: { data, loading },
+    mapData: map,
+    sensorsData: { data, loading },
   } = useDataContext();
+  const [projection, setProjection] = useState<d3.GeoProjection | undefined>();
   const node = createRef<SVGSVGElement>();
   const zoomContainer = createRef<SVGSVGElement>();
 
   const realDimensions = getDimensionsWithoutMargin(dimensions);
 
   useEffect(() => {
-    if (!data || !node.current || !zoomContainer.current) {
+    if (!map.data || !zoomContainer.current) {
       return;
     }
-    drawMap(data, zoomContainer.current, dimensions);
-  }, [data]);
+
+    const { projection } = drawMap(map.data, zoomContainer.current, dimensions);
+    setProjection(() => projection);
+  }, [map.data]);
+
+  useEffect(() => {
+    if (!data || !zoomContainer.current || !projection) {
+      return;
+    }
+    drawMapMarkers(data, projection, zoomContainer.current);
+  }, [projection, data]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (loading || !realDimensions || !node.current) return;
+      if (map.loading || !realDimensions || !node.current) return;
       // TODO: TRANSLATE MAP
     }, 1000);
 
@@ -45,7 +56,7 @@ export const Map: FC<GraphProps> = ({ isBasicInteractive, dimensions }) => {
     }
   }, []);
 
-  if (loading) {
+  if (map.loading || loading) {
     return <div>LOADING MAP DATA...</div>;
   }
 
