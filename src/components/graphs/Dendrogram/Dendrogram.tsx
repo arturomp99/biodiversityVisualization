@@ -51,13 +51,15 @@ export const Dendrogram: FC<GraphProps> = ({
     }
   }, []);
 
-  if (loading) {
-    return <div>LOADING DENDROGRAM DATA...</div>;
-  }
-
   return (
-    <StyledDendrogramContainer ref={node} id={`${dendrogramIdNames.container}`}>
-      <g ref={zoomContainer} id={`${dendrogramIdNames.zoomContainer}`} />
-    </StyledDendrogramContainer>
+    <>
+      {loading && <div>LOADING DENDROGRAM DATA...</div>}
+      <StyledDendrogramContainer
+        ref={node}
+        id={`${dendrogramIdNames.container}`}
+      >
+        <g ref={zoomContainer} id={`${dendrogramIdNames.zoomContainer}`} />
+      </StyledDendrogramContainer>
+    </>
   );
 };
