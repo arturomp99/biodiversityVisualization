@@ -77,12 +77,14 @@ export const dendrogramParameters = {
     radius: 7,
     radiusCollapsed: 1e-5,
   },
+  linkParameters: { strokeWidth: 1 },
   zoom: {
     min: 0.2,
     max: 10,
   },
   transitions: {
     collapseDuration: 1000,
+    zoomEndTransitionDuration: 500,
   },
 };
 

@@ -109,7 +109,8 @@ export const drawDendrogram = (
         : verticalDiagonalLine({ x: 0, y: 0 }, { x: 0, y: 0 });
     })
     .attr("fill", "none")
-    .attr("stroke", "black");
+    .attr("stroke", "black")
+    .attr("stroke-width", "1px");
 
   return;
 };
