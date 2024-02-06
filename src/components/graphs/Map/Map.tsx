@@ -3,7 +3,7 @@ import { GraphProps } from "../graphs.types";
 import { drawMapMarkers, drawMap } from "./drawMap";
 import { StyledMapContainer } from "./styles";
 import { mapIdNames } from "src/data/idClassNames";
-import { addZoom } from "../shared/Interactivity/zoom";
+import { addZoom } from "../shared/Interactivity/zoom/zoom";
 import { mapChartParameters } from "src/data/constants";
 import { useDataContext } from "src/contexts/dataContext";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";

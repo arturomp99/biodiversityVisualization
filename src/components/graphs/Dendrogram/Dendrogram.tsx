@@ -2,12 +2,13 @@ import React, { useEffect, createRef, FC } from "react";
 import { StyledDendrogramContainer } from "./styles";
 import { dendrogramIdNames } from "src/data/idClassNames";
 import { drawDendrogram, scaleData } from "./drawDendrogram";
-import { addZoom } from "../shared/Interactivity/zoom";
+import { addZoom } from "../shared/Interactivity/zoom/zoom";
 import { GraphProps } from "../graphs.types";
 import { dendrogramParameters } from "src/data/constants";
 import { useDataContext } from "src/contexts/dataContext";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
 import { makeNodesCollapsible } from "./interactivtiy/nodesInteractivity";
+import { dendrogramHandleZoomEnd } from "./interactivtiy/zoomInteractivity";
 
 export const Dendrogram: FC<GraphProps> = ({
   isBasicInteractive,
@@ -44,10 +45,12 @@ export const Dendrogram: FC<GraphProps> = ({
   useEffect(() => {
     if (!node.current || !zoomContainer.current) return;
     if (isBasicInteractive) {
-      addZoom(node.current, zoomContainer.current, [
-        dendrogramParameters.zoom.min,
-        dendrogramParameters.zoom.max,
-      ]);
+      addZoom(
+        node.current,
+        zoomContainer.current,
+        [dendrogramParameters.zoom.min, dendrogramParameters.zoom.max],
+        { handleZoomEnd: dendrogramHandleZoomEnd }
+      );
     }
   }, []);
 
