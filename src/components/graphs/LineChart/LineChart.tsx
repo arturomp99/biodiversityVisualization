@@ -1,10 +1,6 @@
 import React, { FC, useRef } from "react";
 import { createRef, useEffect } from "react";
-import {
-  StyledLineChartContainer,
-  StyledContainer,
-  StyledLegendContainer,
-} from "./styles";
+import { StyledLineChartContainer, StyledContainer } from "./styles";
 import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { getLineChartScales } from "./getLineChartScales";
 import { drawLines } from "./drawLines";
@@ -13,15 +9,23 @@ import { SoundChartDataType } from "./lineChart.types";
 import { useDataContext } from "src/contexts/dataContext";
 import { GraphProps } from "../graphs.types";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
-import { drawLegend } from "../shared/Legend/drawLegend";
 import { addBrush } from "../shared/Interactivity/brush";
+import { Legend } from "../shared/Legend/Legend";
+import {
+  lineChartLegendClick,
+  lineChartLegendMouseOver,
+  lineChartLegendMouseOut,
+} from "./interactivity/lineChartLegendInteractivity";
+import { getUniqueIds } from "src/utils/getUniqueIds";
 
-export const LineChart: FC<GraphProps> = ({ dimensions }) => {
+export const LineChart: FC<GraphProps> = ({
+  dimensions,
+  isBasicInteractive,
+}) => {
   const {
     lineChartData: { data, loading },
   } = useDataContext();
   const node = createRef<SVGSVGElement>();
-  const legendRef = createRef<SVGSVGElement>();
   const scales = useRef(getLineChartScales(data));
 
   const realDimensions = getDimensionsWithoutMargin(dimensions);
@@ -49,9 +53,6 @@ export const LineChart: FC<GraphProps> = ({ dimensions }) => {
       ["time (s)", "sound"]
     );
     drawLines(node.current, scaledData, colorScale);
-    if (lineChartParameters.legend.isPresent && !!legendRef.current) {
-      drawLegend(legendRef.current, scaledData, colorScale);
-    }
   }, [data]);
 
   useEffect(() => {
@@ -92,8 +93,22 @@ export const LineChart: FC<GraphProps> = ({ dimensions }) => {
   return (
     <StyledContainer>
       <StyledLineChartContainer ref={node} id="lineChart" />
-      {lineChartParameters.legend.isPresent && (
-        <StyledLegendContainer id="legendContainer" ref={legendRef} />
+      {lineChartParameters.legend.isPresent && !!data && scales.current && (
+        <Legend
+          keys={getUniqueIds(
+            data.map((dataPoint) => ({ id: dataPoint.sensorID }))
+          )}
+          colorScale={scales.current[2]}
+          interactivity={
+            isBasicInteractive
+              ? {
+                  clickHandler: lineChartLegendClick,
+                  mouseOverHandler: lineChartLegendMouseOver,
+                  mouseOutHandler: lineChartLegendMouseOut,
+                }
+              : undefined
+          }
+        />
       )}
     </StyledContainer>
   );
