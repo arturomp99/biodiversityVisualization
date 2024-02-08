@@ -15,8 +15,8 @@ export const useGetGraph = (
     (graphName === "Map" && (
       <Map isBasicInteractive dimensions={dimensions} />
     )) ||
-    (graphName === "LineChart" && <LineChart dimensions={dimensions} />) || (
-      <div>GRAPH NOT FOUND</div>
-    )
+    (graphName === "LineChart" && (
+      <LineChart isBasicInteractive dimensions={dimensions} />
+    )) || <div>GRAPH NOT FOUND</div>
   );
 };

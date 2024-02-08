@@ -40,6 +40,7 @@ export const lineChartParameters = {
   },
   lines: {
     strokeWidth: "1px",
+    inactiveStrokeOpacity: 0.4,
   },
   colorScheme: ["#e41a1c", "#377eb8", "#4daf4a", "#984ea3", "#ff7f00"],
   legend: {

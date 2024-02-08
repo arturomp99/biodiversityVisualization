@@ -39,3 +39,8 @@ export const axes = {
     id: { hAxis: "xAxisTitle", vAxis: "vAxisTitle" },
   },
 };
+
+export const legend = {
+  dots: { class: "legendDots" },
+  labels: { class: "legendLabels" },
+};

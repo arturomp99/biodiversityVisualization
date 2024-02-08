@@ -1,24 +1,18 @@
 import * as d3 from "d3";
-import { LineChartDataType } from "../../LineChart/lineChart.types";
 import { lineChartParameters } from "src/data/constants";
-
-type DataType = LineChartDataType[];
+import { legend } from "src/data/idClassNames";
 
 export const drawLegend = (
   node: SVGSVGElement,
-  data: DataType,
+  keys: string[],
   colorScale: d3.ScaleOrdinal<string, string, never>
 ) => {
-  const keys = d3
-    .groups(data, (dataLine) => dataLine.id)
-    .map((dataLine) => dataLine[0]);
-
   d3.select(node)
-    .selectAll(".legendDots")
+    .selectAll(`.${legend.dots.class}`)
     .data(keys)
     .enter()
     .append("circle")
-    .attr("class", "legendDots")
+    .attr("class", legend.dots.class)
     .attr("cx", lineChartParameters.legend.fontSize)
     .attr("cy", function (_dataLine, index) {
       return (
@@ -32,10 +26,11 @@ export const drawLegend = (
     });
 
   d3.select(node)
-    .selectAll(".legendLabels")
+    .selectAll(`.${legend.labels.class}`)
     .data(keys)
     .enter()
     .append("text")
+    .attr("class", legend.labels.class)
     .attr(
       "x",
       lineChartParameters.legend.gap + lineChartParameters.legend.separation
