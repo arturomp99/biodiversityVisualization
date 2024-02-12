@@ -2,11 +2,13 @@ import React, { FC, useEffect, createRef, useState } from "react";
 import { GraphProps } from "../graphs.types";
 import { drawMapMarkers, drawMap } from "./drawMap";
 import { StyledMapContainer } from "./styles";
-import { mapIdNames } from "src/data/idClassNames";
+import { mapClassNames, mapIdNames } from "src/data/idClassNames";
 import { addZoom } from "../shared/Interactivity/zoom/zoom";
 import { mapChartParameters } from "src/data/constants";
 import { useDataContext } from "src/contexts/dataContext";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
+import { Tooltip } from "../shared/Tooltip/Tooltip";
+import { createTooltipInteractiveElements } from "../shared/Tooltip/createTooltipInteractiveElements";
 
 export const Map: FC<GraphProps> = ({ isBasicInteractive, dimensions }) => {
   const {
@@ -16,6 +18,7 @@ export const Map: FC<GraphProps> = ({ isBasicInteractive, dimensions }) => {
   const [projection, setProjection] = useState<d3.GeoProjection | undefined>();
   const node = createRef<SVGSVGElement>();
   const zoomContainer = createRef<SVGSVGElement>();
+  const [isTooltipReady, setIsTooltipReady] = useState(false);
 
   const realDimensions = getDimensionsWithoutMargin(dimensions);
 
@@ -33,6 +36,13 @@ export const Map: FC<GraphProps> = ({ isBasicInteractive, dimensions }) => {
       return;
     }
     drawMapMarkers(data, projection, zoomContainer.current);
+
+    if (isBasicInteractive) {
+      createTooltipInteractiveElements(zoomContainer.current, [
+        `.${mapClassNames.sensorMarkersGroup}`,
+      ]);
+      setIsTooltipReady(true);
+    }
   }, [projection, data]);
 
   useEffect(() => {
@@ -62,7 +72,11 @@ export const Map: FC<GraphProps> = ({ isBasicInteractive, dimensions }) => {
 
   return (
     <StyledMapContainer ref={node} id={`${mapIdNames.container}`}>
-      <g ref={zoomContainer} id={`${mapIdNames.zoomContainer}`} />
+      <g ref={zoomContainer} id={`${mapIdNames.zoomContainer}`}>
+        {isBasicInteractive && isTooltipReady && (
+          <Tooltip parentId={mapIdNames.zoomContainer} />
+        )}
+      </g>
     </StyledMapContainer>
   );
 };
