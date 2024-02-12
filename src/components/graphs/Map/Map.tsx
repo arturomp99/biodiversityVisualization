@@ -7,6 +7,7 @@ import { addZoom } from "../shared/Interactivity/zoom/zoom";
 import { mapChartParameters } from "src/data/constants";
 import { useDataContext } from "src/contexts/dataContext";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
+import { createMapTooltip } from "./interactivity/createMapTooltip";
 
 export const Map: FC<GraphProps> = ({ isBasicInteractive, dimensions }) => {
   const {
@@ -33,6 +34,10 @@ export const Map: FC<GraphProps> = ({ isBasicInteractive, dimensions }) => {
       return;
     }
     drawMapMarkers(data, projection, zoomContainer.current);
+
+    if (isBasicInteractive) {
+      createMapTooltip(zoomContainer.current);
+    }
   }, [projection, data]);
 
   useEffect(() => {

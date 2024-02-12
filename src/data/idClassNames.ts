@@ -44,3 +44,5 @@ export const legend = {
   dots: { class: "legendDots" },
   labels: { class: "legendLabels" },
 };
+
+export const tooltipInteractiveClass = "tooltipInteractive";

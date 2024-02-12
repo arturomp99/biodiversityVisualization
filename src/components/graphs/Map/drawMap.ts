@@ -50,7 +50,8 @@ export const drawMapMarkers = (
         `translate(${projection([dataPoint.longitude, dataPoint.latitude])})`
     )
     .attr("r", mapChartParameters.markerCircles.radius)
-    .attr("fill", mapChartParameters.markerCircles.fill);
+    .attr("fill", mapChartParameters.markerCircles.fill)
+    .attr("class", mapClassNames.sensorMarker);
 
   return;
 };
