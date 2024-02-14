@@ -29,7 +29,10 @@ const addLabel = (
     .attr("class", dendrogramClassNames.markerLabel)
     .attr(
       "transform",
-      `translate(0,-${1.5 * dendrogramParameters.nodeParameters.radius})`
+      `translate(0,-${
+        dendrogramParameters.nodeParameters.radius +
+        0.5 * dendrogramParameters.labels.fontSize
+      })`
     );
   const labelText = label
     .append("text")
@@ -79,6 +82,18 @@ const recursivelyRemoveLabel = (
   removeLabel(element);
   if (node.parent) recursivelyRemoveLabel(node.parentNode, node.parent);
   return;
+};
+
+const recursivelyColorNodes = (
+  element: HTMLElement | null,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  node: any,
+  color: string
+): void => {
+  d3.select(element)
+    .select(`.${dendrogramClassNames.markerNode}`)
+    .attr("fill", color);
+  if (node.parent) recursivelyColorNodes(node.parentNode, node.parent, color);
 };
 
 export const scaleData = (data: TreeDataType, dimensions: [number, number]) => {
@@ -165,7 +180,8 @@ export const drawDendrogram = (
       dataPoint.expanded || (dataPoint.parent && dataPoint.parent.expanded)
         ? dendrogramParameters.nodeParameters.radius
         : dendrogramParameters.nodeParameters.radiusCollapsed
-    );
+    )
+    .attr("fill", dendrogramParameters.nodeParameters.color);
 
   markersCircles
     .on(
@@ -176,6 +192,11 @@ export const drawDendrogram = (
         data: TreeNode<TreeDataType>
       ) {
         recursivelyAddLabel(this.parentElement, data);
+        recursivelyColorNodes(
+          this.parentElement,
+          data,
+          dendrogramParameters.nodeParameters.distinguishedColor
+        );
         d3.select(this.parentElement).raise();
       }
     )
@@ -187,6 +208,11 @@ export const drawDendrogram = (
         data: TreeNode<TreeDataType>
       ) {
         recursivelyRemoveLabel(this.parentElement, data);
+        recursivelyColorNodes(
+          this.parentElement,
+          data,
+          dendrogramParameters.nodeParameters.color
+        );
       }
     );
 
