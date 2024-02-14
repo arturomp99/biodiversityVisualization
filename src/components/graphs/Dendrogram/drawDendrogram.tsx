@@ -3,6 +3,10 @@ import { TreeDataType, TreeNode } from "./dendrogram.types";
 import { dendrogramParameters, graphMargin } from "src/data/constants";
 import { dendrogramClassNames } from "src/data/idClassNames";
 import { verticalDiagonalLine } from "src/utils/lineEquations";
+import {
+  hideNodeInfoInteractivity,
+  showNodeInfoInteractivity,
+} from "./interactivtiy/showNodeInfoInteractivity";
 
 const setInitialState = (
   root: TreeNode<TreeDataType>,
@@ -16,84 +20,6 @@ const setInitialState = (
     : root.children.forEach((childNode) =>
         setInitialState(childNode, { x: root.x0, y: root.y0 })
       );
-};
-
-const addLabel = (
-  element: HTMLElement | null,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  node: any
-): void => {
-  const label = d3
-    .select(element)
-    .append("g")
-    .attr("class", dendrogramClassNames.markerLabel)
-    .attr(
-      "transform",
-      `translate(0,-${
-        dendrogramParameters.nodeParameters.radius +
-        0.5 * dendrogramParameters.labels.fontSize
-      })`
-    );
-  const labelText = label
-    .append("text")
-    .text(node.name || node.data[0] || "")
-    .attr("class", dendrogramClassNames.markerLabel)
-    .attr("fill", dendrogramParameters.labels.fontColor)
-    .attr("font-size", `${dendrogramParameters.labels.fontSize}px`)
-    .attr("text-anchor", "middle");
-
-  const labelWidth = labelText.node()?.getBBox().width || 0;
-  const labelHeight = labelText.node()?.getBBox().height || 0;
-  label
-    .append("rect")
-    .attr("width", labelWidth)
-    .attr("height", labelHeight)
-    .attr(
-      "transform",
-      `translate(-${labelWidth / 2}, -${
-        labelHeight - 0.2 * dendrogramParameters.labels.fontSize
-      })`
-    )
-    .style("fill", "white")
-    .style("opacity", "0.9");
-
-  labelText.raise();
-};
-
-const removeLabel = (element: HTMLElement | null): void => {
-  d3.select(element).select(`.${dendrogramClassNames.markerLabel}`).remove();
-};
-
-const recursivelyAddLabel = (
-  element: HTMLElement | null,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  node: any
-): void => {
-  addLabel(element, node);
-  if (node.parent) recursivelyAddLabel(node.parentNode, node.parent);
-  return;
-};
-
-const recursivelyRemoveLabel = (
-  element: HTMLElement | null,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  node: any
-): void => {
-  removeLabel(element);
-  if (node.parent) recursivelyRemoveLabel(node.parentNode, node.parent);
-  return;
-};
-
-const recursivelyColorNodes = (
-  element: HTMLElement | null,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  node: any,
-  color: string
-): void => {
-  d3.select(element)
-    .select(`.${dendrogramClassNames.markerNode}`)
-    .attr("fill", color);
-  if (node.parent) recursivelyColorNodes(node.parentNode, node.parent, color);
 };
 
 export const scaleData = (data: TreeDataType, dimensions: [number, number]) => {
@@ -191,13 +117,7 @@ export const drawDendrogram = (
         _,
         data: TreeNode<TreeDataType>
       ) {
-        recursivelyAddLabel(this.parentElement, data);
-        recursivelyColorNodes(
-          this.parentElement,
-          data,
-          dendrogramParameters.nodeParameters.distinguishedColor
-        );
-        d3.select(this.parentElement).raise();
+        showNodeInfoInteractivity(this, data);
       }
     )
     .on(
@@ -207,12 +127,7 @@ export const drawDendrogram = (
         _,
         data: TreeNode<TreeDataType>
       ) {
-        recursivelyRemoveLabel(this.parentElement, data);
-        recursivelyColorNodes(
-          this.parentElement,
-          data,
-          dendrogramParameters.nodeParameters.color
-        );
+        hideNodeInfoInteractivity(this, data);
       }
     );
 
