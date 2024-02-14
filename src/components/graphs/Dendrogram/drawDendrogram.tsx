@@ -3,6 +3,10 @@ import { TreeDataType, TreeNode } from "./dendrogram.types";
 import { dendrogramParameters, graphMargin } from "src/data/constants";
 import { dendrogramClassNames } from "src/data/idClassNames";
 import { verticalDiagonalLine } from "src/utils/lineEquations";
+import {
+  hideNodeInfoInteractivity,
+  showNodeInfoInteractivity,
+} from "./interactivtiy/showNodeInfoInteractivity";
 
 const setInitialState = (
   root: TreeNode<TreeDataType>,
@@ -16,52 +20,6 @@ const setInitialState = (
     : root.children.forEach((childNode) =>
         setInitialState(childNode, { x: root.x0, y: root.y0 })
       );
-};
-
-const addLabel = (
-  element: SVGSVGElement | SVGCircleElement,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  node: any
-): void => {
-  const label = d3
-    .select(element.parentElement)
-    .append("g")
-    .attr("class", dendrogramClassNames.markerLabel)
-    .attr(
-      "transform",
-      `translate(0,-${1.5 * dendrogramParameters.nodeParameters.radius})`
-    );
-  const labelText = label
-    .append("text")
-    .text(node.name || node.data[0] || "")
-    .attr("class", dendrogramClassNames.markerLabel)
-    .attr("fill", dendrogramParameters.labels.fontColor)
-    .attr("font-size", `${dendrogramParameters.labels.fontSize}px`)
-    .attr("text-anchor", "middle");
-
-  const labelWidth = labelText.node()?.getBBox().width || 0;
-  const labelHeight = labelText.node()?.getBBox().height || 0;
-  label
-    .append("rect")
-    .attr("width", labelWidth)
-    .attr("height", labelHeight)
-    .attr(
-      "transform",
-      `translate(-${labelWidth / 2}, -${
-        labelHeight - 0.2 * dendrogramParameters.labels.fontSize
-      })`
-    )
-    .style("fill", "white")
-    .style("opacity", "0.9");
-
-  labelText.raise();
-};
-
-const removeLabel = (element: SVGSVGElement | SVGCircleElement): void => {
-  console.log(element);
-  d3.select(element.parentElement)
-    .select(`.${dendrogramClassNames.markerLabel}`)
-    .remove();
 };
 
 export const scaleData = (data: TreeDataType, dimensions: [number, number]) => {
@@ -148,7 +106,8 @@ export const drawDendrogram = (
       dataPoint.expanded || (dataPoint.parent && dataPoint.parent.expanded)
         ? dendrogramParameters.nodeParameters.radius
         : dendrogramParameters.nodeParameters.radiusCollapsed
-    );
+    )
+    .attr("fill", dendrogramParameters.nodeParameters.color);
 
   markersCircles
     .on(
@@ -158,13 +117,19 @@ export const drawDendrogram = (
         _,
         data: TreeNode<TreeDataType>
       ) {
-        addLabel(this, data);
-        d3.select(this.parentElement).raise();
+        showNodeInfoInteractivity(this, data);
       }
     )
-    .on("mouseout", function (this: SVGSVGElement | SVGCircleElement) {
-      removeLabel(this);
-    });
+    .on(
+      "mouseout",
+      function (
+        this: SVGSVGElement | SVGCircleElement,
+        _,
+        data: TreeNode<TreeDataType>
+      ) {
+        hideNodeInfoInteractivity(this, data);
+      }
+    );
 
   return;
 };

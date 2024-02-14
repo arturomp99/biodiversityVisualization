@@ -77,6 +77,8 @@ export const dendrogramParameters = {
   nodeParameters: {
     radius: 7,
     radiusCollapsed: 1e-5,
+    color: "black",
+    distinguishedColor: "#2d544a",
   },
   linkParameters: { strokeWidth: 1 },
   zoom: {
@@ -89,7 +91,7 @@ export const dendrogramParameters = {
   },
   labels: {
     fontSize: 20,
-    fontColor: "red",
+    fontColor: "#2d544a",
   },
 };
 
