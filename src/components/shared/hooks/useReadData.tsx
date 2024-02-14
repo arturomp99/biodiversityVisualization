@@ -217,13 +217,13 @@ export const useReadData = () => {
     ? undefined
     : group(
         complexData.data,
-        (specimen) => specimen.scientificName,
-        (specimen) => specimen.species,
         (specimen) => specimen.phylum,
         (specimen) => specimen.class,
         (specimen) => specimen.order,
         (specimen) => specimen.family,
-        (specimen) => specimen.genus
+        (specimen) => specimen.genus,
+        (specimen) => specimen.species,
+        (specimen) => specimen.scientificName
       );
 
   return {
