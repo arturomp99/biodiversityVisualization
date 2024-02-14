@@ -159,6 +159,7 @@ export const drawDendrogram = (
         data: TreeNode<TreeDataType>
       ) {
         addLabel(this, data);
+        d3.select(this.parentElement).raise();
       }
     )
     .on("mouseout", function (this: SVGSVGElement | SVGCircleElement) {
