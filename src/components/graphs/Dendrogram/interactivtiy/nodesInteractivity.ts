@@ -137,13 +137,19 @@ export const makeNodesCollapsible = (parentRef: SVGSVGElement) => {
     .selectAll<SVGGElement, TreeNode<TreeDataType>>(
       `.${dendrogramClassNames.markerGroup}`
     )
-    .each((dataPoint, index, nodesGroup) => {
+    .each(function (dataPoint) {
       // We point to each child svg node from parent
-      if (!dataPoint.parent) return;
-      dataPoint.parent.childrenNodes = [
-        ...(dataPoint.parent?.childrenNodes || []),
-        nodesGroup[index],
-      ];
+      if (dataPoint.parent) {
+        dataPoint.parent.childrenNodes = [
+          ...(dataPoint.parent?.childrenNodes || []),
+          this,
+        ];
+      }
+      if (dataPoint.children) {
+        dataPoint.children.forEach(
+          (childNode) => (childNode.parentNode = this)
+        );
+      }
     });
 
   dendrogramMarkers

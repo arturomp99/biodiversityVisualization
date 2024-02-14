@@ -10,6 +10,7 @@ export interface TreeNode<T> {
   children?: this[];
   expanded?: boolean;
   childrenNodes?: SVGGElement[];
+  parentNode?: SVGGElement;
   action?: "collapse" | "expand" | undefined;
   data: T;
   readonly depth: number;

@@ -19,12 +19,12 @@ const setInitialState = (
 };
 
 const addLabel = (
-  element: SVGSVGElement | SVGCircleElement,
+  element: HTMLElement | null,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   node: any
 ): void => {
   const label = d3
-    .select(element.parentElement)
+    .select(element)
     .append("g")
     .attr("class", dendrogramClassNames.markerLabel)
     .attr(
@@ -57,11 +57,28 @@ const addLabel = (
   labelText.raise();
 };
 
-const removeLabel = (element: SVGSVGElement | SVGCircleElement): void => {
-  console.log(element);
-  d3.select(element.parentElement)
-    .select(`.${dendrogramClassNames.markerLabel}`)
-    .remove();
+const removeLabel = (element: HTMLElement | null): void => {
+  d3.select(element).select(`.${dendrogramClassNames.markerLabel}`).remove();
+};
+
+const recursivelyAddLabel = (
+  element: HTMLElement | null,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  node: any
+): void => {
+  addLabel(element, node);
+  if (node.parent) recursivelyAddLabel(node.parentNode, node.parent);
+  return;
+};
+
+const recursivelyRemoveLabel = (
+  element: HTMLElement | null,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  node: any
+): void => {
+  removeLabel(element);
+  if (node.parent) recursivelyRemoveLabel(node.parentNode, node.parent);
+  return;
 };
 
 export const scaleData = (data: TreeDataType, dimensions: [number, number]) => {
@@ -158,13 +175,20 @@ export const drawDendrogram = (
         _,
         data: TreeNode<TreeDataType>
       ) {
-        addLabel(this, data);
+        recursivelyAddLabel(this.parentElement, data);
         d3.select(this.parentElement).raise();
       }
     )
-    .on("mouseout", function (this: SVGSVGElement | SVGCircleElement) {
-      removeLabel(this);
-    });
+    .on(
+      "mouseout",
+      function (
+        this: SVGSVGElement | SVGCircleElement,
+        _,
+        data: TreeNode<TreeDataType>
+      ) {
+        recursivelyRemoveLabel(this.parentElement, data);
+      }
+    );
 
   return;
 };
