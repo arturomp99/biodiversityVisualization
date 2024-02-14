@@ -18,6 +18,52 @@ const setInitialState = (
       );
 };
 
+const addLabel = (
+  element: SVGSVGElement | SVGCircleElement,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  node: any
+): void => {
+  const label = d3
+    .select(element.parentElement)
+    .append("g")
+    .attr("class", dendrogramClassNames.markerLabel)
+    .attr(
+      "transform",
+      `translate(0,-${1.5 * dendrogramParameters.nodeParameters.radius})`
+    );
+  const labelText = label
+    .append("text")
+    .text(node.name || node.data[0] || "")
+    .attr("class", dendrogramClassNames.markerLabel)
+    .attr("fill", dendrogramParameters.labels.fontColor)
+    .attr("font-size", `${dendrogramParameters.labels.fontSize}px`)
+    .attr("text-anchor", "middle");
+
+  const labelWidth = labelText.node()?.getBBox().width || 0;
+  const labelHeight = labelText.node()?.getBBox().height || 0;
+  label
+    .append("rect")
+    .attr("width", labelWidth)
+    .attr("height", labelHeight)
+    .attr(
+      "transform",
+      `translate(-${labelWidth / 2}, -${
+        labelHeight - 0.2 * dendrogramParameters.labels.fontSize
+      })`
+    )
+    .style("fill", "white")
+    .style("opacity", "0.9");
+
+  labelText.raise();
+};
+
+const removeLabel = (element: SVGSVGElement | SVGCircleElement): void => {
+  console.log(element);
+  d3.select(element.parentElement)
+    .select(`.${dendrogramClassNames.markerLabel}`)
+    .remove();
+};
+
 export const scaleData = (data: TreeDataType, dimensions: [number, number]) => {
   const [dendrogramWidth, dendrogramHeight] = dimensions;
 
@@ -70,27 +116,6 @@ export const drawDendrogram = (
 
   dendrogramMarkers
     .selectAll<SVGSVGElement, TreeNode<TreeDataType>>(
-      `.${dendrogramClassNames.markerNode}`
-    )
-    .data((singleData) => [singleData])
-    .join("circle")
-    .attr("class", `${dendrogramClassNames.markerNode}`)
-    .attr("r", (dataPoint) =>
-      dataPoint.expanded || (dataPoint.parent && dataPoint.parent.expanded)
-        ? dendrogramParameters.nodeParameters.radius
-        : dendrogramParameters.nodeParameters.radiusCollapsed
-    );
-
-  // dendrogramMarkers
-  //   .selectAll(`.${dendrogramClassNames.markerLabel}`)
-  //   .data((singleData) => [singleData])
-  //   .join("text")
-  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //   .text((dataPoint: any) => dataPoint.name || dataPoint.data[0] || "")
-  //   .attr("class", `${dendrogramClassNames.markerLabel}`);
-
-  dendrogramMarkers
-    .selectAll<SVGSVGElement, TreeNode<TreeDataType>>(
       `.${dendrogramClassNames.markerLink}`
     )
     .data((singleData) => [singleData])
@@ -111,6 +136,34 @@ export const drawDendrogram = (
     .attr("fill", "none")
     .attr("stroke", "black")
     .attr("stroke-width", "1px");
+
+  const markersCircles = dendrogramMarkers
+    .selectAll<SVGSVGElement, TreeNode<TreeDataType>>(
+      `.${dendrogramClassNames.markerNode}`
+    )
+    .data((singleData) => [singleData])
+    .join("circle")
+    .attr("class", `${dendrogramClassNames.markerNode}`)
+    .attr("r", (dataPoint) =>
+      dataPoint.expanded || (dataPoint.parent && dataPoint.parent.expanded)
+        ? dendrogramParameters.nodeParameters.radius
+        : dendrogramParameters.nodeParameters.radiusCollapsed
+    );
+
+  markersCircles
+    .on(
+      "mouseover",
+      function (
+        this: SVGSVGElement | SVGCircleElement,
+        _,
+        data: TreeNode<TreeDataType>
+      ) {
+        addLabel(this, data);
+      }
+    )
+    .on("mouseout", function (this: SVGSVGElement | SVGCircleElement) {
+      removeLabel(this);
+    });
 
   return;
 };

@@ -87,6 +87,10 @@ export const dendrogramParameters = {
     collapseDuration: 1000,
     zoomEndTransitionDuration: 500,
   },
+  labels: {
+    fontSize: 20,
+    fontColor: "red",
+  },
 };
 
 export const mapChartParameters = {
