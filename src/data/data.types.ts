@@ -1,4 +1,5 @@
 export type CleanDataFileHeaders =
+  | "id"
   | "occurrenceID"
   | "basisOfRecord"
   | "Preparations (Physical Samples)"

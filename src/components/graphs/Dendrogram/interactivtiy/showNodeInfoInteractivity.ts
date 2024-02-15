@@ -35,9 +35,10 @@ const addLabel = (
     .attr("height", labelHeight)
     .attr(
       "transform",
-      `translate(-${labelWidth / 2}, -${
-        labelHeight - 0.2 * dendrogramParameters.labels.fontSize
-      })`
+      `translate(${-labelWidth / 2}, ${-(
+        labelHeight -
+        0.2 * dendrogramParameters.labels.fontSize
+      )})`
     )
     .style("fill", "white")
     .style("opacity", "0.9");

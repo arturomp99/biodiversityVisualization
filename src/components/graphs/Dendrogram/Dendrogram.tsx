@@ -9,6 +9,8 @@ import { useDataContext } from "src/contexts/dataContext";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
 import { makeNodesCollapsible } from "./interactivtiy/nodesInteractivity";
 import { dendrogramHandleZoomEnd } from "./interactivtiy/zoomInteractivity";
+import { useFiltersContext } from "src/contexts/filtersContext";
+import { taxonomicFilter } from "src/data/filters";
 
 export const Dendrogram: FC<GraphProps> = ({
   isBasicInteractive,
@@ -17,6 +19,9 @@ export const Dendrogram: FC<GraphProps> = ({
   const {
     taxonomicClassification: { data, loading },
   } = useDataContext();
+  const { setFilters } = useFiltersContext();
+  useEffect(() => setFilters && setFilters(taxonomicFilter), []);
+
   const node = createRef<SVGSVGElement>();
   const zoomContainer = createRef<SVGSVGElement>();
 

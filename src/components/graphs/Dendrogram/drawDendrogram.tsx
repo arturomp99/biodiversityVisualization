@@ -44,23 +44,32 @@ export const drawDendrogram = (
   data: TreeNode<TreeDataType>,
   parentRef: SVGSVGElement
 ) => {
+  console.log(
+    d3
+      .select(parentRef)
+      .selectAll<typeof parentRef, typeof data>(
+        `.${dendrogramClassNames.markerGroup}`
+      )
+  );
   const dendrogramMarkers = d3
     .select(parentRef)
-    .selectAll<typeof parentRef, typeof data>(
-      `${dendrogramClassNames.markerGroup}`
-    )
+    .selectAll<SVGGElement, typeof data>(`.${dendrogramClassNames.markerGroup}`)
     .data(
       data.descendants(),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (dataPoint: any) => dataPoint.data.species || dataPoint.data[0] || "root"
-    )
+      (dataPoint: any) => dataPoint.data.id //dataPoint.data.species || dataPoint.data[0] || "root"
+    );
+
+  const dendrogramMarkersEnter = dendrogramMarkers
     .enter()
     .append("g")
     .attr("class", `${dendrogramClassNames.markerGroup}`)
     .attr(
       "id",
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (dataPoint: any) => dataPoint.data.species || dataPoint.data[0] || "root"
+      (dataPoint: any) => {
+        return dataPoint.data.species || dataPoint.data[0] || "root";
+      }
     )
     .attr("transform", (dataPoint) => {
       const position = {
@@ -72,7 +81,7 @@ export const drawDendrogram = (
       })`;
     });
 
-  dendrogramMarkers
+  dendrogramMarkersEnter
     .selectAll<SVGSVGElement, TreeNode<TreeDataType>>(
       `.${dendrogramClassNames.markerLink}`
     )
@@ -95,7 +104,7 @@ export const drawDendrogram = (
     .attr("stroke", "black")
     .attr("stroke-width", "1px");
 
-  const markersCircles = dendrogramMarkers
+  const markersCircles = dendrogramMarkersEnter
     .selectAll<SVGSVGElement, TreeNode<TreeDataType>>(
       `.${dendrogramClassNames.markerNode}`
     )
@@ -130,6 +139,22 @@ export const drawDendrogram = (
         hideNodeInfoInteractivity(this, data);
       }
     );
+
+  const dendrogramMarkersUpdate = dendrogramMarkers.attr(
+    "transform",
+    (dataPoint) => {
+      const position = {
+        x: dataPoint.x0 ?? dataPoint.x,
+        y: dataPoint.y0 ?? dataPoint.y,
+      };
+      return `translate(${position.x + graphMargin.left}, ${
+        position.y + graphMargin.top
+      })`;
+    }
+  );
+
+  dendrogramMarkersEnter.merge(dendrogramMarkersUpdate);
+  dendrogramMarkers.exit().remove();
 
   return;
 };
