@@ -6,6 +6,9 @@ export const fontSize = 10;
 
 export const navBar = {
   height: "72px",
+  backgroundColor: "#71b171",
+  fontColor: "white",
+  hoveredColor: "#446e44",
 };
 
 export const appPaddings = {
