@@ -8,8 +8,8 @@ export const StyledNavBarContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #0f172a;
-  color: white;
+  background-color: ${navBar.backgroundColor};
+  color: ${navBar.fontColor};
   position: sticky;
   top: 0;
 `;
@@ -39,6 +39,6 @@ export const StyledNavBarLink = styled(Link)`
   border-radius: 0.5rem;
 
   &:not(.active):hover {
-    background-color: #172554;
+    background-color: ${navBar.hoveredColor};
   }
 `;
