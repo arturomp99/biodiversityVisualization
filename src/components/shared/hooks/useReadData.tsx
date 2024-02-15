@@ -13,6 +13,7 @@ import { SoundHeaders } from "src/data/sampleData/sampleData.types";
 import { TemporalDataType } from "src/components/graphs/TimeLine/timeLine.types";
 import { CleanDataFileHeaders, SensorsFileHeaders } from "src/data/data.types";
 import { MapChartDataType } from "src/components/graphs/Map/map.types";
+import { useFiltersContext } from "src/contexts/filtersContext";
 
 const useReadDendrogramData = () => {
   const [data, setData] = useState<TreeDataType | undefined>(undefined);
@@ -176,6 +177,8 @@ const useReadComplexData = () => {
   >(undefined);
   const [loading, setLoading] = useState(true);
 
+  const { filters } = useFiltersContext();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -201,6 +204,18 @@ const useReadComplexData = () => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (!filters || !data) return;
+    setData((previousData) => {
+      if (!previousData) return;
+      return previousData.filter((dataEntry) => {
+        const dataEntryValue = dataEntry[filters.level] as string;
+        return dataEntryValue.toLocaleLowerCase() === filters.value;
+      });
+    });
+  }, [filters, loading]);
+
   return { data, loading };
 };
 
