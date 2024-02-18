@@ -9,6 +9,6 @@ export const StyledDashboardLayout = styled.div`
   display: grid;
   grid-template: 1fr 1fr / 1fr 1fr;
   grid-auto-flow: column;
-  background-color: ${themeColors.background};
+  background-color: ${themeColors.background.color1};
   gap: 1rem 2rem;
 `;

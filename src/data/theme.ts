@@ -1,5 +1,9 @@
 export const themeColors = {
-  background: "#fff",
+  background: {
+    color1: "#e5f3d6",
+    color2: "#faf5f2",
+    color3: "#2d544a",
+  },
   card: {
     background: "#F8F9FA",
     border: "black",

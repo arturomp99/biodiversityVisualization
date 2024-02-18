@@ -8,7 +8,7 @@ export const RootPage = () => {
       <nav>
         <NavBar />
       </nav>
-      <main>
+      <main className="dark">
         <Outlet />
       </main>
     </>

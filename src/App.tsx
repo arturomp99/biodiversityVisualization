@@ -1,4 +1,5 @@
 import React from "react";
+import { NextUIProvider } from "@nextui-org/react";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./pages/routes/router";
 import { DataContextProvider } from "./contexts/dataContext";
@@ -7,13 +8,15 @@ import { FiltersContextProvider } from "./contexts/filtersContext";
 
 function App() {
   return (
-    <FiltersContextProvider>
-      <DataContextProvider>
-        <div className="app">
-          <RouterProvider router={router} />
-        </div>
-      </DataContextProvider>
-    </FiltersContextProvider>
+    <NextUIProvider>
+      <FiltersContextProvider>
+        <DataContextProvider>
+          <div className="app">
+            <RouterProvider router={router} />
+          </div>
+        </DataContextProvider>
+      </FiltersContextProvider>
+    </NextUIProvider>
   );
 }
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { paragraphMargin } from "src/data/constants";
 import styled from "styled-components";
-import { themeSizes } from "src/data/theme";
+import { themeColors, themeSizes } from "src/data/theme";
 
 const StyledSection = styled.section<{ color: string }>`
   background-color: ${({ color }) => color};
@@ -19,11 +19,15 @@ const StyledTitle = styled.p`
 export const MainPage = () => {
   return (
     <>
-      <StyledSection color={"#e5f3d6"}>
+      <StyledSection color={themeColors.background.color1}>
         <StyledTitle>MAIN PAGE</StyledTitle>
       </StyledSection>
-      <StyledSection color={"#faf5f2"}>Content</StyledSection>
-      <StyledSection color={"#2d544a"}>Content</StyledSection>
+      <StyledSection color={themeColors.background.color2}>
+        Content
+      </StyledSection>
+      <StyledSection color={themeColors.background.color3}>
+        Content
+      </StyledSection>
     </>
   );
 };
