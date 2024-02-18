@@ -30,7 +30,3 @@ export const FiltersContextProvider = (props: { children: ReactNode }) => {
     </FiltersContext.Provider>
   );
 };
-
-export const useDataContext = () => {
-  return useContext(FiltersContext);
-};
