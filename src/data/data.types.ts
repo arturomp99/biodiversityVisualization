@@ -40,6 +40,8 @@ export type CleanDataFileHeaders =
   | "sensorID"
   | "observationsNum";
 
+export type DataType = Record<CleanDataFileHeaders, string | string[]>;
+
 export type SensorsFileHeaders =
   | "sensorId"
   | "latitude"

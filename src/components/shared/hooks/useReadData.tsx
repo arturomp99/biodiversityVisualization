@@ -11,7 +11,11 @@ import { TreeDataType } from "src/components/graphs/Dendrogram/dendrogram.types"
 import { SoundChartDataType } from "src/components/graphs/LineChart/lineChart.types";
 import { SoundHeaders } from "src/data/sampleData/sampleData.types";
 import { TemporalDataType } from "src/components/graphs/TimeLine/timeLine.types";
-import { CleanDataFileHeaders, SensorsFileHeaders } from "src/data/data.types";
+import {
+  CleanDataFileHeaders,
+  DataType,
+  SensorsFileHeaders,
+} from "src/data/data.types";
 import { MapChartDataType } from "src/components/graphs/Map/map.types";
 import { useFiltersContext } from "src/contexts/filtersContext";
 
@@ -172,9 +176,7 @@ const arrayProperties: Array<CleanDataFileHeaders> = [
 ];
 
 const useReadComplexData = () => {
-  const [data, setData] = useState<
-    Record<CleanDataFileHeaders, string | string[]>[] | undefined
-  >(undefined);
+  const [data, setData] = useState<DataType[] | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
   const { filters } = useFiltersContext();
@@ -186,8 +188,7 @@ const useReadComplexData = () => {
           ";",
           "/sampleData/clean.csv",
           (dataEntry: DSVRowString<CleanDataFileHeaders>) => {
-            const cleanEntry: Record<CleanDataFileHeaders, string | string[]> =
-              dataEntry;
+            const cleanEntry: DataType = dataEntry;
             for (const property of arrayProperties) {
               cleanEntry[property] = dataEntry[property].split(",") as string[];
             }
