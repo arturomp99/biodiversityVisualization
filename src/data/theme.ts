@@ -20,4 +20,10 @@ export const themeSizes = {
   cardFooter: {
     maxHeight: "20%",
   },
+  appPaddings: {
+    m: "90px",
+    lg: "180px",
+    xl: "320px",
+    xxl: "450px",
+  },
 };

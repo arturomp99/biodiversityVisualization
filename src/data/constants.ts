@@ -11,10 +11,6 @@ export const navBar = {
   hoveredColor: "#446e44",
 };
 
-export const appPaddings = {
-  lg: "90px",
-};
-
 export const paragraphMargin = "16px";
 
 export const graphMargin = {
@@ -107,4 +103,8 @@ export const mapChartParameters = {
     radius: "10px",
     fill: "black",
   },
+};
+
+export const catalogParameters = {
+  animalsPerPage: 10,
 };

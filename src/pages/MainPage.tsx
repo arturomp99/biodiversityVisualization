@@ -1,10 +1,11 @@
 import React from "react";
-import { appPaddings, paragraphMargin } from "src/data/constants";
+import { paragraphMargin } from "src/data/constants";
 import styled from "styled-components";
+import { themeSizes } from "src/data/theme";
 
 const StyledSection = styled.section<{ color: string }>`
   background-color: ${({ color }) => color};
-  padding: 0 ${appPaddings.lg};
+  padding: 0 ${themeSizes.appPaddings.xl};
   overflow: hidden;
 `;
 

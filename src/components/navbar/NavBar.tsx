@@ -16,7 +16,7 @@ export const NavBar = () => {
           <StyledNavBarLink to="/Dashboard">Dashboard</StyledNavBarLink>
         </StyledNavigationListItem>
         <StyledNavigationListItem>
-          <StyledNavBarLink to="/Detail">Detail</StyledNavBarLink>
+          <StyledNavBarLink to="/Catalog">Catalog</StyledNavBarLink>
         </StyledNavigationListItem>
       </StyledNavigationList>
     </StyledNavBarContainer>
