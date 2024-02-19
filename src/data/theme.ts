@@ -30,4 +30,8 @@ export const themeSizes = {
     xl: "320px",
     xxl: "450px",
   },
+  elementsMargins: {
+    md: "12px",
+    lg: "24px",
+  },
 };

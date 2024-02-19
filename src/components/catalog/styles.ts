@@ -4,5 +4,8 @@ import styled from "styled-components";
 export const CatalogContainerStyled = styled.div`
   background-color: ${themeColors.background.color3};
   color: black;
-  padding: 0px ${themeSizes.appPaddings.xl};
+  padding: ${themeSizes.elementsMargins.lg} ${themeSizes.appPaddings.xl};
+  display: flex;
+  flex-direction: column;
+  gap: ${themeSizes.elementsMargins.md};
 `;

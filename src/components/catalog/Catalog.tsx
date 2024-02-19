@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Pagination } from "@nextui-org/react";
+import { Pagination, Card, CardBody } from "@nextui-org/react";
 
 import { CatalogContainer } from "./CatalogContainer";
 import { useGetCatalogData } from "./hooks/useGetCatalogData";
@@ -21,7 +21,11 @@ export const Catalog = () => {
         <p>Loading...</p>
       ) : (
         catalogData.map((catalogEntry, index) => (
-          <p key={index}>{catalogEntry.species}</p>
+          <Card key={index}>
+            <CardBody>
+              <p>{catalogEntry.species}</p>
+            </CardBody>
+          </Card>
         ))
       )}
       {catalogData?.length && (
