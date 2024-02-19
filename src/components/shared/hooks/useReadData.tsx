@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import {
   DSVRowString,
   ExtendedFeatureCollection,
@@ -177,6 +177,7 @@ const arrayProperties: Array<CleanDataFileHeaders> = [
 
 const useReadComplexData = () => {
   const [data, setData] = useState<DataType[] | undefined>(undefined);
+  const readDataRef = useRef<DataType[] | undefined>();
   const [loading, setLoading] = useState(true);
 
   const { filters } = useFiltersContext();
@@ -197,6 +198,7 @@ const useReadComplexData = () => {
         );
         if (!readData) throw "empty data";
         setLoading(false);
+        readDataRef.current = readData;
         setData(Array.from(readData));
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
@@ -207,13 +209,15 @@ const useReadComplexData = () => {
   }, []);
 
   useEffect(() => {
-    if (!filters || !data) return;
-    setData((previousData) => {
-      if (!previousData) return;
-      return previousData.filter((dataEntry) => {
-        const dataEntryValue = dataEntry[filters.level] as string;
-        return dataEntryValue.toLocaleLowerCase() === filters.value;
-      });
+    setData(() => {
+      if (!readDataRef.current) return;
+      if (!filters) return readDataRef.current;
+      return readDataRef.current.filter((dataEntry) =>
+        filters.every((filter) => {
+          const dataEntryValue = dataEntry[filter.level] as string;
+          return dataEntryValue.toLocaleLowerCase() === filter.value;
+        })
+      );
     });
   }, [filters, loading]);
 

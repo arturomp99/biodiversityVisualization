@@ -44,13 +44,6 @@ export const drawDendrogram = (
   data: TreeNode<TreeDataType>,
   parentRef: SVGSVGElement
 ) => {
-  console.log(
-    d3
-      .select(parentRef)
-      .selectAll<typeof parentRef, typeof data>(
-        `.${dendrogramClassNames.markerGroup}`
-      )
-  );
   const dendrogramMarkers = d3
     .select(parentRef)
     .selectAll<SVGGElement, typeof data>(`.${dendrogramClassNames.markerGroup}`)
