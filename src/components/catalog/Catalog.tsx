@@ -3,6 +3,7 @@ import { Pagination, Card, CardBody } from "@nextui-org/react";
 
 import { CatalogContainer } from "./CatalogContainer";
 import { useGetCatalogData } from "./hooks/useGetCatalogData";
+import { getEnglishVernacularName } from "./utils/getEnglishVernacularName";
 
 export const Catalog = () => {
   const { loading, catalogData, page, setPage, totalPages } =
@@ -20,13 +21,24 @@ export const Catalog = () => {
       {loading || !catalogData ? (
         <p>Loading...</p>
       ) : (
-        catalogData.map((catalogEntry, index) => (
-          <Card key={index}>
-            <CardBody>
-              <p>{catalogEntry.species}</p>
-            </CardBody>
-          </Card>
-        ))
+        catalogData.map(
+          (catalogEntry, index) =>
+            catalogEntry && (
+              <Card key={index}>
+                <CardBody>
+                  <p>
+                    {getEnglishVernacularName(catalogEntry.vernacularNames)}
+                  </p>
+                  <p>{catalogEntry.species}</p>
+                  <p>{catalogEntry.usageKey}</p>
+                  <p>
+                    {catalogEntry.descriptions[0]?.description ||
+                      "no description"}
+                  </p>
+                </CardBody>
+              </Card>
+            )
+        )
       )}
       {catalogData?.length && (
         <Pagination
