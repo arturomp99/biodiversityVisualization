@@ -23,7 +23,8 @@ export const drawLegend = (
     .attr("r", lineChartParameters.legend.fontSize)
     .style("fill", function (dataLine) {
       return colorScale(dataLine);
-    });
+    })
+    .style("cursor", "pointer");
 
   d3.select(node)
     .selectAll(`.${legend.labels.class}`)
@@ -44,6 +45,7 @@ export const drawLegend = (
     .style("fill", function (dataLine) {
       return colorScale(dataLine);
     })
+    .style("cursor", "pointer")
     .text(function (dataLine) {
       return `sensor ${dataLine}`;
     })

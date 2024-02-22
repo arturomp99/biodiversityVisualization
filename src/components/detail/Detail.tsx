@@ -9,7 +9,7 @@ export const Detail = (props: { graphName: string }) => {
   return (
     <DetailLayout>
       <ExpandedView>
-        <Graph graphName={props.graphName} />
+        <Graph graphName={props.graphName} expanded />
       </ExpandedView>
       <GraphDetails graphName={props.graphName} />
     </DetailLayout>

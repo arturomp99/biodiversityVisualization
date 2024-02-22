@@ -2,8 +2,8 @@
   "data": [
     {
       "id": "Dendrogram",
-      "title": "Dendrogram",
-      "description": "This is a dendrogram."
+      "title": "Taxonomy",
+      "description": "Dendrogram showing all of the observations in a tree view. It shows the taxonomic classification of collected species"
     },
     {
       "id": "Map",
@@ -17,7 +17,7 @@
     },
     {
       "id": "LineChart",
-      "title": "Line chart",
+      "title": "Sensors signal",
       "description": "This is a line plot."
     }
   ]

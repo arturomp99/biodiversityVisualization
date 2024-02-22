@@ -1,30 +1,38 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { StyledGraphCard } from "./styles";
+import { StyledGraphCard, StyledGraphTitle } from "./styles";
 import { useObserveResize } from "../../hooks/useObserveResize";
 import { useGetGraph } from "../../hooks/useGetGraph";
+import { ConditionalLink } from "../../ConditionalLink";
 
-export const Graph = (props: { graphName: string; to?: string }) => {
-  const { graphName, to } = props;
+export const Graph = (props: {
+  graphName: string;
+  title?: string;
+  to?: string;
+  expanded?: boolean;
+}) => {
+  const { graphName, to, expanded, title } = props;
 
   const { containerRef, dimensions } = useObserveResize();
 
-  if (!dimensions) {
-    return (
-      <StyledGraphCard ref={containerRef}>
-        <div>loading...</div>
-      </StyledGraphCard>
-    );
-  }
+  console.log("dimensions", dimensions);
 
-  const graphProps = { dimensions };
+  const renderGraph = () => {
+    if (!dimensions) {
+      return <div>loading...</div>;
+    }
+
+    const graphProps = { dimensions };
+    return useGetGraph(graphName, graphProps);
+  };
+
   return (
-    <StyledGraphCard ref={containerRef}>
-      {to ? (
-        <Link to={to}>{useGetGraph(graphName, graphProps)}</Link>
-      ) : (
-        useGetGraph(graphName, graphProps)
+    <StyledGraphCard noBorder={expanded} hasTitle={!!title}>
+      {title && (
+        <ConditionalLink condition={!!to} to={to}>
+          <StyledGraphTitle>{title}</StyledGraphTitle>
+        </ConditionalLink>
       )}
+      <div ref={containerRef}>{renderGraph()}</div>
     </StyledGraphCard>
   );
 };
