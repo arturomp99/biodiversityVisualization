@@ -1,4 +1,5 @@
 import React from "react";
+import { Spinner } from "@nextui-org/react";
 import { StyledGraphCard, StyledGraphTitle } from "./styles";
 import { useObserveResize } from "../../hooks/useObserveResize";
 import { useGetGraph } from "../../hooks/useGetGraph";
@@ -15,8 +16,8 @@ export const Graph = (props: {
   const { containerRef: resizeContainerRef, dimensions } = useObserveResize();
 
   const renderGraph = () => {
-    if (!dimensions) {
-      return <div>loading...</div>;
+    if (dimensions) {
+      return <Spinner />;
     }
 
     const graphProps = { dimensions };

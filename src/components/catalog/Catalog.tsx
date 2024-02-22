@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Pagination, Card, CardBody } from "@nextui-org/react";
+import { Pagination, Card, CardBody, Spinner } from "@nextui-org/react";
 
 import { CatalogContainer } from "./CatalogContainer";
 import { useGetCatalogData } from "./hooks/useGetCatalogData";
@@ -19,7 +19,7 @@ export const Catalog = () => {
   return (
     <CatalogContainer>
       {loading || !catalogData ? (
-        <p>Loading...</p>
+        <Spinner label="gathering animals data..." />
       ) : (
         catalogData.map(
           (catalogEntry, index) =>
