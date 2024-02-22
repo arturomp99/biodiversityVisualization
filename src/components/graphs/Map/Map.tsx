@@ -61,13 +61,12 @@ export const Map: FC<GraphProps> = ({ isBasicInteractive, dimensions }) => {
     }
   }, []);
 
-  if (map.loading || loading) {
-    return <div>LOADING MAP DATA...</div>;
-  }
-
   return (
-    <StyledMapContainer ref={node} id={`${mapIdNames.container}`}>
-      <g ref={zoomContainer} id={`${mapIdNames.zoomContainer}`} />
-    </StyledMapContainer>
+    <>
+      {(map.loading || loading) && <div>LOADING MAP DATA...</div>}
+      <StyledMapContainer ref={node} id={`${mapIdNames.container}`}>
+        <g ref={zoomContainer} id={`${mapIdNames.zoomContainer}`} />
+      </StyledMapContainer>
+    </>
   );
 };

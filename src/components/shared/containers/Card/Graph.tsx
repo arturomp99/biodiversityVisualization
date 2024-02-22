@@ -12,9 +12,7 @@ export const Graph = (props: {
 }) => {
   const { graphName, to, expanded, title } = props;
 
-  const { containerRef, dimensions } = useObserveResize();
-
-  console.log("dimensions", dimensions);
+  const { containerRef: resizeContainerRef, dimensions } = useObserveResize();
 
   const renderGraph = () => {
     if (!dimensions) {
@@ -32,7 +30,7 @@ export const Graph = (props: {
           <StyledGraphTitle>{title}</StyledGraphTitle>
         </ConditionalLink>
       )}
-      <div ref={containerRef}>{renderGraph()}</div>
+      <div ref={resizeContainerRef}>{renderGraph()}</div>
     </StyledGraphCard>
   );
 };
