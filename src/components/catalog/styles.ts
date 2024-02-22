@@ -1,8 +1,8 @@
-import { themeColors, themeSizes } from "src/data/theme";
+import { themeSizes } from "src/data/theme";
 import styled from "styled-components";
 
 export const CatalogContainerStyled = styled.div`
-  background-color: ${themeColors.background.color1};
+  background-color: inherit;
   color: black;
   padding: ${themeSizes.elementsMargins.lg} ${themeSizes.appPaddings.xl};
   display: flex;

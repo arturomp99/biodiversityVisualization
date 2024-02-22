@@ -12,6 +12,7 @@ export const Dashboard = () => {
           <Graph
             key={i}
             graphName={elementGraph.id}
+            title={elementGraph.title}
             to={`../Detail/${elementGraph.id}`}
           />
         );

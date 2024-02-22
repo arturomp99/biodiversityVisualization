@@ -5,15 +5,21 @@ import { router } from "./pages/routes/router";
 import { DataContextProvider } from "./contexts/dataContext";
 import "tippy.js/dist/tippy.css";
 import { FiltersContextProvider } from "./contexts/filtersContext";
+import styled from "styled-components";
+import { themeColors } from "./data/theme";
+
+const StyledApp = styled.div`
+  background-color: ${themeColors.background.color1};
+`;
 
 function App() {
   return (
     <NextUIProvider>
       <FiltersContextProvider>
         <DataContextProvider>
-          <div className="app">
+          <StyledApp>
             <RouterProvider router={router} />
-          </div>
+          </StyledApp>
         </DataContextProvider>
       </FiltersContextProvider>
     </NextUIProvider>
