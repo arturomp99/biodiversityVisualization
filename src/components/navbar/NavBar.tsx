@@ -13,10 +13,10 @@ export const NavBar = () => {
       <StyledLogo to="/">TFM</StyledLogo>
       <StyledNavigationList>
         <StyledNavigationListItem>
-          <StyledNavBarLink to="/Dashboard">Dashboard</StyledNavBarLink>
+          <StyledNavBarLink to="/data/Dashboard">Dashboard</StyledNavBarLink>
         </StyledNavigationListItem>
         <StyledNavigationListItem>
-          <StyledNavBarLink to="/Catalog">Catalog</StyledNavBarLink>
+          <StyledNavBarLink to="/data/Catalog">Catalog</StyledNavBarLink>
         </StyledNavigationListItem>
       </StyledNavigationList>
     </StyledNavBarContainer>

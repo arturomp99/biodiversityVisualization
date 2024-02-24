@@ -16,7 +16,7 @@ export const Graph = (props: {
   const { containerRef: resizeContainerRef, dimensions } = useObserveResize();
 
   const renderGraph = () => {
-    if (dimensions) {
+    if (!dimensions) {
       return <Spinner />;
     }
 
