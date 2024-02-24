@@ -2,6 +2,7 @@ import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { DashboardPage, ErrorPage, DetailPage, MainPage, RootPage } from "..";
 import { CatalogPage } from "../CatalogPage";
+import { RootDataPage } from "../RootDataPage";
 //TODO: Add loader
 
 export const router = createBrowserRouter([
@@ -12,16 +13,22 @@ export const router = createBrowserRouter([
     children: [
       { path: "/", element: <MainPage /> },
       {
-        path: "/Dashboard",
-        element: <DashboardPage />,
-      },
-      {
-        path: "Detail/:chartId",
-        element: <DetailPage />,
-      },
-      {
-        path: "Catalog",
-        element: <CatalogPage />,
+        path: "/data",
+        element: <RootDataPage />,
+        children: [
+          {
+            path: "Dashboard",
+            element: <DashboardPage />,
+          },
+          {
+            path: "Detail/:chartId",
+            element: <DetailPage />,
+          },
+          {
+            path: "Catalog",
+            element: <CatalogPage />,
+          },
+        ],
       },
     ],
   },
