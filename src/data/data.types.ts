@@ -1,4 +1,14 @@
+export type TaxonomicLevelsType =
+  | "phylum"
+  | "class"
+  | "order"
+  | "family"
+  | "genus"
+  | "species"
+  | "scientificName";
+
 export type CleanDataFileHeaders =
+  | TaxonomicLevelsType
   | "id"
   | "occurrenceID"
   | "basisOfRecord"
@@ -6,12 +16,6 @@ export type CleanDataFileHeaders =
   | "eventDate"
   | "scientificName"
   | "kingdom"
-  | "phylum"
-  | "class"
-  | "order"
-  | "family"
-  | "genus"
-  | "species"
   | "taxonRank"
   | "AI Detection Method/Model"
   | "Confidence%"

@@ -2,8 +2,8 @@ import styled, { css } from "styled-components";
 import { themeColors, themeFont, themeSizes } from "src/data/theme";
 
 export const StyledGraphCard = styled.div<{
-  noBorder?: boolean;
-  hasTitle?: boolean;
+  $noBorder?: boolean;
+  $hasTitle?: boolean;
 }>`
   height: 100%;
   padding: 0.5rem 1rem;
@@ -11,8 +11,8 @@ export const StyledGraphCard = styled.div<{
   color: ${themeColors.card.font};
   display: grid;
   grid-template-columns: 1fr;
-  ${({ hasTitle }) =>
-    hasTitle
+  ${({ $hasTitle }) =>
+    $hasTitle
       ? css`
           grid-template-rows: auto 1fr;
         `
@@ -22,8 +22,8 @@ export const StyledGraphCard = styled.div<{
   grid-gap: calc(5px + 0.5rem);
   transition: box-shadow 0.3s ease-in-out;
 
-  ${({ noBorder }) =>
-    !noBorder &&
+  ${({ $noBorder }) =>
+    !$noBorder &&
     css`
       border: ${themeSizes.border.thin} solid ${themeColors.card.border};
       &:hover,

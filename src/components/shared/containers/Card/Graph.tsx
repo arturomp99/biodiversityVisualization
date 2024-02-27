@@ -25,7 +25,7 @@ export const Graph = (props: {
   };
 
   return (
-    <StyledGraphCard noBorder={expanded} hasTitle={!!title}>
+    <StyledGraphCard $noBorder={expanded} $hasTitle={!!title}>
       {title && (
         <ConditionalLink condition={!!to} to={to}>
           <StyledGraphTitle>{title}</StyledGraphTitle>

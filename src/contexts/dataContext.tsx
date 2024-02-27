@@ -8,8 +8,9 @@ const dataContext = createContext<ReturnType<typeof useReadData>>({
   mapData: defaultData,
   timeLineData: defaultData,
   sensorsData: defaultData,
-  complexData: defaultData,
+  complexData: { ...defaultData, readData: undefined },
   taxonomicClassification: defaultData,
+  filtersData: defaultData,
 });
 
 export const DataContextProvider = (props: { children: ReactNode }) => {

@@ -18,6 +18,7 @@ import {
 } from "src/data/data.types";
 import { MapChartDataType } from "src/components/graphs/Map/map.types";
 import { useFiltersContext } from "src/contexts/filtersContext";
+import { useGetFiltersData } from "./useGetFiltersData";
 
 const useReadDendrogramData = () => {
   const [data, setData] = useState<TreeDataType | undefined>(undefined);
@@ -221,7 +222,7 @@ const useReadComplexData = () => {
     });
   }, [filters, loading]);
 
-  return { data, loading };
+  return { data, loading, readData: readDataRef.current };
 };
 
 export const useReadData = () => {
@@ -231,7 +232,8 @@ export const useReadData = () => {
   const sensorsData = useReadSensorsData();
   const timeLineData = useReadTimeLineData();
   const complexData = useReadComplexData();
-  // TODO: FILTER THE DATA HERE ??
+
+  const filtersData = useGetFiltersData(complexData);
 
   const taxonomicClassification = !complexData.data
     ? undefined
@@ -257,5 +259,6 @@ export const useReadData = () => {
       data: taxonomicClassification,
       loading: complexData.loading,
     },
+    filtersData,
   };
 };
