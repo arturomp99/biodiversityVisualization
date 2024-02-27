@@ -12,9 +12,10 @@ export const TaxonomyInput = () => {
     <Autocomplete
       key={levelKey}
       label={`Filter by ${level}`}
-      variant="bordered"
+      variant="faded"
       disableSelectorIconRotation
       isLoading={taxonomicFiltersData.loading}
+      className="transparent"
     >
       {taxonomicFiltersData.data &&
         taxonomicFiltersData.data[level].map((levelElement, elementKey) => (

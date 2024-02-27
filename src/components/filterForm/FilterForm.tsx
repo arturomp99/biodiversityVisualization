@@ -6,7 +6,11 @@ import { inputElementsData } from "./InputElementsData";
 export const FilterForm = () => {
   return (
     <StyledFilterFormLayout>
-      <Accordion selectionMode="multiple" isCompact="true">
+      <Accordion
+        selectionMode="multiple"
+        isCompact="true"
+        itemClasses={{ content: "flex flex-col gap-1" }}
+      >
         {inputElementsData.map((inputElement, key) => (
           <AccordionItem
             key={key}
