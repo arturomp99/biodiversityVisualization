@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
-import { FilterSectionContainer } from "./styles";
+import { StyledFilterSectionLayout } from "./styles";
 import { useFiltersContext } from "src/contexts/filtersContext";
 import { Chip } from "@nextui-org/react";
-import { FiltersType } from "src/data/filters";
+import { FiltersType } from "src/data/filters.types";
 
 export const FilterSection = () => {
   const { filters, removeFilter } = useFiltersContext();
@@ -15,13 +15,13 @@ export const FilterSection = () => {
   }, []);
 
   return (
-    <FilterSectionContainer>
+    <StyledFilterSectionLayout>
       {filters.map((filter, index) => (
         <Chip
           key={index}
           onClose={() => onFilterClosed(filter)}
         >{`${filter?.level}: ${filter.value}`}</Chip>
       ))}
-    </FilterSectionContainer>
+    </StyledFilterSectionLayout>
   );
 };

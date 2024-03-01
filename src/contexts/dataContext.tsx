@@ -1,15 +1,15 @@
 import React, { ReactNode, createContext, useContext } from "react";
-import { useReadData } from "src/components/shared/hooks/useReadData";
+import { useReadData } from "src/components/shared/hooks/useReadData/useReadData";
 
 const defaultData = { data: undefined, loading: true };
 const dataContext = createContext<ReturnType<typeof useReadData>>({
-  dendrogramData: defaultData,
   lineChartData: defaultData,
   mapData: defaultData,
   timeLineData: defaultData,
   sensorsData: defaultData,
-  complexData: defaultData,
+  complexData: { ...defaultData, readData: undefined },
   taxonomicClassification: defaultData,
+  filtersData: defaultData,
 });
 
 export const DataContextProvider = (props: { children: ReactNode }) => {

@@ -22,13 +22,5 @@ export const createMapTooltip = (parentRef: SVGSVGElement) => {
     .classed(`${tooltipInteractiveClass}`, true)
     .attr("data-tippy-content", (dataPoint) => getTooltipContent(dataPoint));
 
-  console.log(
-    d3
-      .select(parentRef)
-      .selectAll<SVGCircleElement, MapChartDataType>(
-        `.${mapClassNames.sensorMarker}`
-      )
-  );
-
   tippy(markersSelection.nodes(), { allowHTML: true });
 };

@@ -27,7 +27,10 @@ export const themeSizes = {
     maxHeight: "20%",
   },
   appPaddings: {
-    m: "90px",
+    xxs: "15px",
+    xs: "30px",
+    sm: "60px",
+    md: "90px",
     lg: "180px",
     xl: "320px",
     xxl: "450px",
