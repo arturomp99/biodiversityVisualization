@@ -1,9 +1,8 @@
 import React, { ReactNode, createContext, useContext } from "react";
-import { useReadData } from "src/components/shared/hooks/useReadData";
+import { useReadData } from "src/components/shared/hooks/useReadData/useReadData";
 
 const defaultData = { data: undefined, loading: true };
 const dataContext = createContext<ReturnType<typeof useReadData>>({
-  dendrogramData: defaultData,
   lineChartData: defaultData,
   mapData: defaultData,
   timeLineData: defaultData,

@@ -5,7 +5,7 @@ import React, {
   useContext,
   useState,
 } from "react";
-import { FiltersType, taxonomicFilter } from "src/data/filters";
+import { FiltersType } from "src/data/filters.types";
 import { isEqual } from "lodash";
 
 type FiltersContextType = {
@@ -25,17 +25,24 @@ const FiltersContext = createContext<FiltersContextType>({
 export const useFiltersContext = () => useContext(FiltersContext);
 
 export const FiltersContextProvider = (props: { children: ReactNode }) => {
-  const [filters, setFilters] = useState<FiltersType[]>([taxonomicFilter]);
+  const [filters, setFilters] = useState<FiltersContextType["filters"]>([]);
 
-  const removeFilter = useCallback((filter: FiltersType) => {
+  const removeFilter = useCallback<
+    NonNullable<FiltersContextType["removeFilter"]>
+  >((filterToRemove) => {
     setFilters((previousFilters) =>
-      previousFilters.filter((filterEntry) => !isEqual(filterEntry, filter))
+      previousFilters.filter(
+        (filterEntry) => !isEqual(filterEntry, filterToRemove)
+      )
     );
   }, []);
 
-  const addFilter = useCallback((filter: FiltersType) => {
-    setFilters((previousFilters) => [...previousFilters, filter]);
-  }, []);
+  const addFilter = useCallback<NonNullable<FiltersContextType["addFilter"]>>(
+    (filter: FiltersType) => {
+      setFilters((previousFilters) => [...previousFilters, filter]);
+    },
+    []
+  );
 
   return (
     <FiltersContext.Provider value={{ filters, addFilter, removeFilter }}>

@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { StyledFilterSectionLayout } from "./styles";
 import { useFiltersContext } from "src/contexts/filtersContext";
 import { Chip } from "@nextui-org/react";
-import { FiltersType } from "src/data/filters";
+import { FiltersType } from "src/data/filters.types";
 
 export const FilterSection = () => {
   const { filters, removeFilter } = useFiltersContext();
