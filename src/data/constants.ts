@@ -89,7 +89,7 @@ export const dendrogramParameters = {
     zoomEndTransitionDuration: 500,
   },
   labels: {
-    fontSize: 20,
+    fontSizeRatio: 3, // Fontsize is a function of node radius (to make it constant on zoom)
     fontColor: "#2d544a",
   },
 };

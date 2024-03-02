@@ -8,23 +8,23 @@ const addLabel = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   node: any
 ): void => {
+  const fontSize =
+    dendrogramParameters.labels.fontSizeRatio *
+    +d3.select(element).select(`.${dendrogramClassNames.markerNode}`).attr("r");
+
+  console.log(fontSize);
+
   const label = d3
     .select(element)
     .append("g")
     .attr("class", dendrogramClassNames.markerLabel)
-    .attr(
-      "transform",
-      `translate(0,-${
-        dendrogramParameters.nodeParameters.radius +
-        0.5 * dendrogramParameters.labels.fontSize
-      })`
-    );
+    .attr("transform", `translate(0,-${fontSize})`);
   const labelText = label
     .append("text")
     .text(node.name || node.data[0] || "")
     .attr("class", dendrogramClassNames.markerLabel)
     .attr("fill", dendrogramParameters.labels.fontColor)
-    .attr("font-size", `${dendrogramParameters.labels.fontSize}px`)
+    .attr("font-size", `${fontSize}px`)
     .attr("text-anchor", "middle");
 
   const labelWidth = labelText.node()?.getBBox().width || 0;
@@ -35,10 +35,7 @@ const addLabel = (
     .attr("height", labelHeight)
     .attr(
       "transform",
-      `translate(${-labelWidth / 2}, ${-(
-        labelHeight -
-        0.2 * dendrogramParameters.labels.fontSize
-      )})`
+      `translate(${-labelWidth / 2}, ${-(labelHeight - 0.2 * fontSize)})`
     )
     .style("fill", "white")
     .style("opacity", "0.9");
