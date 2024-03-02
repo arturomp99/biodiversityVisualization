@@ -51,7 +51,8 @@ const expandTransition = (
     TreeNode<TreeDataType>,
     SVGSVGElement,
     unknown
-  >
+  >,
+  expandedParameters?: { radius?: string; strokeWidth?: string }
 ) => {
   const transition = selection
     .filter((dataPoint) => dataPoint.action === "expand")
@@ -68,13 +69,9 @@ const expandTransition = (
     .selectChild<SVGSVGElement, TreeNode<TreeDataType>>(
       `.${dendrogramClassNames.markerNode}`
     )
-    .attr("r", (dataPoint) =>
-      dataPoint.parentNode
-        ? d3
-            .select(dataPoint.parentNode)
-            .selectChild(`.${dendrogramClassNames.markerNode}`)
-            .attr("r")
-        : dendrogramParameters.nodeParameters.radius
+    .attr(
+      "r",
+      expandedParameters?.radius || dendrogramParameters.nodeParameters.radius
     );
 
   transition
@@ -89,6 +86,13 @@ const expandTransition = (
           x: dataPoint.parent.x - dataPoint.x,
           y: dataPoint.parent.y - dataPoint.y,
         }
+      );
+    })
+    .on("start", function () {
+      d3.select(this).attr(
+        "stroke-width",
+        expandedParameters?.strokeWidth ||
+          dendrogramParameters.linkParameters.strokeWidth
       );
     });
 
@@ -165,7 +169,7 @@ export const makeNodesCollapsible = (parentRef: SVGSVGElement) => {
     .selectAll<SVGSVGElement, TreeNode<TreeDataType>>(
       `.${dendrogramClassNames.markerNode}`
     )
-    .on("click", (_, dataPoint) => {
+    .on("click", function (_, dataPoint) {
       if (!dataPoint.children) {
         console.log("CLICKED A LEAF"); // TODO: TRIGGER AN ACTION
         return;
@@ -178,6 +182,12 @@ export const makeNodesCollapsible = (parentRef: SVGSVGElement) => {
       }
       dataPoint.expanded = true;
       expandNode(dataPoint);
-      expandTransition(dendrogramMarkers);
+      expandTransition(dendrogramMarkers, {
+        radius: d3.select(this).attr("r"),
+        strokeWidth: d3
+          .select(this.parentElement)
+          .selectChild(`.${dendrogramClassNames.markerLink}`)
+          .attr("stroke-width"),
+      });
     });
 };

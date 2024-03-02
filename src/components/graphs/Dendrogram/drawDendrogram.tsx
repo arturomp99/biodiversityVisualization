@@ -95,7 +95,7 @@ export const drawDendrogram = (
     })
     .attr("fill", "none")
     .attr("stroke", "black")
-    .attr("stroke-width", "1px");
+    .attr("stroke-width", dendrogramParameters.linkParameters.strokeWidth);
 
   const markersCircles = dendrogramMarkersEnter
     .selectAll<SVGSVGElement, TreeNode<TreeDataType>>(
