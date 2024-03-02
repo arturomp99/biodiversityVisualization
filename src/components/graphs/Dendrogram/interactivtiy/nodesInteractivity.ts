@@ -65,8 +65,17 @@ const expandTransition = (
     );
 
   transition
-    .selectChild(`.${dendrogramClassNames.markerNode}`)
-    .attr("r", dendrogramParameters.nodeParameters.radius);
+    .selectChild<SVGSVGElement, TreeNode<TreeDataType>>(
+      `.${dendrogramClassNames.markerNode}`
+    )
+    .attr("r", (dataPoint) =>
+      dataPoint.parentNode
+        ? d3
+            .select(dataPoint.parentNode)
+            .selectChild(`.${dendrogramClassNames.markerNode}`)
+            .attr("r")
+        : dendrogramParameters.nodeParameters.radius
+    );
 
   transition
     .selectChild<SVGSVGElement, TreeNode<TreeDataType>>(
