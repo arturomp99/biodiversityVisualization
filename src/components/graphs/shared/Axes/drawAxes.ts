@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import {
+  barChartParameters,
   graphMargin,
   lineChartParameters,
   resizeTransitionDuration,
@@ -14,7 +15,8 @@ type AxisScaleTypes =
 
 type AxesParametersTypes =
   | typeof lineChartParameters.axesParameters
-  | typeof timeLineParameters.axesParameters;
+  | typeof timeLineParameters.axesParameters
+  | typeof barChartParameters.axesParameters;
 
 export function createAxes(
   parentRef: SVGSVGElement,

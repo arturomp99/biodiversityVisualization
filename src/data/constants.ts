@@ -108,3 +108,24 @@ export const mapChartParameters = {
 export const catalogParameters = {
   animalsPerPage: 10,
 };
+
+export const barChartParameters = {
+  barWidth: 36,
+  barsGap: 12,
+  axesParameters: {
+    ticks: {
+      x: 4,
+      y: undefined,
+    },
+    labels: {
+      x: "Count",
+      y: "Classification",
+    },
+    grid: false,
+    title: {
+      anchor: { hAxis: "end", vAxis: "middle" },
+      fontColor: "black",
+      fontSize: "1rem",
+    },
+  },
+};

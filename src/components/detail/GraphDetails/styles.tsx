@@ -8,3 +8,5 @@ export const StyledGraphDetails = styled.div<{ graphName: string }>`
     return css``;
   }};
 `;
+
+export const StyledDetailChart = styled.div``;

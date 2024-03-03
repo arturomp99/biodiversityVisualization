@@ -1,9 +1,9 @@
 import React from "react";
-import { Spinner } from "@nextui-org/react";
 import { StyledGraphCard, StyledGraphTitle } from "./styles";
 import { useObserveResize } from "../../hooks/useObserveResize";
 import { useGetGraph } from "../../hooks/useGetGraph";
 import { ConditionalLink } from "../../ConditionalLink";
+import { renderGraph } from "src/components/graphs/shared/utils/renderGraph";
 
 export const Graph = (props: {
   graphName: string;
@@ -15,14 +15,7 @@ export const Graph = (props: {
 
   const { containerRef: resizeContainerRef, dimensions } = useObserveResize();
 
-  const renderGraph = () => {
-    if (!dimensions) {
-      return <Spinner />;
-    }
-
-    const graphProps = { dimensions };
-    return useGetGraph(graphName, graphProps);
-  };
+  const graphProps = { dimensions: dimensions ?? [0, 0] };
 
   return (
     <StyledGraphCard $noBorder={expanded} $hasTitle={!!title}>
@@ -31,7 +24,9 @@ export const Graph = (props: {
           <StyledGraphTitle>{title}</StyledGraphTitle>
         </ConditionalLink>
       )}
-      <div ref={resizeContainerRef}>{renderGraph()}</div>
+      <div ref={resizeContainerRef}>
+        {renderGraph(useGetGraph(graphName, graphProps), dimensions)}
+      </div>
     </StyledGraphCard>
   );
 };
