@@ -10,17 +10,13 @@ import { drawBars } from "./drawBars";
 
 export const BarChart: FC<BarChartProps> = ({
   dimensions: [width], // We calculate height from the amount of rows
-  isBasicInteractive,
   data,
 }) => {
-  console.log(width, isBasicInteractive);
   const node = createRef<SVGSVGElement>();
   const scalingRef = useRef(getBarChartScales(data));
 
   const [realWidth] = getDimensionsWithoutMargin([width, 0]);
   const { realHeight, totalHeight } = getBarChartHeight(data.length);
-
-  console.log("WIDTH", width);
 
   useEffect(() => {
     if (!data || !node.current) {
