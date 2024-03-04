@@ -6,7 +6,7 @@ import {
   LineChartDetails,
 } from "src/components/detail/GraphDetails";
 
-export const useGetGraphDetails = (graphName: string | undefined) => {
+export const getGraphDetails = (graphName: string | undefined) => {
   return (
     (graphName === "Dendrogram" && <DendrogramDetails />) ||
     (graphName === "Timeline" && <TimeLineDetails />) ||
