@@ -4,7 +4,7 @@ import { dendrogramIdNames } from "src/data/idClassNames";
 import { drawDendrogram, scaleData } from "./drawDendrogram";
 import { addZoom } from "../shared/Interactivity/zoom/zoom";
 import { GraphProps } from "../graphs.types";
-import { dendrogramParameters } from "src/data/constants";
+import { dendrogramParameters, resizeTimeout } from "src/data/constants";
 import { useDataContext } from "src/contexts/dataContext";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
 import { makeNodesCollapsible } from "./interactivtiy/nodesInteractivity";
@@ -36,7 +36,7 @@ export const Dendrogram: FC<GraphProps> = ({
     const timeoutId = setTimeout(() => {
       if (loading || !realDimensions || !node.current) return;
       // TODO: TRANSLATE DENDROGRAM
-    }, 1000);
+    }, resizeTimeout);
 
     return () => {
       clearTimeout(timeoutId);

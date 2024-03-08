@@ -1,4 +1,4 @@
-export const cardResizeTimeout = 1000;
+export const resizeTimeout = 10;
 
 export const resizeTransitionDuration = 2000;
 
@@ -107,4 +107,28 @@ export const mapChartParameters = {
 
 export const catalogParameters = {
   animalsPerPage: 10,
+};
+
+export const barChartParameters = {
+  barWidth: 36,
+  barsGap: 12,
+  axesParameters: {
+    ticks: {
+      x: 4,
+      y: undefined,
+    },
+    labels: {
+      x: "Count",
+      y: "Classification",
+    },
+    grid: false,
+    title: {
+      anchor: { hAxis: "end", vAxis: "middle" },
+      fontColor: "black",
+      fontSize: "1rem",
+    },
+  },
+  bars: {
+    inactiveColor: "#6c7a89",
+  },
 };
