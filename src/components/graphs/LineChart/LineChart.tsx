@@ -4,7 +4,11 @@ import { StyledLineChartContainer, StyledContainer } from "./styles";
 import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { getLineChartScales } from "./getLineChartScales";
 import { drawLines } from "./drawLines";
-import { lineChartParameters, resizeTimeout } from "../../../data/constants";
+import {
+  graphMargin,
+  lineChartParameters,
+  resizeTimeout,
+} from "../../../data/constants";
 import { SoundChartDataType } from "./lineChart.types";
 import { useDataContext } from "src/contexts/dataContext";
 import { GraphProps } from "../graphs.types";
@@ -17,6 +21,8 @@ import {
   lineChartLegendMouseOut,
 } from "./interactivity/lineChartLegendInteractivity";
 import { getUniqueIds } from "src/utils/getUniqueIds";
+import { lineChartClassNames } from "src/data/idClassNames";
+import { useLineChartBrushInteractivity } from "./interactivity/useLineChartBrushInteractivity";
 
 export const LineChart: FC<GraphProps> = ({
   dimensions,
@@ -25,6 +31,8 @@ export const LineChart: FC<GraphProps> = ({
   const {
     lineChartData: { data, loading },
   } = useDataContext();
+  const { brushExtent, lineChartBrushInteractivity } =
+    useLineChartBrushInteractivity();
   const node = createRef<SVGSVGElement>();
   const scales = useRef(getLineChartScales(data));
 
@@ -60,7 +68,19 @@ export const LineChart: FC<GraphProps> = ({
       if (loading || !data || !node.current) {
         return;
       }
-      scales.current = getLineChartScales(data, realDimensions);
+      if (!scales.current) return;
+      scales.current = getLineChartScales(data, realDimensions, {
+        x: brushExtent
+          ? [
+              scales.current[0]
+                .invert(brushExtent[0] - graphMargin.left)
+                .getTime(),
+              scales.current[0]
+                .invert(brushExtent[1] - graphMargin.left)
+                .getTime(),
+            ]
+          : undefined,
+      });
       if (!scales.current) return;
 
       const [xScale, yScale, colorScale] = scales.current;
@@ -72,46 +92,59 @@ export const LineChart: FC<GraphProps> = ({
         lineChartParameters.axesParameters
       );
 
-      const scaledData = data.map((dataPoint) => {
-        return {
-          key: dataPoint.timeStamp,
-          scaledX: xScale(dataPoint.timeStamp),
-          scaledY: yScale(dataPoint.soundMax),
-          id: dataPoint.sensorID,
-        };
-      });
+      const scaledData = data
+        .map((dataPoint) => {
+          return {
+            key: dataPoint.timeStamp,
+            scaledX: xScale(dataPoint.timeStamp),
+            scaledY: yScale(dataPoint.soundMax),
+            id: dataPoint.sensorID,
+          };
+        })
+        .filter(
+          (dataPoint) =>
+            dataPoint.scaledX > 0 && dataPoint.scaledX < realDimensions[0]
+        );
       drawLines(node.current, scaledData, colorScale);
-      addBrush(node.current);
+      if (isBasicInteractive) {
+        addBrush(
+          node.current,
+          `.${lineChartClassNames.linesGroup}`,
+          lineChartBrushInteractivity
+        );
+      }
     }, resizeTimeout);
 
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [realDimensions]);
-
-  if (loading) {
-    return <div>LOADING LINE CHART DATA...</div>;
-  }
+  }, [realDimensions, brushExtent]);
 
   return (
     <StyledContainer>
-      <StyledLineChartContainer ref={node} id="lineChart" />
-      {lineChartParameters.legend.isPresent && !!data && scales.current && (
-        <Legend
-          keys={getUniqueIds(
-            data.map((dataPoint) => ({ id: dataPoint.sensorID }))
+      {loading ? (
+        <div>LOADING LINE CHART DATA...</div>
+      ) : (
+        <>
+          <StyledLineChartContainer ref={node} id="lineChart" />
+          {lineChartParameters.legend.isPresent && !!data && scales.current && (
+            <Legend
+              keys={getUniqueIds(
+                data.map((dataPoint) => ({ id: dataPoint.sensorID }))
+              )}
+              colorScale={scales.current[2]}
+              interactivity={
+                isBasicInteractive
+                  ? {
+                      clickHandler: lineChartLegendClick,
+                      mouseOverHandler: lineChartLegendMouseOver,
+                      mouseOutHandler: lineChartLegendMouseOut,
+                    }
+                  : undefined
+              }
+            />
           )}
-          colorScale={scales.current[2]}
-          interactivity={
-            isBasicInteractive
-              ? {
-                  clickHandler: lineChartLegendClick,
-                  mouseOverHandler: lineChartLegendMouseOver,
-                  mouseOutHandler: lineChartLegendMouseOut,
-                }
-              : undefined
-          }
-        />
+        </>
       )}
     </StyledContainer>
   );
