@@ -4,7 +4,8 @@ import { lineChartParameters } from "src/data/constants";
 
 export const getLineChartScales = (
   data: SoundChartDataType[] | undefined,
-  dimensions?: [number, number]
+  dimensions?: [number, number],
+  extent?: { x?: [number, number]; y?: [number, number] }
 ):
   | [
       d3.ScaleTime<number, number, never>,
@@ -16,19 +17,22 @@ export const getLineChartScales = (
     return;
   }
 
-  const xExtent = d3.extent(data, (dataInstance) => dataInstance.timeStamp) as [
-    number,
-    number
-  ];
-  const yExtent = lineChartParameters.startAtZero
-    ? ([0, d3.max(data, (dataInstance) => dataInstance.soundMax)] as [
-        number,
-        number
-      ])
-    : (d3.extent(data, (dataInstance) => dataInstance.soundMax) as [
-        number,
-        number
-      ]);
+  const xExtent =
+    extent?.x ??
+    (d3.extent(data, (dataInstance) => dataInstance.timeStamp) as [
+      number,
+      number
+    ]);
+  const yExtent =
+    extent?.y ?? lineChartParameters.startAtZero
+      ? ([0, d3.max(data, (dataInstance) => dataInstance.soundMax)] as [
+          number,
+          number
+        ])
+      : (d3.extent(data, (dataInstance) => dataInstance.soundMax) as [
+          number,
+          number
+        ]);
   const xScale = d3.scaleTime().domain(xExtent);
   const yScale = d3.scaleLinear().domain(yExtent.reverse());
 
