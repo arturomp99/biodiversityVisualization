@@ -18,21 +18,35 @@ export const drawLines = (
 
   const groupedData = d3.groups(data, (dataLine) => dataLine.id);
 
-  d3.select(parentRef)
+  const lineMarkersGroup = d3
+    .select(parentRef)
     .selectAll(`.${lineChartClassNames.linesGroup}`)
-    .data([null])
+    .data([groupedData]);
+  lineMarkersGroup
     .enter()
     .append("g")
-    .attr("class", `${lineChartClassNames.linesGroup}`)
-    .selectAll(`.${lineChartClassNames.line}`)
-    .data(groupedData)
-    .join("path")
+    .attr("class", `${lineChartClassNames.linesGroup}`);
+
+  const lineMarkers = lineMarkersGroup
+    .selectAll<SVGPathElement, [string, LineChartDataType[]]>(
+      `.${lineChartClassNames.line}`
+    )
+    .data(
+      (data) => data,
+      (data) => data[0]
+    );
+  const lineMarkersEnter = lineMarkers
+    .enter()
+    .append("path")
     .attr("d", (dataLine) => line(dataLine[1]))
-    .attr("class", `${lineChartClassNames.line}`)
+    .attr("class", lineChartClassNames.line)
     .attr("fill", "none")
     .attr("stroke", (dataLine) => colors(dataLine[0]))
     .attr("stroke-width", lineChartParameters.lines.strokeWidth)
     .attr("transform", `translate(${graphMargin.left},${graphMargin.top})`);
-
+  const lineMarkersUpdate = lineMarkers.attr("d", (dataLine) =>
+    line(dataLine[1])
+  );
+  lineMarkersEnter.merge(lineMarkersUpdate);
   raiseGrid();
 };

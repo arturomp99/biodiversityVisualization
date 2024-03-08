@@ -43,7 +43,7 @@ export const StackedBarChart: FC<StackedBarChartProps> = ({
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (!data || !node.current || !scalingRef.current?.scales) {
+      if (!data || !node.current) {
         return;
       }
       // So that it only happens after a time delay

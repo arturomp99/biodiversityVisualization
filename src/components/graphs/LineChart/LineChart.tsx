@@ -57,9 +57,12 @@ export const LineChart: FC<GraphProps> = ({
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (loading || !data || !node.current || !scales.current) {
+      if (loading || !data || !node.current) {
         return;
       }
+      scales.current = getLineChartScales(data, realDimensions);
+      if (!scales.current) return;
+
       const [xScale, yScale, colorScale] = scales.current;
       // So that it only happens after a time delay
       giveSizeToAxes(
