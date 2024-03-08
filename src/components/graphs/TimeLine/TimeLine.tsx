@@ -2,7 +2,7 @@ import React, { createRef, useEffect, FC, useRef } from "react";
 import { StyledTimeLineContainer } from "./styles";
 import { getTimeLineScales } from "./getTimeLineScales";
 import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
-import { timeLineParameters } from "src/data/constants";
+import { resizeTimeout, timeLineParameters } from "src/data/constants";
 import { drawMarkers } from "./drawMarkers";
 import { useDataContext } from "src/contexts/dataContext";
 import { GraphProps } from "../graphs.types";
@@ -56,7 +56,7 @@ export const TimeLine: FC<GraphProps> = ({ dimensions }) => {
       }
       const [, graphHeight] = realDimensions;
       drawMarkers(node.current, scaledData, graphHeight);
-    }, 1000);
+    }, resizeTimeout);
 
     return () => {
       clearTimeout(timeoutId);

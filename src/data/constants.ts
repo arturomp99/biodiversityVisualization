@@ -1,4 +1,4 @@
-export const cardResizeTimeout = 1000;
+export const resizeTimeout = 10;
 
 export const resizeTransitionDuration = 2000;
 
@@ -127,5 +127,8 @@ export const barChartParameters = {
       fontColor: "black",
       fontSize: "1rem",
     },
+  },
+  bars: {
+    inactiveColor: "#6c7a89",
   },
 };

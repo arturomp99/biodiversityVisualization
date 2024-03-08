@@ -4,7 +4,7 @@ import { StyledLineChartContainer, StyledContainer } from "./styles";
 import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { getLineChartScales } from "./getLineChartScales";
 import { drawLines } from "./drawLines";
-import { lineChartParameters } from "../../../data/constants";
+import { lineChartParameters, resizeTimeout } from "../../../data/constants";
 import { SoundChartDataType } from "./lineChart.types";
 import { useDataContext } from "src/contexts/dataContext";
 import { GraphProps } from "../graphs.types";
@@ -79,7 +79,7 @@ export const LineChart: FC<GraphProps> = ({
       });
       drawLines(node.current, scaledData, colorScale);
       addBrush(node.current);
-    }, 1000);
+    }, resizeTimeout);
 
     return () => {
       clearTimeout(timeoutId);

@@ -28,6 +28,11 @@ export const lineChartClassNames = {
   line: "dataLine",
 };
 
+export const stackedBarChartClassNames = {
+  bar: "bar",
+  stackedBar: "stackedBar",
+};
+
 export const axes = {
   class: "axis",
   id: {

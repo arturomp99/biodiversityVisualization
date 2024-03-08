@@ -3,7 +3,6 @@ import {
   barChartParameters,
   graphMargin,
   lineChartParameters,
-  resizeTransitionDuration,
   timeLineParameters,
 } from "../../../../data/constants";
 import { axes } from "src/data/idClassNames";
@@ -118,40 +117,24 @@ export const giveSizeToAxes = (
   }
 
   const parent = d3.select(parentRef);
-  parent
-    .select<SVGSVGElement>("#hAxis")
-    .transition()
-    .duration(resizeTransitionDuration)
-    .call(xAxis);
-  parent
-    .select<SVGSVGElement>("#vAxis")
-    .transition()
-    .duration(resizeTransitionDuration)
-    .call(yAxis);
+  parent.select<SVGSVGElement>("#hAxis").call(xAxis);
+  parent.select<SVGSVGElement>("#vAxis").call(yAxis);
 
   parent
     .selectAll("#hAxis")
-    .transition()
-    .duration(resizeTransitionDuration)
     .attr(
       "transform",
       `translate(${graphMargin.left},${height + graphMargin.top})`
     );
   parent
     .selectAll("#vAxis")
-    .transition()
-    .duration(resizeTransitionDuration)
     .attr("transform", `translate(${graphMargin.left},${graphMargin.top})`);
   parent
     .selectAll("#xAxisTitle")
-    .transition()
-    .duration(resizeTransitionDuration)
     .attr("x", width - graphMargin.right)
     .attr("y", graphMargin.bottom / 2);
   parent
     .selectAll("#yAxisTitle")
-    .transition()
-    .duration(resizeTransitionDuration)
     .attr("x", -height / 2)
     .attr("y", -graphMargin.left / 2);
 };

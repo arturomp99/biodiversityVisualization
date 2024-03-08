@@ -4,7 +4,7 @@ import { drawMapMarkers, drawMap } from "./drawMap";
 import { StyledMapContainer } from "./styles";
 import { mapIdNames } from "src/data/idClassNames";
 import { addZoom } from "../shared/Interactivity/zoom/zoom";
-import { mapChartParameters } from "src/data/constants";
+import { mapChartParameters, resizeTimeout } from "src/data/constants";
 import { useDataContext } from "src/contexts/dataContext";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
 import { createMapTooltip } from "./interactivity/createMapTooltip";
@@ -44,7 +44,7 @@ export const Map: FC<GraphProps> = ({ isBasicInteractive, dimensions }) => {
     const timeoutId = setTimeout(() => {
       if (map.loading || !realDimensions || !node.current) return;
       // TODO: TRANSLATE MAP
-    }, 1000);
+    }, resizeTimeout);
 
     return () => {
       clearTimeout(timeoutId);
