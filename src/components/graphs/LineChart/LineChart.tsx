@@ -27,6 +27,7 @@ export const LineChart: FC<LineChartProps> = ({
   dimensions,
   isBasicInteractive,
   data,
+  isBrushInteractive,
 }) => {
   const { brushExtent, lineChartBrushInteractivity } =
     useLineChartBrushInteractivity();
@@ -67,16 +68,17 @@ export const LineChart: FC<LineChartProps> = ({
       }
       if (!scales.current) return;
       scales.current = getLineChartScales(data, realDimensions, {
-        x: brushExtent
-          ? [
-              scales.current[0]
-                .invert(brushExtent[0] - graphMargin.left)
-                .getTime(),
-              scales.current[0]
-                .invert(brushExtent[1] - graphMargin.left)
-                .getTime(),
-            ]
-          : undefined,
+        x:
+          brushExtent && isBrushInteractive
+            ? [
+                scales.current[0]
+                  .invert(brushExtent[0] - graphMargin.left)
+                  .getTime(),
+                scales.current[0]
+                  .invert(brushExtent[1] - graphMargin.left)
+                  .getTime(),
+              ]
+            : undefined,
       });
       if (!scales.current) return;
 
@@ -103,7 +105,7 @@ export const LineChart: FC<LineChartProps> = ({
             dataPoint.scaledX > 0 && dataPoint.scaledX < realDimensions[0]
         );
       drawLines(node.current, scaledData, colorScale);
-      if (isBasicInteractive) {
+      if (isBrushInteractive) {
         addBrush(
           node.current,
           `.${lineChartClassNames.linesGroup}`,

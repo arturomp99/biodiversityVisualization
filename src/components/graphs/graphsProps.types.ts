@@ -7,10 +7,12 @@ import {
 export interface GraphProps {
   dimensions: [number, number];
   isBasicInteractive?: boolean;
+  isFullInteractive?: boolean;
 }
 
 export type LineChartProps = GraphProps & {
   data: LineChartDataType[];
+  isBrushInteractive?: boolean;
 };
 
 export type BarChartProps = GraphProps & {

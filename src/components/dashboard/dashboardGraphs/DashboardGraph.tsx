@@ -12,7 +12,7 @@ export const DashboardGraph: FC<DashboardGraphProps> = ({
   graphName,
   graphProps,
 }) => {
-  const { dimensions } = graphProps;
+  const { dimensions, isFullInteractive } = graphProps;
   return (
     (graphName === "Dendrogram" && (
       <Dendrogram isBasicInteractive dimensions={dimensions} />
@@ -22,7 +22,11 @@ export const DashboardGraph: FC<DashboardGraphProps> = ({
       <Map isBasicInteractive dimensions={dimensions} />
     )) ||
     (graphName === "LineChart" && (
-      <SoundChart isBasicInteractive dimensions={dimensions} />
+      <SoundChart
+        isBasicInteractive
+        isFullInteractive={isFullInteractive}
+        dimensions={dimensions}
+      />
     )) || <div>GRAPH NOT FOUND</div>
   );
 };
