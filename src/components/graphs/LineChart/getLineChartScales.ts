@@ -1,9 +1,9 @@
 import * as d3 from "d3";
-import { SoundChartDataType } from "./lineChart.types";
 import { lineChartParameters } from "src/data/constants";
+import { LineChartDataType } from "../graphsData.types";
 
 export const getLineChartScales = (
-  data: SoundChartDataType[] | undefined,
+  data: LineChartDataType[] | undefined,
   dimensions?: [number, number],
   extent?: { x?: [number, number]; y?: [number, number] }
 ):
@@ -25,11 +25,11 @@ export const getLineChartScales = (
     ]);
   const yExtent =
     extent?.y ?? lineChartParameters.startAtZero
-      ? ([0, d3.max(data, (dataInstance) => dataInstance.soundMax)] as [
+      ? ([0, d3.max(data, (dataInstance) => dataInstance.value)] as [
           number,
           number
         ])
-      : (d3.extent(data, (dataInstance) => dataInstance.soundMax) as [
+      : (d3.extent(data, (dataInstance) => dataInstance.value) as [
           number,
           number
         ]);
@@ -42,7 +42,7 @@ export const getLineChartScales = (
     yScale.range([0, height]);
   }
 
-  const groupedData = d3.groups(data, (dataLine) => dataLine.sensorID);
+  const groupedData = d3.groups(data, (dataLine) => dataLine.group);
   const sensorValues = groupedData.map((dataPoint) => dataPoint[0]);
   const colorScale = d3
     .scaleOrdinal<string>()

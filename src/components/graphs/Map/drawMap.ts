@@ -1,7 +1,7 @@
 import * as d3 from "d3";
-import { MapChartDataType } from "./map.types";
 import { mapClassNames } from "src/data/idClassNames";
 import { mapChartParameters } from "src/data/constants";
+import { MapChartDataType } from "../graphsData.types";
 
 const getGenerator = (
   data: d3.ExtendedFeatureCollection,

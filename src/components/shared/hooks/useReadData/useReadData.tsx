@@ -1,27 +1,29 @@
 import { ExtendedFeatureCollection, group } from "d3";
-import { SoundChartDataType } from "src/components/graphs/LineChart/lineChart.types";
 import { SoundHeaders } from "src/data/sampleData/sampleData.types";
-import { TemporalDataType } from "src/components/graphs/TimeLine/timeLine.types";
 import {
   CleanDataFileHeaders,
   DataType,
   SensorsFileHeaders,
 } from "src/data/data.types";
-import { MapChartDataType } from "src/components/graphs/Map/map.types";
 import { useGetFiltersData } from "../useGetFiltersData/useGetFiltersData";
 import { useFetchJSON } from "./useFetchJson";
 import { useFetchDSV } from "./useFetchDSV";
 import { useApplyFilters } from "../useApplyFilters/useApplyFilters";
+import {
+  LineChartDataType,
+  MapChartDataType,
+  TimelineChartDataType,
+} from "src/components/graphs/graphsData.types";
 
 const useReadLineChartData = () => {
   const { dataRef, data, loading, setData } = useFetchDSV<
-    SoundChartDataType,
+    LineChartDataType,
     SoundHeaders
   >(",", "/sampleData/testBioacustic.csv", (soundData) => {
     return {
       timeStamp: Number(soundData.timeStamp),
-      soundMax: Number(soundData.soundMax),
-      sensorID: soundData.sensorID,
+      value: Number(soundData.soundMax),
+      group: soundData.sensorID,
     };
   });
 
@@ -56,9 +58,9 @@ const useReadSensorsData = () => {
 };
 
 const useReadTimeLineData = () => {
-  const { dataRef, data, setData, loading } = useFetchJSON<TemporalDataType[]>(
-    "/sampleData/sampleTimelineData.json"
-  );
+  const { dataRef, data, setData, loading } = useFetchJSON<
+    TimelineChartDataType[]
+  >("/sampleData/sampleTimelineData.json");
 
   useApplyFilters(dataRef.current, setData);
   return { data, loading, readData: dataRef.current };

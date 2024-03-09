@@ -5,7 +5,7 @@ import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { resizeTimeout, timeLineParameters } from "src/data/constants";
 import { drawMarkers } from "./drawMarkers";
 import { useDataContext } from "src/contexts/dataContext";
-import { GraphProps } from "../graphs.types";
+import { GraphProps } from "../graphsProps.types";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
 
 export const TimeLine: FC<GraphProps> = ({ dimensions }) => {

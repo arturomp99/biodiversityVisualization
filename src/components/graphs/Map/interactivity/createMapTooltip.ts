@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { mapClassNames, tooltipInteractiveClass } from "src/data/idClassNames";
 import tippy from "tippy.js";
-import { MapChartDataType } from "../map.types";
+import { MapChartDataType } from "../../graphsData.types";
 
 export const getTooltipContent = (data: MapChartDataType) => {
   return `<p>sensor ${data.sensorId || ""}

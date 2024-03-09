@@ -5,7 +5,7 @@ import {
   asyncGetTaxonomicFiltersData,
 } from "./asyncGetTaxonomicFiltersData";
 import { asyncGetTimeFiltersData } from "./asyncGetTimeFiltersData";
-import { SoundChartDataType } from "src/components/graphs/LineChart/lineChart.types";
+import { LineChartDataType } from "src/components/graphs";
 
 export const useGetFiltersData = <
   DataT extends {
@@ -13,7 +13,7 @@ export const useGetFiltersData = <
     loading: boolean;
   },
   TemporalDataT extends {
-    readData?: SoundChartDataType[];
+    readData?: LineChartDataType[];
     loading: boolean;
   }
 >(

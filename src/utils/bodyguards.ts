@@ -1,4 +1,4 @@
-import { TemporalDataType } from "src/components/graphs/TimeLine/timeLine.types";
+import { TimelineChartDataType } from "src/components/graphs";
 import { DataType } from "src/data/data.types";
 
 export const isTaxonomicDataType = (array: unknown[]): array is DataType[] => {
@@ -11,7 +11,7 @@ export const isTaxonomicDataType = (array: unknown[]): array is DataType[] => {
 
 export const isTemporalDataType = (
   array: unknown[]
-): array is TemporalDataType[] => {
+): array is TimelineChartDataType[] => {
   return (
     typeof array[0] === "object" && array[0] !== null && "timestamp" in array[0]
   );

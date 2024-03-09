@@ -9,9 +9,7 @@ import {
   lineChartParameters,
   resizeTimeout,
 } from "../../../data/constants";
-import { SoundChartDataType } from "./lineChart.types";
-import { useDataContext } from "src/contexts/dataContext";
-import { GraphProps } from "../graphs.types";
+import { LineChartProps } from "../graphsProps.types";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
 import { addBrush } from "../shared/Interactivity/brush";
 import { Legend } from "../shared/Legend/Legend";
@@ -23,14 +21,13 @@ import {
 import { getUniqueIds } from "src/utils/getUniqueIds";
 import { lineChartClassNames } from "src/data/idClassNames";
 import { useLineChartBrushInteractivity } from "./interactivity/useLineChartBrushInteractivity";
+import { LineChartDataType } from "../graphsData.types";
 
-export const LineChart: FC<GraphProps> = ({
+export const LineChart: FC<LineChartProps> = ({
   dimensions,
   isBasicInteractive,
+  data,
 }) => {
-  const {
-    lineChartData: { data, loading },
-  } = useDataContext();
   const { brushExtent, lineChartBrushInteractivity } =
     useLineChartBrushInteractivity();
   const node = createRef<SVGSVGElement>();
@@ -45,12 +42,12 @@ export const LineChart: FC<GraphProps> = ({
     scales.current = getLineChartScales(data, realDimensions);
     if (!scales.current) return;
     const [xScale, yScale, colorScale] = scales.current;
-    const scaledData = data.map((dataPoint: SoundChartDataType) => {
+    const scaledData = data.map((dataPoint: LineChartDataType) => {
       return {
         key: dataPoint.timeStamp,
         scaledX: xScale(dataPoint.timeStamp),
-        scaledY: yScale(dataPoint.soundMax),
-        id: dataPoint.sensorID,
+        scaledY: yScale(dataPoint.value),
+        id: dataPoint.group,
       };
     });
     createAxes(
@@ -65,7 +62,7 @@ export const LineChart: FC<GraphProps> = ({
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (loading || !data || !node.current) {
+      if (!data || !node.current) {
         return;
       }
       if (!scales.current) return;
@@ -97,8 +94,8 @@ export const LineChart: FC<GraphProps> = ({
           return {
             key: dataPoint.timeStamp,
             scaledX: xScale(dataPoint.timeStamp),
-            scaledY: yScale(dataPoint.soundMax),
-            id: dataPoint.sensorID,
+            scaledY: yScale(dataPoint.value),
+            id: dataPoint.group,
           };
         })
         .filter(
@@ -122,29 +119,23 @@ export const LineChart: FC<GraphProps> = ({
 
   return (
     <StyledContainer>
-      {loading ? (
-        <div>LOADING LINE CHART DATA...</div>
-      ) : (
-        <>
-          <StyledLineChartContainer ref={node} id="lineChart" />
-          {lineChartParameters.legend.isPresent && !!data && scales.current && (
-            <Legend
-              keys={getUniqueIds(
-                data.map((dataPoint) => ({ id: dataPoint.sensorID }))
-              )}
-              colorScale={scales.current[2]}
-              interactivity={
-                isBasicInteractive
-                  ? {
-                      clickHandler: lineChartLegendClick,
-                      mouseOverHandler: lineChartLegendMouseOver,
-                      mouseOutHandler: lineChartLegendMouseOut,
-                    }
-                  : undefined
-              }
-            />
+      <StyledLineChartContainer ref={node} id="lineChart" />
+      {lineChartParameters.legend.isPresent && !!data && scales.current && (
+        <Legend
+          keys={getUniqueIds(
+            data.map((dataPoint) => ({ id: dataPoint.group }))
           )}
-        </>
+          colorScale={scales.current[2]}
+          interactivity={
+            isBasicInteractive
+              ? {
+                  clickHandler: lineChartLegendClick,
+                  mouseOverHandler: lineChartLegendMouseOver,
+                  mouseOutHandler: lineChartLegendMouseOut,
+                }
+              : undefined
+          }
+        />
       )}
     </StyledContainer>
   );

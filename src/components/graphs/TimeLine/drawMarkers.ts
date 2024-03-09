@@ -1,10 +1,10 @@
 import * as d3 from "d3";
-import { TimeLineChartDataType } from "./timeLine.types";
 import { graphMargin } from "../../../data/constants";
+import { TimelineChartPointType } from "..";
 
 export const drawMarkers = (
   parentRef: SVGSVGElement | null,
-  data: TimeLineChartDataType[],
+  data: TimelineChartPointType[],
   totalHeight: number
 ) => {
   d3.select(parentRef)

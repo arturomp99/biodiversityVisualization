@@ -1,7 +1,7 @@
 import React from "react";
 import { StyledGraphCard, StyledGraphTitle } from "./styles";
 import { useObserveResize } from "../../hooks/useObserveResize";
-import { getGraph } from "../../getGraph";
+import { DashboardGraph } from "../../../dashboard/dashboardGraphs/DashboardGraph";
 import { ConditionalLink } from "../../ConditionalLink";
 import { renderGraph } from "src/components/graphs/shared/utils/renderGraph";
 
@@ -25,7 +25,10 @@ export const Graph = (props: {
         </ConditionalLink>
       )}
       <div ref={resizeContainerRef}>
-        {renderGraph(getGraph(graphName, graphProps), dimensions)}
+        {renderGraph(
+          <DashboardGraph graphName={graphName} graphProps={graphProps} />,
+          dimensions
+        )}
       </div>
     </StyledGraphCard>
   );

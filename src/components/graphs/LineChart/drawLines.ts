@@ -1,16 +1,16 @@
 import * as d3 from "d3";
-import { LineChartDataType } from "./lineChart.types";
 import { graphMargin, lineChartParameters } from "../../../data/constants";
 import { lineChartClassNames } from "src/data/idClassNames";
 import { raiseGrid } from "src/utils/raiseGrid";
+import { LineChartPointType } from "../graphsPoints.types";
 
 export const drawLines = (
   parentRef: SVGSVGElement | null,
-  data: LineChartDataType[],
+  data: LineChartPointType[],
   colors: d3.ScaleOrdinal<string, string, never>
 ) => {
   const line = d3
-    .line<LineChartDataType>()
+    .line<LineChartPointType>()
     .x((dataPoint) => {
       return dataPoint.scaledX;
     })
@@ -28,7 +28,7 @@ export const drawLines = (
     .attr("class", `${lineChartClassNames.linesGroup}`);
 
   const lineMarkers = lineMarkersGroup
-    .selectAll<SVGPathElement, [string, LineChartDataType[]]>(
+    .selectAll<SVGPathElement, [string, LineChartPointType[]]>(
       `.${lineChartClassNames.line}`
     )
     .data(

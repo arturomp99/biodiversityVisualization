@@ -1,8 +1,8 @@
-import { TemporalDataType } from "src/components/graphs/TimeLine/timeLine.types";
+import { TimelineChartDataType } from "src/components/graphs";
 import { FiltersType, TypeOfFilter } from "src/data/filters.types";
 
 export const filterTemporalData = (
-  data: TemporalDataType[],
+  data: TimelineChartDataType[],
   filters: FiltersType[]
 ) => {
   const filteredFilters = filters.filter(

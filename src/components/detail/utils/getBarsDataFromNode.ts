@@ -1,9 +1,9 @@
 import * as d3 from "d3";
-import { TreeDataType } from "src/components/graphs/Dendrogram/dendrogram.types";
 import {
   BarChartDataType,
   StackedBarChartDataType,
-} from "src/components/graphs/StackedBarChart/BarChart.types";
+} from "src/components/graphs";
+import { TreeDataType } from "src/components/graphs/Dendrogram/dendrogram.types";
 
 export const getBarsDataFromNode = (
   node: d3.HierarchyNode<TreeDataType>

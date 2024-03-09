@@ -1,8 +1,6 @@
 import * as d3 from "d3";
-import {
-  StackedBarChartDataType,
-  StackedBarChartPointType,
-} from "./BarChart.types";
+import { StackedBarChartDataType } from "../graphsData.types";
+import { StackedBarChartPointType } from "../graphsPoints.types";
 
 type BarChartScalesType = {
   xScale: d3.ScaleLinear<number, number, never>;
