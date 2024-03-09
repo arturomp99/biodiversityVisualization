@@ -8,25 +8,26 @@ import {
   SensorsFileHeaders,
 } from "src/data/data.types";
 import { MapChartDataType } from "src/components/graphs/Map/map.types";
-import { useGetFiltersData } from "../useGetFiltersData";
+import { useGetFiltersData } from "../useGetFiltersData/useGetFiltersData";
 import { useFetchJSON } from "./useFetchJson";
 import { useFetchDSV } from "./useFetchDSV";
-import { useApplyFilters } from "./useApplyFilters";
+import { useApplyFilters } from "../useApplyFilters/useApplyFilters";
 
 const useReadLineChartData = () => {
-  const { data, loading } = useFetchDSV<SoundChartDataType, SoundHeaders>(
-    ",",
-    "/sampleData/testBioacustic.csv",
-    (soundData) => {
-      return {
-        timeStamp: Number(soundData.timeStamp),
-        soundMax: Number(soundData.soundMax),
-        sensorID: soundData.sensorID,
-      };
-    }
-  );
+  const { dataRef, data, loading, setData } = useFetchDSV<
+    SoundChartDataType,
+    SoundHeaders
+  >(",", "/sampleData/testBioacustic.csv", (soundData) => {
+    return {
+      timeStamp: Number(soundData.timeStamp),
+      soundMax: Number(soundData.soundMax),
+      sensorID: soundData.sensorID,
+    };
+  });
 
-  return { data, loading };
+  useApplyFilters(dataRef.current, setData);
+
+  return { data, loading, readData: dataRef.current };
 };
 
 const useReadMapData = () => {
@@ -55,11 +56,12 @@ const useReadSensorsData = () => {
 };
 
 const useReadTimeLineData = () => {
-  const { data, loading } = useFetchJSON<TemporalDataType[]>(
+  const { dataRef, data, setData, loading } = useFetchJSON<TemporalDataType[]>(
     "/sampleData/sampleTimelineData.json"
   );
 
-  return { data, loading };
+  useApplyFilters(dataRef.current, setData);
+  return { data, loading, readData: dataRef.current };
 };
 
 const arrayProperties: Array<CleanDataFileHeaders> = [
@@ -107,7 +109,7 @@ export const useReadData = () => {
   const timeLineData = useReadTimeLineData();
   const complexData = useReadComplexData();
 
-  const filtersData = useGetFiltersData(complexData);
+  const filtersData = useGetFiltersData(complexData, lineChartData);
 
   const taxonomicClassification = !complexData.data
     ? undefined

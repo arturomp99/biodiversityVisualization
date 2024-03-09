@@ -9,7 +9,6 @@ export const useLineChartBrushInteractivity = () => {
   const lineChartBrushInteractivity = useCallback(
     (event: d3.D3BrushEvent<unknown>) => {
       setBrushExtent(event.selection || undefined);
-      console.log("BRUSHED", event.selection);
     },
     []
   );

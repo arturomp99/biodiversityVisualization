@@ -44,16 +44,18 @@ export const DendrogramDetails = () => {
 
   const onBarClick = useCallback<StackedBarChartProps["onBarClick"]>(
     (clickedNodeKey) => {
-      if (!node?.children) {
-        return;
-      }
-      const clickedNode = node?.children.find(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (childNode: any) => childNode.data[0] === clickedNodeKey
-      );
-      setNode(clickedNode);
+      setNode((prevNode) => {
+        if (!prevNode?.children) {
+          return;
+        }
+        const clickedNode = prevNode?.children.find(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (childNode: any) => childNode.data[0] === clickedNodeKey
+        );
+        return clickedNode;
+      });
     },
-    [node]
+    []
   );
 
   return (
