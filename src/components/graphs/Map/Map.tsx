@@ -1,5 +1,5 @@
 import React, { FC, useEffect, createRef, useState } from "react";
-import { GraphProps } from "../graphs.types";
+import { GraphProps } from "../graphsProps.types";
 import { drawMapMarkers, drawMap } from "./drawMap";
 import { StyledMapContainer } from "./styles";
 import { mapIdNames } from "src/data/idClassNames";

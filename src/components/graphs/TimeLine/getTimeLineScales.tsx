@@ -1,5 +1,6 @@
 import * as d3 from "d3";
-import { TemporalDataType, TimeLineChartDataType } from "./timeLine.types";
+import { TimelineChartDataType } from "../graphsData.types";
+import { TimelineChartPointType } from "../graphsPoints.types";
 
 type TimeLineScalesType = [
   d3.ScaleTime<number, number, never>,
@@ -17,7 +18,7 @@ const getXScale = (data: string[]) => {
   return d3.scaleTime().domain(xExtent);
 };
 
-const getScales = <T extends TemporalDataType[]>(
+const getScales = <T extends TimelineChartDataType[]>(
   data: T
 ): TimeLineScalesType | undefined => {
   const animalsValues = data.flatMap((dataPoint) => dataPoint.species);
@@ -32,10 +33,10 @@ const getScales = <T extends TemporalDataType[]>(
 };
 
 const getDataScaling = (scales: TimeLineScalesType) => {
-  return <T extends TemporalDataType>(data: T[]) => {
+  return <T extends TimelineChartDataType>(data: T[]) => {
     const [xScale, yScale] = scales;
 
-    const scaledData = data.flatMap((dataPoint): TimeLineChartDataType[] => {
+    const scaledData = data.flatMap((dataPoint): TimelineChartPointType[] => {
       const dataPointDates = dataPoint.eventDate as string[];
 
       const scaledDataPointObservations = dataPointDates.map(
@@ -66,7 +67,7 @@ const getDataScaling = (scales: TimeLineScalesType) => {
   };
 };
 
-export const getTimeLineScales = <T extends TemporalDataType[]>(
+export const getTimeLineScales = <T extends TimelineChartDataType[]>(
   data: T | undefined,
   dimensions?: [number, number]
 ) => {

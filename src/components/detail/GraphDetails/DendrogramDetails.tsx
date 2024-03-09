@@ -6,11 +6,11 @@ import { useObserveResize } from "src/components/shared/hooks/useObserveResize";
 import { renderGraph } from "src/components/graphs/shared/utils/renderGraph";
 import { useDataContext } from "src/contexts/dataContext";
 import { TreeDataType } from "src/components/graphs/Dendrogram/dendrogram.types";
+import { getStackedBarsDataFromNode } from "../utils/getBarsDataFromNode";
 import {
   StackedBarChartDataType,
   StackedBarChartProps,
-} from "src/components/graphs/StackedBarChart/BarChart.types";
-import { getStackedBarsDataFromNode } from "../utils/getBarsDataFromNode";
+} from "src/components/graphs";
 
 export const DendrogramDetails = () => {
   const {

@@ -1,11 +1,8 @@
 import * as d3 from "d3";
-// import { barChartParameters, graphMargin } from "../../../data/constants";
-import {
-  StackedBarChartPointType,
-  StackedBarChartProps,
-} from "./BarChart.types";
 import { barChartParameters, graphMargin } from "src/data/constants";
 import { stackedBarChartClassNames } from "src/data/idClassNames";
+import { StackedBarChartProps } from "../graphsProps.types";
+import { StackedBarChartPointType } from "../graphsPoints.types";
 
 export const drawBars = (
   parentRef: SVGSVGElement | null,

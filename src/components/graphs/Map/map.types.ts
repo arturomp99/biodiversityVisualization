@@ -15,10 +15,3 @@ export interface GeoJSONDataFeature {
     coordinates: Array<Array<Array<number[]>>>;
   };
 }
-
-export type MapChartDataType = {
-  latitude: number;
-  longitude: number;
-  sensorId: string;
-  observationsNum: number;
-};

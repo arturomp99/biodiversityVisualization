@@ -3,7 +3,7 @@ import { StyledDendrogramContainer } from "./styles";
 import { dendrogramIdNames } from "src/data/idClassNames";
 import { drawDendrogram, scaleData } from "./drawDendrogram";
 import { addZoom } from "../shared/Interactivity/zoom/zoom";
-import { GraphProps } from "../graphs.types";
+import { GraphProps } from "../graphsProps.types";
 import { dendrogramParameters, resizeTimeout } from "src/data/constants";
 import { useDataContext } from "src/contexts/dataContext";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";

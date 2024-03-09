@@ -1,7 +1,7 @@
 import * as d3 from "d3";
-import { SoundChartDataType } from "src/components/graphs/LineChart/lineChart.types";
+import { LineChartDataType } from "src/components/graphs";
 
-export const asyncGetTimeFiltersData = async (data: SoundChartDataType[]) => {
+export const asyncGetTimeFiltersData = async (data: LineChartDataType[]) => {
   const dateStrings = data.flatMap((dataPoint) => dataPoint.timeStamp);
   const timeMin = d3.min(
     dateStrings,

@@ -1,5 +1,4 @@
 import React, { FC, createRef, useEffect, useRef } from "react";
-import { StackedBarChartProps } from "./BarChart.types";
 import { getStackedBarChartScales } from "./getStackedBarChartScales";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
 import { getBarChartHeight } from "./getBarChartHeight";
@@ -7,6 +6,7 @@ import { StyledBarChartContainer } from "./styles";
 import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { barChartParameters, resizeTimeout } from "src/data/constants";
 import { drawBars } from "./drawBars";
+import { StackedBarChartProps } from "../graphsProps.types";
 
 export const StackedBarChart: FC<StackedBarChartProps> = ({
   dimensions: [width], // We calculate height from the amount of rows
