@@ -12,8 +12,5 @@ export const asyncGetTimeFiltersData = async (data: SoundChartDataType[]) => {
     (pointObservation) => new Date(pointObservation)
   );
 
-  console.log("arturo", data);
-  console.log("arturo\ntimeMin", timeMin, "timeMax", timeMax);
-
   return [timeMin, timeMax];
 };

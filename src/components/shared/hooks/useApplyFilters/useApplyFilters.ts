@@ -16,7 +16,6 @@ export const useApplyFilters = <Data>(
         return dataRef;
       }
       if (isTaxonomicDataType(dataRef)) {
-        console.log("APPLY TAXONOMIC FILTER");
         return filterTaxonomicData(dataRef, filters) as Data[];
       }
       if (isTemporalDataType(dataRef)) {

@@ -109,7 +109,6 @@ export const useReadData = () => {
   const complexData = useReadComplexData();
   const filtersData = useGetFiltersData(complexData, lineChartData);
 
-  console.log(filtersData);
   const taxonomicClassification = !complexData.data
     ? undefined
     : group(
