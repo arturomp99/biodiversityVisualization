@@ -14,19 +14,20 @@ import { useFetchDSV } from "./useFetchDSV";
 import { useApplyFilters } from "../useApplyFilters/useApplyFilters";
 
 const useReadLineChartData = () => {
-  const { data, loading } = useFetchDSV<SoundChartDataType, SoundHeaders>(
-    ",",
-    "/sampleData/testBioacustic.csv",
-    (soundData) => {
-      return {
-        timeStamp: Number(soundData.timeStamp),
-        soundMax: Number(soundData.soundMax),
-        sensorID: soundData.sensorID,
-      };
-    }
-  );
+  const { dataRef, data, loading, setData } = useFetchDSV<
+    SoundChartDataType,
+    SoundHeaders
+  >(",", "/sampleData/testBioacustic.csv", (soundData) => {
+    return {
+      timeStamp: Number(soundData.timeStamp),
+      soundMax: Number(soundData.soundMax),
+      sensorID: soundData.sensorID,
+    };
+  });
 
-  return { data, loading };
+  useApplyFilters(dataRef.current, setData);
+
+  return { data, loading, readData: dataRef.current };
 };
 
 const useReadMapData = () => {
@@ -107,6 +108,7 @@ export const useReadData = () => {
   const sensorsData = useReadSensorsData();
   const timeLineData = useReadTimeLineData();
   const complexData = useReadComplexData();
+
   const filtersData = useGetFiltersData(complexData, lineChartData);
 
   const taxonomicClassification = !complexData.data

@@ -3,7 +3,7 @@ import { useReadData } from "src/components/shared/hooks/useReadData/useReadData
 
 const defaultData = { data: undefined, loading: true };
 const dataContext = createContext<ReturnType<typeof useReadData>>({
-  lineChartData: defaultData,
+  lineChartData: { ...defaultData, readData: undefined },
   mapData: defaultData,
   timeLineData: { ...defaultData, readData: undefined },
   sensorsData: defaultData,

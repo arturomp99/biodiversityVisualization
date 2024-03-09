@@ -34,6 +34,7 @@ export const useGetFiltersData = <
       return;
     }
     asyncGetTaxonomicFiltersData(data.readData).then((collectedFiltersData) => {
+      console.log("arturo collectedFiltersData", collectedFiltersData);
       setFiltersData((previousFiltersData) => ({
         ...previousFiltersData,
         taxonomic: { data: collectedFiltersData, loading: false },
