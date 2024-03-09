@@ -67,7 +67,8 @@ export const drawBars = (
     .attr("fill", barChartParameters.bars.inactiveColor);
   const stackedBarsUpdate = stackedBars
     .attr("width", (dataPoint) => dataPoint.scaledLength)
-    .attr("x", (dataPoint) => dataPoint.scaledX ?? 0);
+    .attr("x", (dataPoint) => dataPoint.scaledX ?? 0)
+    .attr("y", (dataPoint) => dataPoint.scaledY ?? 0);
   stackedBarsEnter.merge(stackedBarsUpdate);
   stackedBars.exit().remove();
 };

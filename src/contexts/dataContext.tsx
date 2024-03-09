@@ -5,11 +5,11 @@ const defaultData = { data: undefined, loading: true };
 const dataContext = createContext<ReturnType<typeof useReadData>>({
   lineChartData: defaultData,
   mapData: defaultData,
-  timeLineData: defaultData,
+  timeLineData: { ...defaultData, readData: undefined },
   sensorsData: defaultData,
   complexData: { ...defaultData, readData: undefined },
   taxonomicClassification: defaultData,
-  filtersData: defaultData,
+  filtersData: undefined,
 });
 
 export const DataContextProvider = (props: { children: ReactNode }) => {

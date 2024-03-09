@@ -1,19 +1,25 @@
 import React, { useCallback } from "react";
 import { AutocompleteItem } from "@nextui-org/react";
 import { useDataContext } from "src/contexts/dataContext";
-import { taxonomicLevels } from "src/components/shared/hooks/useGetFiltersData";
 import { ControlledAutocomplete } from "../components/ControlledAutocomplete";
 import { useFiltersContext } from "src/contexts/filtersContext";
 import { TaxonomicLevelsType } from "src/data/data.types";
 import { TypeOfFilter } from "src/data/filters.types";
+import { taxonomicLevels } from "src/components/shared/hooks/useGetFiltersData/asyncGetTaxonomicFiltersData";
 
 export const TaxonomyInput = () => {
-  const { filtersData: taxonomicFiltersData } = useDataContext();
+  const { filtersData } = useDataContext();
   const { addFilter, removeFilter } = useFiltersContext();
 
   const taxonomicLevelFilterHandler = useCallback(
     (level: TaxonomicLevelsType, value?: number) => {
-      if (!addFilter || !removeFilter || !taxonomicFiltersData.data || !value) {
+      const taxonomicFiltersData = filtersData?.taxonomic;
+      if (
+        !addFilter ||
+        !removeFilter ||
+        !taxonomicFiltersData?.data ||
+        !value
+      ) {
         return;
       }
       addFilter({
@@ -22,7 +28,7 @@ export const TaxonomyInput = () => {
         type: TypeOfFilter.Taxonomic,
       });
     },
-    [addFilter, removeFilter, taxonomicFiltersData.data]
+    [addFilter, removeFilter, filtersData?.taxonomic?.data]
   );
 
   // Use disableSelectorIconRotation to avoid the small flickering bug
@@ -30,13 +36,13 @@ export const TaxonomyInput = () => {
     <ControlledAutocomplete
       key={levelKey}
       label={`Filter by ${level}`}
-      loading={taxonomicFiltersData.loading}
+      loading={filtersData?.taxonomic?.loading || false}
       onValueChanged={(value?: number) =>
         taxonomicLevelFilterHandler(level, value)
       }
     >
-      {taxonomicFiltersData.data &&
-        taxonomicFiltersData.data[level].map((levelElement, elementKey) => (
+      {filtersData?.taxonomic?.data &&
+        filtersData.taxonomic.data[level].map((levelElement, elementKey) => (
           <AutocompleteItem key={elementKey}>{levelElement}</AutocompleteItem>
         ))}
     </ControlledAutocomplete>

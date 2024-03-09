@@ -12,8 +12,6 @@ const addLabel = (
     dendrogramParameters.labels.fontSizeRatio *
     +d3.select(element).select(`.${dendrogramClassNames.markerNode}`).attr("r");
 
-  console.log(fontSize);
-
   const label = d3
     .select(element)
     .append("g")
