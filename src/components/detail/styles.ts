@@ -1,12 +1,12 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { detailGridAreas } from "src/data/layoutsConstants";
-import { navBar } from "src/data/constants";
 
 export const DetailLayout = styled.div`
-  height: calc(100vh - ${navBar.height});
+  height: 100%;
+  min-height: 100vh;
   display: grid;
-  grid-template-columns: 9fr 3fr;
-  grid-template-rows: 9fr 3fr;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 1fr auto;
   grid-template-areas:
     "${detailGridAreas.expanded} ${detailGridAreas.expanded}"
     "${detailGridAreas.detail} ${detailGridAreas.kpi}";
@@ -14,5 +14,13 @@ export const DetailLayout = styled.div`
 
 export const ExpandedView = styled.div`
   grid-area: ${detailGridAreas.expanded};
-  height: 100%;
+  height: 75vh;
+`;
+
+export const GraphDetailsView = styled.div<{ graphName: string }>`
+  grid-area: ${detailGridAreas.detail};
+  ${({ graphName }) => {
+    console.log("details:", graphName);
+    return css``;
+  }};
 `;
