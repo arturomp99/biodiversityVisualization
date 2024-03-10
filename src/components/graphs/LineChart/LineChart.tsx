@@ -23,7 +23,6 @@ import { lineChartClassNames } from "src/data/idClassNames";
 import { useLineChartBrushInteractivity } from "./interactivity/useLineChartBrushInteractivity";
 import { LineChartDataType } from "../graphsData.types";
 import { mouseCursor } from "../shared/Interactivity/mouseCursor";
-import { raiseCursor } from "src/utils/raiseElements";
 
 export const LineChart: FC<LineChartProps> = ({
   dimensions,
@@ -118,7 +117,6 @@ export const LineChart: FC<LineChartProps> = ({
           lineChartBrushInteractivity
         );
       }
-      // raiseCursor();
     }, resizeTimeout);
 
     return () => {
