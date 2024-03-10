@@ -34,6 +34,15 @@ export const StyledGraphCard = styled.div<{
     `};
 `;
 
+export const GraphCardHeaderLayout = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: ${themeSizes.elementsMargins.md};
+  align-items: center;
+`;
+
 export const StyledFooter = styled.div`
   background-color: ${themeColors.card.footer.background};
   padding: 0.5rem;
