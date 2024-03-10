@@ -42,12 +42,14 @@ export const Catalog = () => {
                   </p>
                 </CardHeader>
                 <Divider />
-                <CardBody>
+                <CardBody className="flex gap-3">
                   {catalogEntry?.images && catalogEntry.images.length !== 0 && (
-                    <Image
-                      alt={catalogEntry.images[0]?.description || ""}
-                      src={catalogEntry.images[0].identifier}
-                    />
+                    <div className="mx-auto">
+                      <Image
+                        alt={catalogEntry.images[0]?.description || ""}
+                        src={catalogEntry.images[0].identifier}
+                      />
+                    </div>
                   )}
                   <p>{catalogEntry.usageKey}</p>
                   {isStringHTML(
