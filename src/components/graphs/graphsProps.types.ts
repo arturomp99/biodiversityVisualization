@@ -13,6 +13,7 @@ export interface GraphProps {
 export type LineChartProps = GraphProps & {
   data: LineChartDataType[];
   isBrushInteractive?: boolean;
+  isCursorInteractive?: boolean;
 };
 
 export type BarChartProps = GraphProps & {

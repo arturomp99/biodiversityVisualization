@@ -19,6 +19,7 @@ export const SoundChart: FC<GraphProps> = ({
           dimensions={dimensions}
           data={data}
           isBrushInteractive={isFullInteractive}
+          isCursorInteractive={isFullInteractive}
         />
       ) : (
         <div>LOADING LINE CHART DATA...</div>

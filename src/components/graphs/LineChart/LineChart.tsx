@@ -22,12 +22,15 @@ import { getUniqueIds } from "src/utils/getUniqueIds";
 import { lineChartClassNames } from "src/data/idClassNames";
 import { useLineChartBrushInteractivity } from "./interactivity/useLineChartBrushInteractivity";
 import { LineChartDataType } from "../graphsData.types";
+import { mouseCursor } from "../shared/Interactivity/mouseCursor";
+import { raiseCursor } from "src/utils/raiseElements";
 
 export const LineChart: FC<LineChartProps> = ({
   dimensions,
   isBasicInteractive,
   data,
   isBrushInteractive,
+  isCursorInteractive,
 }) => {
   const { brushExtent, lineChartBrushInteractivity } =
     useLineChartBrushInteractivity();
@@ -59,6 +62,9 @@ export const LineChart: FC<LineChartProps> = ({
       ["time (s)", "sound"]
     );
     drawLines(node.current, scaledData, colorScale);
+    if (isCursorInteractive) {
+      mouseCursor(node.current);
+    }
   }, [data]);
 
   useEffect(() => {
@@ -112,6 +118,7 @@ export const LineChart: FC<LineChartProps> = ({
           lineChartBrushInteractivity
         );
       }
+      // raiseCursor();
     }, resizeTimeout);
 
     return () => {

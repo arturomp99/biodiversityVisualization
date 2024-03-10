@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { graphMargin, lineChartParameters } from "../../../data/constants";
 import { lineChartClassNames } from "src/data/idClassNames";
-import { raiseGrid } from "src/utils/raiseGrid";
+import { raiseGrid } from "src/utils/raiseElements";
 import { LineChartPointType } from "../graphsPoints.types";
 
 export const drawLines = (
