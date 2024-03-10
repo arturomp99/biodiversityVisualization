@@ -6,6 +6,7 @@ import {
   Spinner,
   CardHeader,
   Divider,
+  Image,
 } from "@nextui-org/react";
 
 import { CatalogContainer } from "./CatalogContainer";
@@ -41,7 +42,15 @@ export const Catalog = () => {
                   </p>
                 </CardHeader>
                 <Divider />
-                <CardBody>
+                <CardBody className="flex gap-3">
+                  {catalogEntry?.images && catalogEntry.images.length !== 0 && (
+                    <div className="mx-auto">
+                      <Image
+                        alt={catalogEntry.images[0]?.description || ""}
+                        src={catalogEntry.images[0].identifier}
+                      />
+                    </div>
+                  )}
                   <p>{catalogEntry.usageKey}</p>
                   {isStringHTML(
                     catalogEntry.descriptions[0]?.description || ""
