@@ -69,3 +69,24 @@ export const getDescription = async (
 
   return await response.json();
 };
+
+type GBIFImageType = {
+  results?: {
+    type: string; // TODO: Check that it is a valid type. Which types can be returned?
+    format: string; // TODO: Which formats can be returned?
+    description?: string;
+    identifier: string;
+  }[];
+};
+
+export const getImages = async (usageKey: number): Promise<GBIFImageType> => {
+  const response = await fetch(
+    gbifSpeciesAPIUrl + gbifGetSlugs.image(usageKey)
+  );
+  if (!response.ok)
+    throw new Error(
+      `Failed to get description comments for usage key ${usageKey}`
+    );
+
+  return await response.json();
+};

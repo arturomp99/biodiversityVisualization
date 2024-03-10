@@ -3,6 +3,7 @@ import { useDataContext } from "src/contexts/dataContext";
 import { catalogParameters } from "src/data/constants";
 import {
   getDescription,
+  getImages,
   getUsageKey,
   getVernacularNames,
 } from "../requests/requests";
@@ -15,8 +16,9 @@ const getGBIFData = (pageReadData: DataType[]) => {
     if (!usageKey) return undefined;
     const { results: vernacularNames } = await getVernacularNames(usageKey);
     const { results: descriptions } = await getDescription(usageKey);
+    const { results: images } = await getImages(usageKey);
 
-    return { species, usageKey, vernacularNames, descriptions };
+    return { species, usageKey, vernacularNames, descriptions, images };
   });
 };
 
