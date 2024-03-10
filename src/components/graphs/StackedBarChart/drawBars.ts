@@ -1,14 +1,17 @@
 import * as d3 from "d3";
-import { barChartParameters, graphMargin } from "src/data/constants";
+import { barChartParameters } from "src/data/constants";
 import { stackedBarChartClassNames } from "src/data/idClassNames";
 import { StackedBarChartProps } from "../graphsProps.types";
 import { StackedBarChartPointType } from "../graphsPoints.types";
+import { getGraphMargins } from "src/utils/getGraphMargins";
 
 export const drawBars = (
   parentRef: SVGSVGElement | null,
   data: StackedBarChartPointType[],
-  onBarClick?: StackedBarChartProps["onBarClick"]
+  onBarClick?: StackedBarChartProps["onBarClick"],
+  customMargins?: Parameters<typeof getGraphMargins>[0]
 ) => {
+  const margins = getGraphMargins(customMargins);
   const groupedData = d3.group(data, (dataPoint) => dataPoint.parentBarId);
   const bars = d3
     .select(parentRef)
@@ -60,7 +63,7 @@ export const drawBars = (
     .attr("x", (dataPoint) => dataPoint.scaledX ?? 0)
     .attr("width", (dataPoint) => dataPoint.scaledLength)
     .attr("height", barChartParameters.barWidth)
-    .attr("transform", `translate(${graphMargin.left},${graphMargin.top})`)
+    .attr("transform", `translate(${margins.left},${margins.top})`)
     .attr("fill", barChartParameters.bars.inactiveColor);
   const stackedBarsUpdate = stackedBars
     .attr("width", (dataPoint) => dataPoint.scaledLength)

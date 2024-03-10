@@ -4,7 +4,11 @@ import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin
 import { getBarChartHeight } from "./getBarChartHeight";
 import { StyledBarChartContainer } from "./styles";
 import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
-import { barChartParameters, resizeTimeout } from "src/data/constants";
+import {
+  barChartParameters,
+  fontSize,
+  resizeTimeout,
+} from "src/data/constants";
 import { drawBars } from "./drawBars";
 import { StackedBarChartProps } from "../graphsProps.types";
 
@@ -16,7 +20,8 @@ export const StackedBarChart: FC<StackedBarChartProps> = ({
   const node = createRef<SVGSVGElement>();
   const scalingRef = useRef(getStackedBarChartScales(data));
 
-  const [realWidth] = getDimensionsWithoutMargin([width, 0]);
+  const customMargin = { left: 8 * fontSize };
+  const [realWidth] = getDimensionsWithoutMargin([width, 0], customMargin);
   const { realHeight, totalHeight } = getBarChartHeight(data.length);
 
   useEffect(() => {
@@ -36,9 +41,11 @@ export const StackedBarChart: FC<StackedBarChartProps> = ({
       node.current,
       [scalingRef.current.scales.xScale, scalingRef.current.scales.yScale],
       [realWidth, realHeight],
-      barChartParameters.axesParameters
+      barChartParameters.axesParameters,
+      undefined,
+      customMargin
     );
-    drawBars(node.current, scaledData, onBarClick);
+    drawBars(node.current, scaledData, onBarClick, customMargin);
   }, [data]);
 
   useEffect(() => {
@@ -57,14 +64,15 @@ export const StackedBarChart: FC<StackedBarChartProps> = ({
         node.current,
         [scalingRef.current.scales.xScale, scalingRef.current.scales.yScale],
         [realWidth, realHeight],
-        barChartParameters.axesParameters
+        barChartParameters.axesParameters,
+        customMargin
       );
 
       const scaledData = scalingRef.current.scaleData(data);
       if (!scaledData) {
         return;
       }
-      drawBars(node.current, scaledData, onBarClick);
+      drawBars(node.current, scaledData, onBarClick, customMargin);
     }, resizeTimeout);
 
     return () => {

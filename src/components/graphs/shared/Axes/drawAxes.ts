@@ -1,11 +1,11 @@
 import * as d3 from "d3";
 import {
   barChartParameters,
-  graphMargin,
   lineChartParameters,
   timeLineParameters,
 } from "../../../../data/constants";
 import { axes } from "src/data/idClassNames";
+import { getGraphMargins } from "src/utils/getGraphMargins";
 
 type AxisScaleTypes =
   | d3.ScaleTime<number, number, never>
@@ -22,8 +22,11 @@ export function createAxes(
   scales: AxisScaleTypes[],
   dimensions: [number, number],
   axesParameters: AxesParametersTypes,
-  axesTitles?: [string, string]
+  axesTitles?: [string, string],
+  customMargin?: Parameters<typeof getGraphMargins>[0]
 ) {
+  const margins = getGraphMargins(customMargin);
+  console.log("arturo", margins);
   const [xScale, yScale] = scales;
   const [width, height] = dimensions;
   xScale.range([0, width]);
@@ -51,17 +54,14 @@ export function createAxes(
     .attr("class", axes.class)
     .attr("id", axes.id.hAxis)
     .call(xAxis)
-    .attr(
-      "transform",
-      `translate(${graphMargin.left},${height + graphMargin.top})`
-    )
+    .attr("transform", `translate(${margins.left},${height + margins.top})`)
     .style("pointer-events", "none");
   parent
     .append("g")
     .attr("class", axes.class)
     .attr("id", axes.id.vAxis)
     .call(yAxis)
-    .attr("transform", `translate(${graphMargin.left},${graphMargin.top})`)
+    .attr("transform", `translate(${margins.left},${margins.top})`)
     .style("pointer-events", "none");
 
   if (axesTitles) {
@@ -72,8 +72,8 @@ export function createAxes(
       .attr("class", axes.title.class)
       .attr("id", axes.title.id.hAxis)
       .attr("text-anchor", axesParameters.title.anchor.hAxis)
-      .attr("x", width - graphMargin.right)
-      .attr("y", graphMargin.bottom / 2)
+      .attr("x", width - margins.right)
+      .attr("y", margins.bottom / 2)
       .attr("fill", axesParameters.title.fontColor)
       .attr("font-size", axesParameters.title.fontSize)
       .text(xAxisTitle);
@@ -85,7 +85,7 @@ export function createAxes(
       .attr("text-anchor", axesParameters.title.anchor.vAxis)
       .attr("transform", "rotate(-90)")
       .attr("x", -height / 2)
-      .attr("y", -graphMargin.left / 2)
+      .attr("y", -margins.left / 2)
       .attr("fill", axesParameters.title.fontColor)
       .attr("font-size", axesParameters.title.fontSize)
       .text(yAxisTitle);
@@ -96,8 +96,10 @@ export const giveSizeToAxes = (
   parentRef: SVGSVGElement,
   scales: AxisScaleTypes[],
   dimensions: [number, number],
-  axesParameters: AxesParametersTypes
+  axesParameters: AxesParametersTypes,
+  customMargin?: Parameters<typeof getGraphMargins>[0]
 ) => {
+  const margins = getGraphMargins(customMargin);
   const [xScale, yScale] = scales;
   const [width, height] = dimensions;
   xScale.range([0, width]);
@@ -124,19 +126,16 @@ export const giveSizeToAxes = (
 
   parent
     .selectAll("#hAxis")
-    .attr(
-      "transform",
-      `translate(${graphMargin.left},${height + graphMargin.top})`
-    );
+    .attr("transform", `translate(${margins.left},${height + margins.top})`);
   parent
     .selectAll("#vAxis")
-    .attr("transform", `translate(${graphMargin.left},${graphMargin.top})`);
+    .attr("transform", `translate(${margins.left},${margins.top})`);
   parent
     .selectAll("#xAxisTitle")
-    .attr("x", width - graphMargin.right)
-    .attr("y", graphMargin.bottom / 2);
+    .attr("x", width - margins.right)
+    .attr("y", margins.bottom / 2);
   parent
     .selectAll("#yAxisTitle")
     .attr("x", -height / 2)
-    .attr("y", -graphMargin.left / 2);
+    .attr("y", -margins.left / 2);
 };
