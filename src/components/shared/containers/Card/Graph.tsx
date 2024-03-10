@@ -15,7 +15,10 @@ export const Graph = (props: {
 
   const { containerRef: resizeContainerRef, dimensions } = useObserveResize();
 
-  const graphProps = { dimensions: dimensions ?? [0, 0] };
+  const graphProps = {
+    dimensions: dimensions ?? [0, 0],
+    isFullInteractive: expanded,
+  };
 
   return (
     <StyledGraphCard $noBorder={expanded} $hasTitle={!!title}>

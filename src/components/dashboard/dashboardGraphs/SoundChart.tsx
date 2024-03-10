@@ -1,11 +1,12 @@
 import React, { FC } from "react";
-import { LineChart } from "src/components/graphs";
-import { GraphProps } from "src/components/graphs/graphsProps.types";
+import { GraphProps, LineChart } from "src/components/graphs";
 import { useDataContext } from "src/contexts/dataContext";
 
-export const SoundChart: FC<
-  Pick<GraphProps, "isBasicInteractive" | "dimensions">
-> = ({ isBasicInteractive, dimensions }) => {
+export const SoundChart: FC<GraphProps> = ({
+  isBasicInteractive,
+  dimensions,
+  isFullInteractive,
+}) => {
   const {
     lineChartData: { data, loading },
   } = useDataContext();
@@ -17,6 +18,8 @@ export const SoundChart: FC<
           isBasicInteractive={isBasicInteractive}
           dimensions={dimensions}
           data={data}
+          isBrushInteractive={isFullInteractive}
+          isCursorInteractive={isFullInteractive}
         />
       ) : (
         <div>LOADING LINE CHART DATA...</div>

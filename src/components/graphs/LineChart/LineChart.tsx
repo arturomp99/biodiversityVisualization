@@ -22,11 +22,15 @@ import { getUniqueIds } from "src/utils/getUniqueIds";
 import { lineChartClassNames } from "src/data/idClassNames";
 import { useLineChartBrushInteractivity } from "./interactivity/useLineChartBrushInteractivity";
 import { LineChartDataType } from "../graphsData.types";
+import { mouseCursor } from "../shared/Interactivity/mouseCursor";
+import { raiseCursor } from "src/utils/raiseElements";
 
 export const LineChart: FC<LineChartProps> = ({
   dimensions,
   isBasicInteractive,
   data,
+  isBrushInteractive,
+  isCursorInteractive,
 }) => {
   const { brushExtent, lineChartBrushInteractivity } =
     useLineChartBrushInteractivity();
@@ -58,6 +62,9 @@ export const LineChart: FC<LineChartProps> = ({
       ["time (s)", "sound"]
     );
     drawLines(node.current, scaledData, colorScale);
+    if (isCursorInteractive) {
+      mouseCursor(node.current);
+    }
   }, [data]);
 
   useEffect(() => {
@@ -67,16 +74,17 @@ export const LineChart: FC<LineChartProps> = ({
       }
       if (!scales.current) return;
       scales.current = getLineChartScales(data, realDimensions, {
-        x: brushExtent
-          ? [
-              scales.current[0]
-                .invert(brushExtent[0] - graphMargin.left)
-                .getTime(),
-              scales.current[0]
-                .invert(brushExtent[1] - graphMargin.left)
-                .getTime(),
-            ]
-          : undefined,
+        x:
+          brushExtent && isBrushInteractive
+            ? [
+                scales.current[0]
+                  .invert(brushExtent[0] - graphMargin.left)
+                  .getTime(),
+                scales.current[0]
+                  .invert(brushExtent[1] - graphMargin.left)
+                  .getTime(),
+              ]
+            : undefined,
       });
       if (!scales.current) return;
 
@@ -103,13 +111,14 @@ export const LineChart: FC<LineChartProps> = ({
             dataPoint.scaledX > 0 && dataPoint.scaledX < realDimensions[0]
         );
       drawLines(node.current, scaledData, colorScale);
-      if (isBasicInteractive) {
+      if (isBrushInteractive) {
         addBrush(
           node.current,
           `.${lineChartClassNames.linesGroup}`,
           lineChartBrushInteractivity
         );
       }
+      // raiseCursor();
     }, resizeTimeout);
 
     return () => {

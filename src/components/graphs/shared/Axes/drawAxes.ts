@@ -54,13 +54,15 @@ export function createAxes(
     .attr(
       "transform",
       `translate(${graphMargin.left},${height + graphMargin.top})`
-    );
+    )
+    .style("pointer-events", "none");
   parent
     .append("g")
     .attr("class", axes.class)
     .attr("id", axes.id.vAxis)
     .call(yAxis)
-    .attr("transform", `translate(${graphMargin.left},${graphMargin.top})`);
+    .attr("transform", `translate(${graphMargin.left},${graphMargin.top})`)
+    .style("pointer-events", "none");
 
   if (axesTitles) {
     const [xAxisTitle, yAxisTitle] = axesTitles;
