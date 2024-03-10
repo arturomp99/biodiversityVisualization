@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { detailGridAreas } from "src/data/layoutsConstants";
+import { themeSizes } from "src/data/theme";
 
 export const DetailLayout = styled.div`
   height: 100%;
@@ -10,6 +11,10 @@ export const DetailLayout = styled.div`
   grid-template-areas:
     "${detailGridAreas.expanded} ${detailGridAreas.expanded}"
     "${detailGridAreas.detail} ${detailGridAreas.kpi}";
+  padding-top: ${themeSizes.elementsMargins.lg};
+  padding-bottom: ${themeSizes.elementsMargins.lg};
+  padding-left: ${themeSizes.appPaddings.xs};
+  padding-right: ${themeSizes.appPaddings.md};
 `;
 
 export const ExpandedView = styled.div`
