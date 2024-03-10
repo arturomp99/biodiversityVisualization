@@ -48,6 +48,7 @@ export const Catalog = () => {
                       <Image
                         alt={catalogEntry.images[0]?.description || ""}
                         src={catalogEntry.images[0].identifier}
+                        className="w-full max-w-xl"
                       />
                     </div>
                   )}
