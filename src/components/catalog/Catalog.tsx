@@ -1,9 +1,18 @@
 import React, { useCallback } from "react";
-import { Pagination, Card, CardBody, Spinner } from "@nextui-org/react";
+import {
+  Pagination,
+  Card,
+  CardBody,
+  Spinner,
+  CardHeader,
+  Divider,
+} from "@nextui-org/react";
 
 import { CatalogContainer } from "./CatalogContainer";
 import { useGetCatalogData } from "./hooks/useGetCatalogData";
 import { getEnglishVernacularName } from "./utils/getEnglishVernacularName";
+import { CatalogCardTitle, CatalogDescription } from "./styles";
+import { isStringHTML } from "src/utils/isStringHTML";
 
 export const Catalog = () => {
   const { loading, catalogData, page, setPage, totalPages } =
@@ -25,16 +34,26 @@ export const Catalog = () => {
           (catalogEntry, index) =>
             catalogEntry && (
               <Card key={index}>
-                <CardBody>
+                <CardHeader className="flex gap-3">
+                  <CatalogCardTitle>{catalogEntry.species}</CatalogCardTitle>
                   <p>
                     {getEnglishVernacularName(catalogEntry.vernacularNames)}
                   </p>
-                  <p>{catalogEntry.species}</p>
+                </CardHeader>
+                <Divider />
+                <CardBody>
                   <p>{catalogEntry.usageKey}</p>
-                  <p>
-                    {catalogEntry.descriptions[0]?.description ||
-                      "no description"}
-                  </p>
+                  {isStringHTML(
+                    catalogEntry.descriptions[0]?.description || ""
+                  ) ? (
+                    <CatalogDescription
+                      dangerouslySetInnerHTML={{
+                        __html: catalogEntry.descriptions[0]?.description,
+                      }}
+                    ></CatalogDescription>
+                  ) : (
+                    catalogEntry.descriptions[0]?.description || ""
+                  )}
                 </CardBody>
               </Card>
             )

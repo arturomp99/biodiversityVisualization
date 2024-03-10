@@ -6,5 +6,5 @@ export const getEnglishVernacularName = (
   for (const name of names) {
     if (name.language === "eng") return name.vernacularName;
   }
-  return "No vernacular name found";
+  return "";
 };
