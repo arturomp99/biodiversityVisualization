@@ -66,3 +66,14 @@ export const StyledGraphTitle = styled.p`
   font-size: ${themeFont.h3.size};
   font-weight: ${themeFont.h3.weight};
 `;
+
+export const TitleLayout = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: ${themeSizes.elementsMargins.sm};
+`;
+
+export const StyledInfoIcon = styled.div`
+  align-self: flex-start;
+`;

@@ -4,6 +4,7 @@ import {
   GraphCardHeaderLayout,
   StyledGraphCard,
   StyledGraphTitle,
+  TitleLayout,
 } from "./styles";
 import { useObserveResize } from "../../hooks/useObserveResize";
 import { DashboardGraph } from "../../../dashboard/dashboardGraphs/DashboardGraph";
@@ -11,14 +12,16 @@ import { ConditionalLink } from "../../ConditionalLink";
 import { renderGraph } from "src/components/graphs/shared/utils/renderGraph";
 import { Button } from "@nextui-org/react";
 import { ForwardIcon } from "src/icons/ForwardIcon";
+import { GraphInfo } from "src/components/dashboard/GraphInfo";
 
 export const Graph = (props: {
   graphName: string;
   title?: string;
   to?: string;
   expanded?: boolean;
+  info?: string;
 }) => {
-  const { graphName, to, expanded, title } = props;
+  const { graphName, to, expanded, title, info } = props;
 
   const navigate = useNavigate();
   const { containerRef: resizeContainerRef, dimensions } = useObserveResize();
@@ -32,9 +35,12 @@ export const Graph = (props: {
     <StyledGraphCard $noBorder={expanded} $hasTitle={!!title}>
       {title && (
         <GraphCardHeaderLayout>
-          <ConditionalLink condition={!!to} to={to}>
-            <StyledGraphTitle>{title}</StyledGraphTitle>
-          </ConditionalLink>
+          <TitleLayout>
+            <ConditionalLink condition={!!to} to={to}>
+              <StyledGraphTitle>{title}</StyledGraphTitle>
+            </ConditionalLink>
+            {!!info && <GraphInfo info={info} />}
+          </TitleLayout>
           <ConditionalLink condition={!!to} to={to}>
             <Button
               variant="light"

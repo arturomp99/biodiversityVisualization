@@ -36,6 +36,7 @@ export const themeSizes = {
     xxl: "450px",
   },
   elementsMargins: {
+    sm: "8px",
     md: "12px",
     lg: "24px",
   },
