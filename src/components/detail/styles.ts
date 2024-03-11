@@ -29,3 +29,15 @@ export const GraphDetailsView = styled.div<{ graphName: string }>`
     return css``;
   }};
 `;
+
+export const DetailHeaderStyled = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: center;
+  gap: ${themeSizes.elementsMargins.sm};
+  padding-top: ${themeSizes.elementsMargins.lg};
+  padding-left: ${themeSizes.appPaddings.xs};
+  padding-right: ${themeSizes.appPaddings.md};
+`;
