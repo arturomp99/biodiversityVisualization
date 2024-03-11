@@ -75,6 +75,7 @@ export const Catalog = () => {
           initialPage={page}
           variant="light"
           onChange={onPaginationChange}
+          color="success"
         />
       )}
     </CatalogContainer>
