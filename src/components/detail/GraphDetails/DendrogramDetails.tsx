@@ -11,6 +11,8 @@ import {
   StackedBarChartDataType,
   StackedBarChartProps,
 } from "src/components/graphs";
+import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
+import { useTaxonomicBreadcrumbNavigation } from "src/components/shared/hooks/useTaxonomicBreadcrumbNavigation";
 
 export const DendrogramDetails = () => {
   const {
@@ -23,6 +25,8 @@ export const DendrogramDetails = () => {
   >();
 
   const { containerRef: resizeContainerRef, dimensions } = useObserveResize();
+  const { breadcrumbItems, breadcrumbAddLevel, breadcrumbSelectedLevel } =
+    useTaxonomicBreadcrumbNavigation();
 
   useEffect(() => {
     if (!data) {
@@ -39,7 +43,10 @@ export const DendrogramDetails = () => {
     if (!node) {
       return;
     }
-    setBarChartData(() => getStackedBarsDataFromNode(node));
+    console.log("arturo node", node);
+    breadcrumbAddLevel(node);
+    const stackedBarsData = getStackedBarsDataFromNode(node);
+    setBarChartData(() => stackedBarsData);
   }, [node]);
 
   const onBarClick = useCallback<StackedBarChartProps["onBarClick"]>(
@@ -58,19 +65,41 @@ export const DendrogramDetails = () => {
     []
   );
 
+  const breadcrumbPressHandler = (node: d3.HierarchyNode<TreeDataType>) => {
+    breadcrumbSelectedLevel(node);
+    setNode(() => node);
+  };
+
+  console.log("arturo breadcrumbItems", breadcrumbItems);
+
   return (
     <StyledDetailChart ref={resizeContainerRef}>
-      {!loading &&
-        !!barChartData &&
-        renderGraph(
-          <StackedBarChart
-            dimensions={dimensions ?? [0, 0]}
-            isBasicInteractive
-            data={barChartData}
-            onBarClick={onBarClick}
-          />,
-          dimensions
-        )}
+      {!loading && !!barChartData && (
+        <>
+          <Breadcrumbs>
+            {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              breadcrumbItems.current.map((breadcrumbItem: any) => (
+                <BreadcrumbItem
+                  key={breadcrumbItem.data[0] || "Root"}
+                  onPress={() => breadcrumbPressHandler(breadcrumbItem)}
+                >
+                  {breadcrumbItem.data[0] || "Root"}
+                </BreadcrumbItem>
+              ))
+            }
+          </Breadcrumbs>
+          {renderGraph(
+            <StackedBarChart
+              dimensions={dimensions ?? [0, 0]}
+              isBasicInteractive
+              data={barChartData}
+              onBarClick={onBarClick}
+            />,
+            dimensions
+          )}
+        </>
+      )}
     </StyledDetailChart>
   );
 };
