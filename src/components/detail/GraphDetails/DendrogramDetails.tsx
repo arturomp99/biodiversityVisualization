@@ -43,7 +43,6 @@ export const DendrogramDetails = () => {
     if (!node) {
       return;
     }
-    console.log("arturo node", node);
     breadcrumbAddLevel(node);
     const stackedBarsData = getStackedBarsDataFromNode(node);
     setBarChartData(() => stackedBarsData);
@@ -69,8 +68,6 @@ export const DendrogramDetails = () => {
     breadcrumbSelectedLevel(node);
     setNode(() => node);
   };
-
-  console.log("arturo breadcrumbItems", breadcrumbItems);
 
   return (
     <StyledDetailChart ref={resizeContainerRef}>
