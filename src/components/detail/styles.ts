@@ -3,7 +3,6 @@ import { detailGridAreas } from "src/data/layoutsConstants";
 import { themeSizes } from "src/data/theme";
 
 export const DetailLayout = styled.div`
-  height: 100%;
   min-height: 100vh;
   display: grid;
   grid-template-columns: 1fr auto;
