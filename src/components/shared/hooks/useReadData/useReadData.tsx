@@ -70,10 +70,12 @@ const arrayProperties: Array<CleanDataFileHeaders> = [
   "occurrenceID",
   "basisOfRecord",
   "eventDate",
+  "identifiedBy",
   "AI Detection Method/Model",
   "Confidence%",
   "Verification Method",
   "Verification Name",
+  "dateIdentified",
   "individualCount",
   "organismQuantity",
   "organismQuantityType",
@@ -81,8 +83,8 @@ const arrayProperties: Array<CleanDataFileHeaders> = [
   "decimalLongitude",
   "geodeticDatum",
   "coordinateUncertaintyInMeters",
-  "latitude",
-  "longitude",
+  "verbatimCoordinates",
+  "verbatimCoordinateSystem",
   "occurrenceRemarks",
   "references",
 ];
@@ -91,7 +93,7 @@ const useReadComplexData = () => {
   const { dataRef, data, setData, loading } = useFetchDSV<
     DataType,
     CleanDataFileHeaders
-  >(";", "/sampleData/clean.csv", (dataEntry) => {
+  >(",", "/sampleData/clean_IdentifiedSpeciesTime.csv", (dataEntry) => {
     const cleanEntry: DataType = dataEntry;
     for (const property of arrayProperties) {
       cleanEntry[property] = dataEntry[property].split(",") as string[];
