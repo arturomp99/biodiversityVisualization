@@ -70,6 +70,7 @@ export const timeLineParameters = {
       fontSize: "1rem",
     },
   },
+  markers: { width: 10, borderRadius: 3 },
 };
 
 export const dendrogramParameters = {
