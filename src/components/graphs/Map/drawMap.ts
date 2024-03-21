@@ -55,3 +55,20 @@ export const drawMapMarkers = (
 
   return;
 };
+
+export const drawGeoJson = (
+  data: d3.ExtendedFeatureCollection,
+  parentRef: SVGSVGElement,
+  generator: d3.GeoPath<unknown, d3.GeoPermissibleObjects>,
+  properties: { className: string; color?: string; strokeWidth?: string }
+) => {
+  d3.select(parentRef)
+    .selectAll(`.${properties.className}`)
+    .data(data.features)
+    .join("path")
+    .attr("d", generator)
+    .attr("fill", "none")
+    .attr("stroke", properties.color || "black")
+    .attr("stroke-width", properties.strokeWidth || 0.001)
+    .attr("class", properties.className);
+};

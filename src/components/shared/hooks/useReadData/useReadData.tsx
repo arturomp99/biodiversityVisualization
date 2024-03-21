@@ -34,8 +34,14 @@ const useReadLineChartData = () => {
 
 const useReadMapData = () => {
   const { data, loading } = useFetchJSON<ExtendedFeatureCollection>(
-    "/sampleData/sampleMap.geojson"
+    "/geoJson/Singapore.geojson"
   );
+
+  return { data, loading };
+};
+
+const useReadGeoJsonData = (filePath: string) => {
+  const { data, loading } = useFetchJSON<ExtendedFeatureCollection>(filePath);
 
   return { data, loading };
 };
@@ -112,6 +118,20 @@ export const useReadData = () => {
   const sensorsData = useReadSensorsData();
   const timeLineData = useReadTimeLineData();
   const complexData = useReadComplexData();
+  const geoJsonData = {
+    dronePaths: [
+      useReadGeoJsonData("/geoJson/dronePath0.geojson"),
+      useReadGeoJsonData("/geoJson/dronePath1.geojson"),
+      useReadGeoJsonData("/geoJson/dronePath2.geojson"),
+      useReadGeoJsonData("/geoJson/dronePath3.geojson"),
+      useReadGeoJsonData("/geoJson/dronePath4.geojson"),
+      useReadGeoJsonData("/geoJson/dronePath5.geojson"),
+      useReadGeoJsonData("/geoJson/dronePath6.geojson"),
+      useReadGeoJsonData("/geoJson/dronePath7.geojson"),
+      useReadGeoJsonData("/geoJson/dronePath8.geojson"),
+      useReadGeoJsonData("/geoJson/dronePath9.geojson"),
+    ],
+  };
 
   const filtersData = useGetFiltersData(complexData, lineChartData);
 
@@ -139,5 +159,6 @@ export const useReadData = () => {
       loading: complexData.loading,
     },
     filtersData,
+    geoJsonData,
   };
 };

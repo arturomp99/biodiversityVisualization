@@ -1,6 +1,7 @@
 import React, { FC, useEffect, createRef, useState } from "react";
+import * as _ from "lodash";
 import { GraphProps } from "../graphsProps.types";
-import { drawMapMarkers, drawMap } from "./drawMap";
+import { drawMapMarkers, drawMap, drawGeoJson } from "./drawMap";
 import { StyledMapContainer } from "./styles";
 import { mapIdNames } from "src/data/idClassNames";
 import { addZoom } from "../shared/Interactivity/zoom/zoom";
@@ -13,8 +14,10 @@ export const Map: FC<GraphProps> = ({ isBasicInteractive, dimensions }) => {
   const {
     mapData: map,
     sensorsData: { data, loading },
+    geoJsonData,
   } = useDataContext();
   const [projection, setProjection] = useState<d3.GeoProjection | undefined>();
+  const [generator, setGenerator] = useState<d3.GeoPath | undefined>();
   const node = createRef<SVGSVGElement>();
   const zoomContainer = createRef<SVGSVGElement>();
 
@@ -25,20 +28,40 @@ export const Map: FC<GraphProps> = ({ isBasicInteractive, dimensions }) => {
       return;
     }
 
-    const { projection } = drawMap(map.data, zoomContainer.current, dimensions);
-    setProjection(() => projection);
+    const { projection: mapProjection, generator: mapGenerator } = drawMap(
+      map.data,
+      zoomContainer.current,
+      dimensions
+    );
+    setProjection(() => mapProjection);
+    setGenerator(() => mapGenerator);
   }, [map.data]);
 
   useEffect(() => {
-    if (!data || !zoomContainer.current || !projection) {
+    if (!zoomContainer.current || !generator) {
       return;
     }
-    drawMapMarkers(data, projection, zoomContainer.current);
 
-    if (isBasicInteractive) {
-      createMapTooltip(zoomContainer.current);
-    }
-  }, [projection, data]);
+    geoJsonData.dronePaths.forEach(
+      (dronePath, key) =>
+        !!dronePath.data &&
+        !!zoomContainer.current &&
+        drawGeoJson(dronePath.data, zoomContainer.current, generator, {
+          className: `path${key}`,
+        })
+    );
+  }, [geoJsonData.dronePaths, generator]);
+
+  // useEffect(() => {
+  //   if (!data || !zoomContainer.current || !projection) {
+  //     return;
+  //   }
+  //   drawMapMarkers(data, projection, zoomContainer.current);
+
+  //   if (isBasicInteractive) {
+  //     createMapTooltip(zoomContainer.current);
+  //   }
+  // }, [projection, data]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
