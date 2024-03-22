@@ -32,6 +32,10 @@ export const Map: FC<GraphProps> = () => {
           };
         },
 
+        pointToLayer: (_, latlng) => {
+          return L.marker(latlng, { icon: mapChartParameters.icons.default });
+        },
+
         onEachFeature: (feature, layer) => {
           if (feature.properties && feature.properties.name)
             layer.bindTooltip(feature.properties.name);

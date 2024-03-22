@@ -1,3 +1,5 @@
+import L from "leaflet";
+
 export const resizeTimeout = 10;
 
 export const resizeTransitionDuration = 2000;
@@ -98,6 +100,13 @@ export const dendrogramParameters = {
 export const mapChartParameters = {
   zoom: {
     maxLevel: 25,
+  },
+  icons: {
+    default: L.icon({
+      iconUrl: "https://cdn-icons-png.freepik.com/256/447/447031.png",
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
+    }),
   },
 };
 
