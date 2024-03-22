@@ -4,7 +4,8 @@ import { GraphProps } from "../graphsProps.types";
 import { StyledMapContainer } from "./styles";
 import { mapIdNames } from "src/data/idClassNames";
 import { useDataContext } from "src/contexts/dataContext";
-import { createMapTooltip } from "./interactivity/createMapTooltip";
+import { mapChartParameters } from "src/data/constants";
+// import { createMapTooltip } from "./interactivity/createMapTooltip";
 
 export const Map: FC<GraphProps> = () => {
   const { geoJsonData } = useDataContext();
@@ -12,12 +13,32 @@ export const Map: FC<GraphProps> = () => {
   const node = createRef<HTMLDivElement>();
 
   useEffect(() => {
-    if (!node.current) return;
-    const map = L.map(node.current).setView([1.3521, 103.8198], 13);
+    if (!map) {
+      return;
+    }
+    const geoJsonLayer = L.geoJSON().addTo(map);
+    geoJsonData.dronePaths.forEach((dronePath) =>
+      L.geoJSON(dronePath.data).addTo(geoJsonLayer)
+    );
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "© OpenStreetMap contributors",
-    }).addTo(map);
+    geoJsonLayer.getBounds().isValid() &&
+      map.fitBounds(geoJsonLayer.getBounds());
+  }, [map, geoJsonData.dronePaths]);
+
+  useEffect(() => {
+    setMap(() => {
+      if (!node.current) return;
+      const map = L.map(node.current)
+        .setView([1.3521, 103.8198], 13)
+        .setMaxZoom(mapChartParameters.zoom.maxLevel);
+
+      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; <a href='http://www.example.com/'>Example</a>",
+        maxNativeZoom: 19,
+        maxZoom: mapChartParameters.zoom.maxLevel,
+      }).addTo(map);
+      return map;
+    });
   }, []);
 
   return (

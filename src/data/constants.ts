@@ -97,12 +97,7 @@ export const dendrogramParameters = {
 
 export const mapChartParameters = {
   zoom: {
-    min: 0.5,
-    max: 10000,
-  },
-  markerCircles: {
-    radius: "10px",
-    fill: "black",
+    maxLevel: 25,
   },
 };
 
