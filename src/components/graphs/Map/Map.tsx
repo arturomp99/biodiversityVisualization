@@ -1,72 +1,61 @@
-import React, { FC, useEffect, createRef, useState } from "react";
+import React, { FC, useEffect, createRef, useState, useRef } from "react";
+import L from "leaflet";
 import { GraphProps } from "../graphsProps.types";
-import { drawMapMarkers, drawMap } from "./drawMap";
 import { StyledMapContainer } from "./styles";
 import { mapIdNames } from "src/data/idClassNames";
-import { addZoom } from "../shared/Interactivity/zoom/zoom";
-import { mapChartParameters, resizeTimeout } from "src/data/constants";
 import { useDataContext } from "src/contexts/dataContext";
-import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
-import { createMapTooltip } from "./interactivity/createMapTooltip";
+import { mapChartParameters } from "src/data/constants";
+import { getMapScales } from "./getMapScales";
+import { drawDetections, drawGeoJson } from "./drawMap";
 
-export const Map: FC<GraphProps> = ({ isBasicInteractive, dimensions }) => {
-  const {
-    mapData: map,
-    sensorsData: { data, loading },
-  } = useDataContext();
-  const [projection, setProjection] = useState<d3.GeoProjection | undefined>();
-  const node = createRef<SVGSVGElement>();
-  const zoomContainer = createRef<SVGSVGElement>();
-
-  const realDimensions = getDimensionsWithoutMargin(dimensions);
+export const Map: FC<GraphProps> = () => {
+  const { geoJsonData, detectionsPositionsData } = useDataContext();
+  const mapScalesRef = useRef(getMapScales());
+  const [map, setMap] = useState<L.Map | undefined>();
+  const node = createRef<HTMLDivElement>();
 
   useEffect(() => {
-    if (!map.data || !zoomContainer.current) {
+    if (!map) {
       return;
     }
 
-    const { projection } = drawMap(map.data, zoomContainer.current, dimensions);
-    setProjection(() => projection);
-  }, [map.data]);
+    const geoJsonLayer = drawGeoJson(
+      map,
+      geoJsonData.dronePaths,
+      mapScalesRef.current.dronePathColorScale
+    );
+
+    geoJsonLayer.getBounds().isValid() &&
+      map.fitBounds(geoJsonLayer.getBounds());
+  }, [map, geoJsonData.dronePaths]);
 
   useEffect(() => {
-    if (!data || !zoomContainer.current || !projection) {
+    if (!map) {
       return;
     }
-    drawMapMarkers(data, projection, zoomContainer.current);
 
-    if (isBasicInteractive) {
-      createMapTooltip(zoomContainer.current);
-    }
-  }, [projection, data]);
+    drawDetections(map, detectionsPositionsData.data);
+  }, [map, detectionsPositionsData.data]);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (map.loading || !realDimensions || !node.current) return;
-      // TODO: TRANSLATE MAP
-    }, resizeTimeout);
+    setMap(() => {
+      if (!node.current) return;
+      const map = L.map(node.current)
+        .setView([1.3521, 103.8198], 13)
+        .setMaxZoom(mapChartParameters.zoom.maxLevel);
 
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [realDimensions]);
-
-  useEffect(() => {
-    if (!node.current || !zoomContainer.current) return;
-    if (isBasicInteractive) {
-      addZoom(node.current, zoomContainer.current, [
-        mapChartParameters.zoom.min,
-        mapChartParameters.zoom.max,
-      ]);
-    }
+      L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; <a href='http://www.example.com/'>Example</a>",
+        maxNativeZoom: 19,
+        maxZoom: mapChartParameters.zoom.maxLevel,
+      }).addTo(map);
+      return map;
+    });
   }, []);
 
   return (
     <>
-      {(map.loading || loading) && <div>LOADING MAP DATA...</div>}
-      <StyledMapContainer ref={node} id={`${mapIdNames.container}`}>
-        <g ref={zoomContainer} id={`${mapIdNames.zoomContainer}`} />
-      </StyledMapContainer>
+      <StyledMapContainer ref={node} id={`${mapIdNames.container}`} />
     </>
   );
 };

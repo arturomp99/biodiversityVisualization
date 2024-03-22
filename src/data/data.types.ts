@@ -46,8 +46,9 @@ export type CleanDataFileHeaders =
 
 export type DataType = Record<CleanDataFileHeaders, string | string[]>;
 
-export type SensorsFileHeaders =
-  | "sensorId"
-  | "latitude"
-  | "longitude"
+export type PositionsFileHeaders =
+  | "occurrenceID"
+  | "scientificName"
+  | "decimalLatitude"
+  | "decimalLongitude"
   | "observationsNum";

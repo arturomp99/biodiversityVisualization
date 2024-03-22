@@ -6,10 +6,24 @@ const dataContext = createContext<ReturnType<typeof useReadData>>({
   lineChartData: { ...defaultData, readData: undefined },
   mapData: defaultData,
   timeLineData: { ...defaultData, readData: undefined },
-  sensorsData: defaultData,
+  detectionsPositionsData: defaultData,
   complexData: { ...defaultData, readData: undefined },
   taxonomicClassification: defaultData,
   filtersData: undefined,
+  geoJsonData: {
+    dronePaths: [
+      defaultData,
+      defaultData,
+      defaultData,
+      defaultData,
+      defaultData,
+      defaultData,
+      defaultData,
+      defaultData,
+      defaultData,
+      defaultData,
+    ],
+  },
 });
 
 export const DataContextProvider = (props: { children: ReactNode }) => {
