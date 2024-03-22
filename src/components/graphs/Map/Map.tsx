@@ -1,14 +1,15 @@
-import React, { FC, useEffect, createRef, useState } from "react";
+import React, { FC, useEffect, createRef, useState, useRef } from "react";
 import L from "leaflet";
 import { GraphProps } from "../graphsProps.types";
 import { StyledMapContainer } from "./styles";
 import { mapIdNames } from "src/data/idClassNames";
 import { useDataContext } from "src/contexts/dataContext";
 import { mapChartParameters } from "src/data/constants";
-// import { createMapTooltip } from "./interactivity/createMapTooltip";
+import { getMapScales } from "./getMapScales";
 
 export const Map: FC<GraphProps> = () => {
   const { geoJsonData } = useDataContext();
+  const mapScalesRef = useRef(getMapScales());
   const [map, setMap] = useState<L.Map | undefined>();
   const node = createRef<HTMLDivElement>();
 
@@ -17,8 +18,41 @@ export const Map: FC<GraphProps> = () => {
       return;
     }
     const geoJsonLayer = L.geoJSON().addTo(map);
-    geoJsonData.dronePaths.forEach((dronePath) =>
-      L.geoJSON(dronePath.data).addTo(geoJsonLayer)
+    geoJsonData.dronePaths.forEach((dronePath, key) =>
+      L.geoJSON(dronePath.data, {
+        style: (feature) => {
+          if (feature?.geometry.type !== "LineString") {
+            return {};
+          }
+          return {
+            color: mapScalesRef.current.dronePathColorScale(
+              key / geoJsonData.dronePaths.length
+            ),
+          };
+        },
+
+        onEachFeature: (feature, layer) => {
+          if (feature.properties && feature.properties.name)
+            layer.bindTooltip(feature.properties.name);
+
+          if (feature?.geometry.type === "LineString") {
+            layer.on({
+              mouseover: (event) => {
+                const hoveredLayer = event.target;
+                hoveredLayer.setStyle({
+                  weight: 6,
+                });
+              },
+              mouseout: (event) => {
+                const hoveredLayer = event.target;
+                hoveredLayer.setStyle({
+                  weight: 4,
+                });
+              },
+            });
+          }
+        },
+      }).addTo(geoJsonLayer)
     );
 
     geoJsonLayer.getBounds().isValid() &&
