@@ -6,9 +6,10 @@ import { mapIdNames } from "src/data/idClassNames";
 import { useDataContext } from "src/contexts/dataContext";
 import { mapChartParameters } from "src/data/constants";
 import { getMapScales } from "./getMapScales";
+import { drawDetections, drawGeoJson } from "./drawMap";
 
 export const Map: FC<GraphProps> = () => {
-  const { geoJsonData } = useDataContext();
+  const { geoJsonData, detectionsPositionsData } = useDataContext();
   const mapScalesRef = useRef(getMapScales());
   const [map, setMap] = useState<L.Map | undefined>();
   const node = createRef<HTMLDivElement>();
@@ -17,54 +18,24 @@ export const Map: FC<GraphProps> = () => {
     if (!map) {
       return;
     }
-    const geoJsonLayer = L.geoJSON().addTo(map);
-    geoJsonData.dronePaths.forEach((dronePath, key) =>
-      L.geoJSON(dronePath.data, {
-        style: (feature) => {
-          if (feature?.geometry.type !== "LineString") {
-            return {};
-          }
-          return {
-            color: mapScalesRef.current.dronePathColorScale(
-              key / geoJsonData.dronePaths.length
-            ),
-            opacity: 0.7,
-          };
-        },
 
-        pointToLayer: (_, latlng) => {
-          return L.marker(latlng, { icon: mapChartParameters.icons.default });
-        },
-
-        onEachFeature: (feature, layer) => {
-          if (feature.properties && feature.properties.name)
-            layer.bindTooltip(feature.properties.name);
-
-          if (feature?.geometry.type === "LineString") {
-            layer.on({
-              mouseover: (event) => {
-                const hoveredLayer = event.target;
-                hoveredLayer.setStyle({
-                  weight: 6,
-                  opacity: 1,
-                });
-              },
-              mouseout: (event) => {
-                const hoveredLayer = event.target;
-                hoveredLayer.setStyle({
-                  weight: 4,
-                  opacity: 0.7,
-                });
-              },
-            });
-          }
-        },
-      }).addTo(geoJsonLayer)
+    const geoJsonLayer = drawGeoJson(
+      map,
+      geoJsonData.dronePaths,
+      mapScalesRef.current.dronePathColorScale
     );
 
     geoJsonLayer.getBounds().isValid() &&
       map.fitBounds(geoJsonLayer.getBounds());
   }, [map, geoJsonData.dronePaths]);
+
+  useEffect(() => {
+    if (!map) {
+      return;
+    }
+
+    drawDetections(map, detectionsPositionsData.data);
+  }, [map, detectionsPositionsData.data]);
 
   useEffect(() => {
     setMap(() => {

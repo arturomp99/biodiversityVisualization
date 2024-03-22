@@ -7,7 +7,7 @@ export interface LineChartDataType {
 export type MapChartDataType = {
   latitude: number;
   longitude: number;
-  sensorId: string;
+  Id: string | string[];
   observationsNum: number;
 };
 

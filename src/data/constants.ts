@@ -107,6 +107,11 @@ export const mapChartParameters = {
       iconSize: [32, 32],
       iconAnchor: [16, 16],
     }),
+    detection: L.icon({
+      iconUrl: "https://cdn-icons-png.flaticon.com/512/3720/3720102.png",
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
+    }),
   },
 };
 

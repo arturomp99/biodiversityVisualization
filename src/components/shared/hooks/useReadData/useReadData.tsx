@@ -3,7 +3,7 @@ import { SoundHeaders } from "src/data/sampleData/sampleData.types";
 import {
   CleanDataFileHeaders,
   DataType,
-  SensorsFileHeaders,
+  PositionsFileHeaders,
 } from "src/data/data.types";
 import { useGetFiltersData } from "../useGetFiltersData/useGetFiltersData";
 import { useFetchJSON } from "./useFetchJson";
@@ -46,16 +46,17 @@ const useReadGeoJsonData = (filePath: string) => {
   return { data, loading };
 };
 
-const useReadSensorsData = () => {
-  const { data, loading } = useFetchDSV<MapChartDataType, SensorsFileHeaders>(
-    ";",
-    "/sampleData/sensors.csv",
-    (sensorData) => {
+const useReadPositionsData = (fileName: string) => {
+  const { data, loading } = useFetchDSV<MapChartDataType, PositionsFileHeaders>(
+    ",",
+    fileName,
+    (positionData) => {
       return {
-        sensorId: sensorData.sensorId,
-        latitude: Number(sensorData.latitude),
-        longitude: Number(sensorData.longitude),
-        observationsNum: Number(sensorData.observationsNum),
+        Id: positionData.occurrenceID.split(","),
+        latitude: Number(positionData.decimalLatitude),
+        longitude: Number(positionData.decimalLongitude),
+        scientificNames: positionData.scientificName.split(","),
+        observationsNum: Number(positionData.observationsNum),
       };
     }
   );
@@ -100,7 +101,7 @@ const useReadComplexData = () => {
     DataType,
     CleanDataFileHeaders
   >(",", "/sampleData/clean_IdentifiedSpeciesTime.csv", (dataEntry) => {
-    const cleanEntry: DataType = dataEntry;
+    const cleanEntry: DataType = { ...dataEntry };
     for (const property of arrayProperties) {
       cleanEntry[property] = dataEntry[property].split(",") as string[];
     }
@@ -115,7 +116,10 @@ const useReadComplexData = () => {
 export const useReadData = () => {
   const lineChartData = useReadLineChartData();
   const mapData = useReadMapData();
-  const sensorsData = useReadSensorsData();
+  const detectionsPositionsData = useReadPositionsData(
+    "/sampleData/positions.csv"
+  );
+  console.log("arturo detectionsPositionsData", detectionsPositionsData);
   const timeLineData = useReadTimeLineData();
   const complexData = useReadComplexData();
   const geoJsonData = {
@@ -152,7 +156,7 @@ export const useReadData = () => {
     lineChartData,
     mapData,
     timeLineData,
-    sensorsData,
+    detectionsPositionsData,
     complexData,
     taxonomicClassification: {
       data: taxonomicClassification,
