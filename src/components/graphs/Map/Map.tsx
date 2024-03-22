@@ -28,6 +28,7 @@ export const Map: FC<GraphProps> = () => {
             color: mapScalesRef.current.dronePathColorScale(
               key / geoJsonData.dronePaths.length
             ),
+            opacity: 0.7,
           };
         },
 
@@ -41,12 +42,14 @@ export const Map: FC<GraphProps> = () => {
                 const hoveredLayer = event.target;
                 hoveredLayer.setStyle({
                   weight: 6,
+                  opacity: 1,
                 });
               },
               mouseout: (event) => {
                 const hoveredLayer = event.target;
                 hoveredLayer.setStyle({
                   weight: 4,
+                  opacity: 0.7,
                 });
               },
             });
