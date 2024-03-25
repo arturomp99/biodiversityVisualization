@@ -4,6 +4,7 @@ import { useFiltersContext } from "src/contexts/filtersContext";
 import { Chip } from "@nextui-org/react";
 import { FiltersType } from "src/data/filters.types";
 import {
+  isDropFilterType,
   isTaxonomicFilterType,
   isTemporalFilterType,
 } from "src/utils/bodyguards";
@@ -18,6 +19,9 @@ const getFilterString = (filter: FiltersType) => {
     const minDateString = `${minDate.getDate()}/${minDate.getMonth()} ${minDate.getHours()}:${minDate.getMinutes()}:${minDate.getSeconds()}`;
     const maxDateString = `${maxDate.getDate()}/${minDate.getMonth()} ${maxDate.getHours()}:${maxDate.getMinutes()}:${maxDate.getSeconds()}`;
     return `Time: from ${minDateString} to ${maxDateString}`;
+  }
+  if (isDropFilterType(filter)) {
+    return `DROP: ${filter.dropId}`;
   }
   return "unrecognized filter";
 };

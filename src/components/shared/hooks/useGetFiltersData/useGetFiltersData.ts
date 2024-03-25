@@ -9,6 +9,10 @@ import {
   asyncGetTimeFiltersData,
 } from "./asyncGetTimeFiltersData";
 import { LineChartDataType } from "src/components/graphs";
+import {
+  DropFiltersDataType,
+  asyncGetDropFiltersData,
+} from "./asyncGetDropFiltersData";
 
 export const useGetFiltersData = <
   DataT extends {
@@ -26,6 +30,7 @@ export const useGetFiltersData = <
   const [filtersData, setFiltersData] = useState<{
     taxonomic?: TaxonomicFiltersDataType;
     temporal?: TimeFiltersDataType;
+    drop?: DropFiltersDataType;
   }>();
 
   useEffect(() => {
@@ -45,6 +50,12 @@ export const useGetFiltersData = <
           temporal: { data: collectedFiltersData, loading: false },
         }));
       }
+    );
+    asyncGetDropFiltersData(data.readData).then((collectedFiltersData) =>
+      setFiltersData((previousFiltersData) => ({
+        ...previousFiltersData,
+        drop: { data: collectedFiltersData, loading: false },
+      }))
     );
   }, [
     data.loading,

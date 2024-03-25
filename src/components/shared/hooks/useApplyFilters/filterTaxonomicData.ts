@@ -1,5 +1,6 @@
 import { DataType } from "src/data/data.types";
 import {
+  DropFilterType,
   FiltersType,
   TaxonomicFilterType,
   TemporalFilterType,
@@ -42,6 +43,15 @@ const applyTemporalFilter = (
   );
 };
 
+const applyDropFilter = (data: DataType[], filters: DropFilterType[]) => {
+  if (!filters.length) {
+    return data;
+  }
+  return data.filter((dataEntry) =>
+    filters.some((filter) => dataEntry.dropId === filter.dropId)
+  );
+};
+
 export const filterTaxonomicData = (
   data: DataType[],
   filters: FiltersType[]
@@ -52,7 +62,14 @@ export const filterTaxonomicData = (
   const temporalFilters = filters.filter(
     (filter) => filter.type === TypeOfFilter.Temporal
   ) as TemporalFilterType[];
+  const dropFilters = filters.filter(
+    (filter) => filter.type === TypeOfFilter.Drop
+  ) as DropFilterType[];
 
   const taxonomicFilteredData = applyTaxonomicFilter(data, taxonomicFilters);
-  return applyTemporalFilter(taxonomicFilteredData, temporalFilters);
+  const temporalFilteredData = applyTemporalFilter(
+    taxonomicFilteredData,
+    temporalFilters
+  );
+  return applyDropFilter(temporalFilteredData, dropFilters);
 };

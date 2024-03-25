@@ -3,6 +3,7 @@ import { TaxonomicLevelsType } from "./data.types";
 export enum TypeOfFilter {
   Taxonomic = "Taxonomic",
   Temporal = "Temporal",
+  Drop = "Drop",
 }
 
 type FiltersBaseType = {
@@ -19,4 +20,11 @@ export type TemporalFilterType = FiltersBaseType & {
   maxTime: number;
 };
 
-export type FiltersType = TaxonomicFilterType | TemporalFilterType;
+export type DropFilterType = FiltersBaseType & {
+  dropId: string;
+};
+
+export type FiltersType =
+  | TaxonomicFilterType
+  | TemporalFilterType
+  | DropFilterType;

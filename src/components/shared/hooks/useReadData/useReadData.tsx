@@ -119,7 +119,6 @@ export const useReadData = () => {
   const detectionsPositionsData = useReadPositionsData(
     "/sampleData/positions.csv"
   );
-  console.log("arturo detectionsPositionsData", detectionsPositionsData);
   const timeLineData = useReadTimeLineData();
   const complexData = useReadComplexData();
   const geoJsonData = {

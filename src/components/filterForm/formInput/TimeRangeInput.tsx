@@ -6,11 +6,11 @@ import { TypeOfFilter } from "src/data/filters.types";
 
 export const TimeRangeInput = () => {
   const { filtersData } = useDataContext();
-  const { addFilter, removeFilter } = useFiltersContext();
+  const { addFilter } = useFiltersContext();
 
   const timeRangeFilterHandler = useCallback(
     (valueRange: [number, number]) => {
-      if (!addFilter || !removeFilter) {
+      if (!addFilter) {
         return;
       }
       addFilter({
@@ -19,7 +19,7 @@ export const TimeRangeInput = () => {
         type: TypeOfFilter.Temporal,
       });
     },
-    [addFilter, removeFilter]
+    [addFilter]
   );
 
   return (

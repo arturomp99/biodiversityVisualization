@@ -26,7 +26,7 @@ export function createAxes(
   customMargin?: Parameters<typeof getGraphMargins>[0]
 ) {
   const margins = getGraphMargins(customMargin);
-  console.log("arturo", margins);
+
   const [xScale, yScale] = scales;
   const [width, height] = dimensions;
   xScale.range([0, width]);
