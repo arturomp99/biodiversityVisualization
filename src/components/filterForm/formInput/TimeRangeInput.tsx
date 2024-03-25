@@ -1,12 +1,13 @@
 import { Slider } from "@nextui-org/react";
-import React, { useCallback } from "react";
-import { useDataContext } from "src/contexts/dataContext";
-import { useFiltersContext } from "src/contexts/filtersContext";
-import { TypeOfFilter } from "src/data/filters.types";
+import React, { useCallback, FC, useState, useEffect } from "react";
+import { TemporalFilterType, TypeOfFilter } from "src/data/filters.types";
+import { FilterInputProps } from "./types";
+import { TimeFiltersDataType } from "src/components/shared/hooks/useGetFiltersData/asyncGetTimeFiltersData";
 
-export const TimeRangeInput = () => {
-  const { filtersData } = useDataContext();
-  const { addFilter } = useFiltersContext();
+const TimeRangeInput: FC<
+  FilterInputProps<TimeFiltersDataType, TemporalFilterType>
+> = ({ filtersData, addFilter, selectedFilters }) => {
+  const [value, setValue] = useState<[number, number] | undefined>();
 
   const timeRangeFilterHandler = useCallback(
     (valueRange: [number, number]) => {
@@ -22,15 +23,27 @@ export const TimeRangeInput = () => {
     [addFilter]
   );
 
+  useEffect(() => {
+    if (!selectedFilters || !selectedFilters[0]) {
+      setValue(() => [
+        filtersData?.data[0]?.getTime() ?? 0,
+        filtersData?.data[1]?.getTime() ?? 0,
+      ]);
+      return;
+    }
+    setValue([selectedFilters[0].minTime, selectedFilters[0].maxTime]);
+  }, [selectedFilters]);
+
   return (
     <Slider
       label=" "
-      loading={filtersData?.temporal?.loading || false}
+      loading={filtersData?.loading || false}
       size="sm"
       color="success"
-      minValue={filtersData?.temporal?.data[0]?.getTime()}
-      maxValue={filtersData?.temporal?.data[1]?.getTime()}
-      defaultValue={filtersData?.temporal?.data}
+      minValue={filtersData?.data[0]?.getTime()}
+      maxValue={filtersData?.data[1]?.getTime()}
+      value={value}
+      defaultValue={filtersData?.data}
       getValue={(time: string) => {
         const minDate = new Date(time[0]);
         const maxDate = new Date(time[1]);
@@ -38,7 +51,10 @@ export const TimeRangeInput = () => {
         ${maxDate.getDate()}/${minDate.getMonth()} ${maxDate.getHours()}:${maxDate.getMinutes()}:${maxDate.getSeconds()}`;
       }}
       className="max-w-md"
+      onChange={setValue}
       onChangeEnd={(value: [number, number]) => timeRangeFilterHandler(value)}
     ></Slider>
   );
 };
+
+export const MemoTimeRangeInput = React.memo(TimeRangeInput);
