@@ -26,7 +26,6 @@ export function createAxes(
   customMargin?: Parameters<typeof getGraphMargins>[0]
 ) {
   const margins = getGraphMargins(customMargin);
-
   const [xScale, yScale] = scales;
   const [width, height] = dimensions;
   xScale.range([0, width]);
