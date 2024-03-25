@@ -3,6 +3,24 @@ import { StyledFilterSectionLayout } from "./styles";
 import { useFiltersContext } from "src/contexts/filtersContext";
 import { Chip } from "@nextui-org/react";
 import { FiltersType } from "src/data/filters.types";
+import {
+  isTaxonomicFilterType,
+  isTemporalFilterType,
+} from "src/utils/bodyguards";
+
+const getFilterString = (filter: FiltersType) => {
+  if (isTaxonomicFilterType(filter)) {
+    return `${filter?.level}: ${filter.value}`;
+  }
+  if (isTemporalFilterType(filter)) {
+    const minDate = new Date(filter.minTime);
+    const maxDate = new Date(filter.maxTime);
+    const minDateString = `${minDate.getDate()}/${minDate.getMonth()} ${minDate.getHours()}:${minDate.getMinutes()}:${minDate.getSeconds()}`;
+    const maxDateString = `${maxDate.getDate()}/${minDate.getMonth()} ${maxDate.getHours()}:${maxDate.getMinutes()}:${maxDate.getSeconds()}`;
+    return `Time: from ${minDateString} to ${maxDateString}`;
+  }
+  return "unrecognized filter";
+};
 
 export const FilterSection = () => {
   const { filters, removeFilter } = useFiltersContext();
@@ -17,10 +35,9 @@ export const FilterSection = () => {
   return (
     <StyledFilterSectionLayout>
       {filters.map((filter, index) => (
-        <Chip
-          key={index}
-          onClose={() => onFilterClosed(filter)}
-        >{`${filter?.level}: ${filter.value}`}</Chip>
+        <Chip key={index} onClose={() => onFilterClosed(filter)}>
+          {getFilterString(filter)}
+        </Chip>
       ))}
     </StyledFilterSectionLayout>
   );

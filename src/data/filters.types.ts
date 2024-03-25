@@ -7,11 +7,11 @@ export enum TypeOfFilter {
 
 type FiltersBaseType = {
   type: TypeOfFilter;
-  value: string;
 };
 
 export type TaxonomicFilterType = FiltersBaseType & {
   level: TaxonomicLevelsType;
+  value: string;
 };
 
 export type TemporalFilterType = FiltersBaseType & {
@@ -19,4 +19,4 @@ export type TemporalFilterType = FiltersBaseType & {
   maxTime: number;
 };
 
-export type FiltersType = TaxonomicFilterType;
+export type FiltersType = TaxonomicFilterType | TemporalFilterType;

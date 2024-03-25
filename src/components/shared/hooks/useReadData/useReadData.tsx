@@ -137,7 +137,7 @@ export const useReadData = () => {
     ],
   };
 
-  const filtersData = useGetFiltersData(complexData, lineChartData);
+  const filtersData = useGetFiltersData(complexData);
 
   const taxonomicClassification = !complexData.data
     ? undefined

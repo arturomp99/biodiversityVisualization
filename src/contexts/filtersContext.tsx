@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { FiltersType } from "src/data/filters.types";
 import { isEqual } from "lodash";
+import { isTemporalFilterType } from "src/utils/bodyguards";
 
 type FiltersContextType = {
   filters: FiltersType[];
@@ -39,7 +40,21 @@ export const FiltersContextProvider = (props: { children: ReactNode }) => {
 
   const addFilter = useCallback<NonNullable<FiltersContextType["addFilter"]>>(
     (filter: FiltersType) => {
-      setFilters((previousFilters) => [...previousFilters, filter]);
+      if (isTemporalFilterType(filter)) {
+        setFilters((previousFilters) => {
+          const temporalFilterIndex = previousFilters.findIndex(
+            (previousFilter) => isTemporalFilterType(previousFilter)
+          );
+          // If the temporal filter is there, modify it
+          if (temporalFilterIndex !== -1) {
+            previousFilters[temporalFilterIndex] = filter;
+            return [...previousFilters];
+          }
+          return [...previousFilters, filter];
+        });
+      } else {
+        setFilters((previousFilters) => [...previousFilters, filter]);
+      }
     },
     []
   );

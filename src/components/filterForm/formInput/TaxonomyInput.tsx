@@ -9,17 +9,12 @@ import { taxonomicLevels } from "src/components/shared/hooks/useGetFiltersData/a
 
 export const TaxonomyInput = () => {
   const { filtersData } = useDataContext();
-  const { addFilter, removeFilter } = useFiltersContext();
+  const { addFilter } = useFiltersContext();
 
   const taxonomicLevelFilterHandler = useCallback(
     (level: TaxonomicLevelsType, value?: number) => {
       const taxonomicFiltersData = filtersData?.taxonomic;
-      if (
-        !addFilter ||
-        !removeFilter ||
-        !taxonomicFiltersData?.data ||
-        !value
-      ) {
+      if (!addFilter || !taxonomicFiltersData?.data || !value) {
         return;
       }
       addFilter({
@@ -28,7 +23,7 @@ export const TaxonomyInput = () => {
         type: TypeOfFilter.Taxonomic,
       });
     },
-    [addFilter, removeFilter, filtersData?.taxonomic?.data]
+    [addFilter, filtersData?.taxonomic?.data]
   );
 
   // Use disableSelectorIconRotation to avoid the small flickering bug
