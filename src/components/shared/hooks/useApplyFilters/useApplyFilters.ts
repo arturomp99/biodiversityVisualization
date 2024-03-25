@@ -10,6 +10,8 @@ export const useApplyFilters = <Data>(
 ) => {
   const { filters } = useFiltersContext();
 
+  console.log("arturo filters", filters);
+
   useEffect(() => {
     setData(() => {
       if (!filters || filters.length === 0 || !dataRef) {
