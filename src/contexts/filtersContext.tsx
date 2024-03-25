@@ -9,7 +9,7 @@ import { FiltersType } from "src/data/filters.types";
 import { isEqual } from "lodash";
 import { isTemporalFilterType } from "src/utils/bodyguards";
 
-type FiltersContextType = {
+export type FiltersContextType = {
   filters: FiltersType[];
   addFilter?: (filter: FiltersType) => void;
   removeFilter?: (filter: FiltersType) => void;

@@ -6,7 +6,7 @@ export enum TypeOfFilter {
   Drop = "Drop",
 }
 
-type FiltersBaseType = {
+export type FiltersBaseType = {
   type: TypeOfFilter;
 };
 
