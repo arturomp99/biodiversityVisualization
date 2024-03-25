@@ -42,7 +42,8 @@ export type CleanDataFileHeaders =
   | "verbatimLocality"
   | "occurrenceRemarks"
   | "references"
-  | "observationsNum";
+  | "observationsNum"
+  | "dropId";
 
 export type DataType = Record<CleanDataFileHeaders, string | string[]>;
 

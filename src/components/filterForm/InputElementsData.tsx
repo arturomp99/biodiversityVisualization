@@ -2,7 +2,7 @@ import React from "react";
 
 import { TaxonomyInput } from "./formInput/TaxonomyInput";
 import { TimeRangeInput } from "./formInput/TimeRangeInput";
-import { SensorInput } from "./formInput/SensorInput";
+import { DropInput } from "./formInput/DropInput";
 
 import { InputDataType } from "./inputElementsData.types";
 
@@ -16,13 +16,13 @@ const temporalInputData = {
   element: <TimeRangeInput />,
 };
 
-const sensorInputData = {
-  title: "Sensor",
-  element: <SensorInput />,
+const dropInputData = {
+  title: "DROP",
+  element: <DropInput />,
 };
 
 export const inputElementsData: InputDataType[] = [
   taxonomyInputData,
   temporalInputData,
-  sensorInputData,
+  dropInputData,
 ];

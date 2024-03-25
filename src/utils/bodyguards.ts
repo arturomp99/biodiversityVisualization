@@ -1,8 +1,10 @@
 import { TimelineChartDataType } from "src/components/graphs";
 import { DataType } from "src/data/data.types";
 import {
+  DropFilterType,
   FiltersType,
   TaxonomicFilterType,
+  TemporalFilterType,
   TypeOfFilter,
 } from "src/data/filters.types";
 
@@ -30,6 +32,12 @@ export const isTaxonomicFilterType = (
 
 export const isTemporalFilterType = (
   filter: FiltersType
-): filter is TaxonomicFilterType => {
+): filter is TemporalFilterType => {
   return filter.type === TypeOfFilter.Temporal;
+};
+
+export const isDropFilterType = (
+  filter: FiltersType
+): filter is DropFilterType => {
+  return filter.type === TypeOfFilter.Drop;
 };
