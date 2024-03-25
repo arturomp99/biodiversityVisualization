@@ -1,9 +1,11 @@
 import React from "react";
 import { StyledFilterFormLayout } from "./styles";
-import { Accordion, AccordionItem } from "@nextui-org/react";
+import { Accordion, AccordionItem, Button } from "@nextui-org/react";
 import { inputElementsData } from "./InputElementsData";
+import { useFiltersContext } from "src/contexts/filtersContext";
 
 export const FilterForm = () => {
+  const { filters, removeAllFilters } = useFiltersContext();
   return (
     <StyledFilterFormLayout>
       <Accordion
@@ -21,6 +23,14 @@ export const FilterForm = () => {
           </AccordionItem>
         ))}
       </Accordion>
+      <Button
+        color="success"
+        variant="solid"
+        isDisabled={filters.length === 0 || !removeAllFilters}
+        onPress={() => removeAllFilters && removeAllFilters()}
+      >
+        Clear all filters
+      </Button>
     </StyledFilterFormLayout>
   );
 };

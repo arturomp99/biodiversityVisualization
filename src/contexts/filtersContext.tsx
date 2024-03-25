@@ -13,6 +13,7 @@ type FiltersContextType = {
   filters: FiltersType[];
   addFilter?: (filter: FiltersType) => void;
   removeFilter?: (filter: FiltersType) => void;
+  removeAllFilters?: () => void;
 };
 
 const FiltersContext = createContext<FiltersContextType>({
@@ -21,6 +22,8 @@ const FiltersContext = createContext<FiltersContextType>({
   addFilter: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   removeFilter: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  removeAllFilters: () => {},
 });
 
 export const useFiltersContext = () => useContext(FiltersContext);
@@ -36,6 +39,12 @@ export const FiltersContextProvider = (props: { children: ReactNode }) => {
         (filterEntry) => !isEqual(filterEntry, filterToRemove)
       )
     );
+  }, []);
+
+  const removeAllFilters = useCallback<
+    NonNullable<FiltersContextType["removeAllFilters"]>
+  >(() => {
+    setFilters(() => []);
   }, []);
 
   const addFilter = useCallback<NonNullable<FiltersContextType["addFilter"]>>(
@@ -60,7 +69,9 @@ export const FiltersContextProvider = (props: { children: ReactNode }) => {
   );
 
   return (
-    <FiltersContext.Provider value={{ filters, addFilter, removeFilter }}>
+    <FiltersContext.Provider
+      value={{ filters, addFilter, removeFilter, removeAllFilters }}
+    >
       {props.children}
     </FiltersContext.Provider>
   );
