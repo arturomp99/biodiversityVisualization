@@ -1,4 +1,8 @@
 import {
+  DendrogramSettingsType,
+  SettingActions,
+} from "../dashboard/dashboardGraphSettings/types";
+import {
   BarChartDataType,
   LineChartDataType,
   StackedBarChartDataType,
@@ -9,6 +13,11 @@ export interface GraphProps {
   isBasicInteractive?: boolean;
   isFullInteractive?: boolean;
 }
+
+export type DendrogramProps = GraphProps & {
+  settings: DendrogramSettingsType | undefined;
+  settingsActionCallback: (action: SettingActions) => void;
+};
 
 export type LineChartProps = GraphProps & {
   data: LineChartDataType[];

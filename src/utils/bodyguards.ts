@@ -1,3 +1,8 @@
+import {
+  DashboardGraphSettingsType,
+  DendrogramSettingsType,
+} from "src/components/dashboard/dashboardGraphSettings/types";
+import { DashboardGraphName } from "src/components/dashboard/dashboardGraphs/DashboardGraph";
 import { TimelineChartDataType } from "src/components/graphs";
 import { DataType } from "src/data/data.types";
 import {
@@ -40,4 +45,10 @@ export const isDropFilterType = (
   filter: FiltersType
 ): filter is DropFilterType => {
   return filter.type === TypeOfFilter.Drop;
+};
+
+export const isDendrogramSettings = (
+  settings: DashboardGraphSettingsType
+): settings is DendrogramSettingsType => {
+  return settings.type === DashboardGraphName.DENDROGRAM;
 };

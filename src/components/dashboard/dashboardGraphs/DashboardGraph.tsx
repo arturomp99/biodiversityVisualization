@@ -1,7 +1,22 @@
-import React, { FC } from "react";
+import React, { FC, useCallback, useReducer } from "react";
 import { Dendrogram, TimeLine, Map } from "../../graphs";
 import { GraphProps } from "src/components/graphs/graphsProps.types";
 import { SoundChart } from "./SoundChart";
+import { StyledGraphSettings } from "../dashboardGraphSettings/styles";
+import { DendrorgamSettings } from "../dashboardGraphSettings/DendrogramSettings";
+import { isDendrogramSettings } from "src/utils/bodyguards";
+import {
+  dashboardSettingsReducer,
+  getInitialSettings,
+} from "../dashboardGraphSettings/dashboardSettingsReducer";
+import { SettingActions } from "../dashboardGraphSettings/types";
+
+export enum DashboardGraphName {
+  DENDROGRAM = "Dendrogram",
+  TIMELINE = "Timeline",
+  MAP = "Map",
+  LINECHART = "LineChart",
+}
 
 type DashboardGraphProps = {
   graphName: string | undefined;
@@ -13,15 +28,43 @@ export const DashboardGraph: FC<DashboardGraphProps> = ({
   graphProps,
 }) => {
   const { dimensions, isFullInteractive } = graphProps;
+  const [graphSettings, settingsDispatch] = useReducer(
+    dashboardSettingsReducer,
+    getInitialSettings(graphName)
+  );
+
+  const settingsActionCallback = useCallback(
+    (action: SettingActions, value?: unknown) => {
+      settingsDispatch({ type: action, value: value });
+    },
+    [settingsDispatch]
+  );
+
   return (
-    (graphName === "Dendrogram" && (
-      <Dendrogram isBasicInteractive dimensions={dimensions} />
+    (graphName === DashboardGraphName.DENDROGRAM && (
+      <>
+        <Dendrogram
+          isBasicInteractive
+          dimensions={dimensions}
+          settings={
+            graphSettings && isDendrogramSettings(graphSettings)
+              ? graphSettings
+              : undefined
+          }
+          settingsActionCallback={settingsActionCallback}
+        />
+        <StyledGraphSettings>
+          <DendrorgamSettings setSettings={settingsDispatch} />
+        </StyledGraphSettings>
+      </>
     )) ||
-    (graphName === "Timeline" && <TimeLine dimensions={dimensions} />) ||
-    (graphName === "Map" && (
+    (graphName === DashboardGraphName.TIMELINE && (
+      <TimeLine dimensions={dimensions} />
+    )) ||
+    (graphName === DashboardGraphName.MAP && (
       <Map isBasicInteractive dimensions={dimensions} />
     )) ||
-    (graphName === "LineChart" && (
+    (graphName === DashboardGraphName.LINECHART && (
       <SoundChart
         isBasicInteractive
         isFullInteractive={isFullInteractive}

@@ -13,7 +13,9 @@ export const Detail = (props: { graphName: string }) => {
     <div>
       <DetailHeaderStyled>
         <Button
+          color="success"
           variant="ghost"
+          className="text-black"
           startContent={<BackIcon />}
           onPress={() => {
             navigate("../Dashboard");

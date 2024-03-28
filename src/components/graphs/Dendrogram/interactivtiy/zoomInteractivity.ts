@@ -25,4 +25,59 @@ export const dendrogramHandleZoomEnd = (
       "stroke-width",
       `${dendrogramParameters.linkParameters.strokeWidth / event.transform.k}px`
     ); // Modify strokeWidth to default one
+
+  const markerLabel = transition.selectChild(
+    `.${dendrogramClassNames.markerLabel}`
+  );
+  markerLabel
+    .selectChild<SVGTextElement, unknown>("text")
+    .attr(
+      "font-size",
+      `${
+        (dendrogramParameters.labels.fontSizeRatio *
+          dendrogramParameters.nodeParameters.radius) /
+        event.transform.k
+      }px`
+    );
+  markerLabel
+    .selectChild<SVGRectElement, unknown>("rect")
+    .attr("width", function () {
+      return (
+        d3
+          .select(this.parentElement)
+          .select<SVGTextElement>("text")
+          .node()
+          ?.getBBox().width || 0
+      );
+    })
+    .attr("height", function () {
+      return (
+        d3
+          .select(this.parentElement)
+          .select<SVGTextElement>("text")
+          .node()
+          ?.getBBox().height || 0
+      );
+    })
+    .attr("transform", function () {
+      const fontSize =
+        (dendrogramParameters.labels.fontSizeRatio *
+          dendrogramParameters.nodeParameters.radius) /
+        event.transform.k;
+      const labelWidth: number =
+        d3
+          .select(this.parentElement)
+          .select<SVGTextElement>("text")
+          .node()
+          ?.getBBox().width || 0;
+      const labelHeight =
+        d3
+          .select(this.parentElement)
+          .select<SVGTextElement>("text")
+          .node()
+          ?.getBBox().height || 0;
+      return `translate(${
+        -labelWidth / 2
+      }, ${-(labelHeight - 0.2 * fontSize)})`;
+    });
 };
