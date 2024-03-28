@@ -130,11 +130,13 @@ export const giveSizeToAxes = (
     .selectAll("#vAxis")
     .attr("transform", `translate(${margins.left},${margins.top})`);
   parent
-    .selectAll("#xAxisTitle")
+    .selectAll(`#${axes.id.hAxis}`)
+    .selectChild(`.${axes.title.class}`)
     .attr("x", width - margins.right)
     .attr("y", margins.bottom / 2);
   parent
-    .selectAll("#yAxisTitle")
+    .selectAll(`#${axes.id.vAxis}`)
+    .selectChild(`.${axes.title.class}`)
     .attr("x", -height / 2)
     .attr("y", -margins.left / 2);
 };

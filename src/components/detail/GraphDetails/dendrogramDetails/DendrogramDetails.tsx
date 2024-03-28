@@ -1,12 +1,12 @@
 import * as d3 from "d3";
 import React, { useCallback, useEffect, useState } from "react";
 import { StackedBarChart } from "src/components/graphs/StackedBarChart/StackedBarChart";
-import { StyledDetailChart } from "./styles";
+import { StyledDetailChart } from "../styles";
 import { useObserveResize } from "src/components/shared/hooks/useObserveResize";
 import { renderGraph } from "src/components/graphs/shared/utils/renderGraph";
 import { useDataContext } from "src/contexts/dataContext";
 import { TreeDataType } from "src/components/graphs/Dendrogram/dendrogram.types";
-import { getStackedBarsDataFromNode } from "../utils/getBarsDataFromNode";
+import { getStackedBarsDataFromNode } from "./getBarsDataFromNode";
 import {
   StackedBarChartDataType,
   StackedBarChartProps,
