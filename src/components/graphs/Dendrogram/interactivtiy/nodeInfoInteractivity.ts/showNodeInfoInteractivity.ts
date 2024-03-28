@@ -16,7 +16,8 @@ export const addLabel = (
     .select(element)
     .append("g")
     .attr("class", dendrogramClassNames.markerLabel)
-    .attr("transform", `translate(0,-${0.8 * fontSize})`);
+    .attr("transform", `translate(0,-${0.8 * fontSize})`)
+    .attr("opacity", "1");
   const labelText = label
     .append("text")
     .text(node.name || node.data[0] || "")

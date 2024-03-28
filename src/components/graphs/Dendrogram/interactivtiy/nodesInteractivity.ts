@@ -43,6 +43,10 @@ const collapseTransition = (
         }
       );
     });
+
+  transition
+    .selectChild(`.${dendrogramClassNames.markerLabel}`)
+    .attr("opacity", "0");
 };
 
 const expandTransition = (
@@ -107,6 +111,9 @@ const expandTransition = (
         );
       })
   );
+  transition
+    .selectChild(`.${dendrogramClassNames.markerLabel}`)
+    .attr("opacity", "1");
 };
 
 /**
