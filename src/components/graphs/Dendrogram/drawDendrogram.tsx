@@ -3,10 +3,6 @@ import { TreeDataType, TreeNode } from "./dendrogram.types";
 import { dendrogramParameters, graphMargin } from "src/data/constants";
 import { dendrogramClassNames } from "src/data/idClassNames";
 import { verticalDiagonalLine } from "src/utils/lineEquations";
-import {
-  hideNodeInfoInteractivity,
-  showNodeInfoInteractivity,
-} from "./interactivtiy/showNodeInfoInteractivity";
 
 const setInitialState = (
   root: TreeNode<TreeDataType>,
@@ -97,7 +93,7 @@ export const drawDendrogram = (
     .attr("stroke", "black")
     .attr("stroke-width", dendrogramParameters.linkParameters.strokeWidth);
 
-  const markersCircles = dendrogramMarkersEnter
+  dendrogramMarkersEnter
     .selectAll<SVGSVGElement, TreeNode<TreeDataType>>(
       `.${dendrogramClassNames.markerNode}`
     )
@@ -110,28 +106,6 @@ export const drawDendrogram = (
         : dendrogramParameters.nodeParameters.radiusCollapsed
     )
     .attr("fill", dendrogramParameters.nodeParameters.color);
-
-  markersCircles
-    .on(
-      "mouseover",
-      function (
-        this: SVGSVGElement | SVGCircleElement,
-        _,
-        data: TreeNode<TreeDataType>
-      ) {
-        showNodeInfoInteractivity(this, data);
-      }
-    )
-    .on(
-      "mouseout",
-      function (
-        this: SVGSVGElement | SVGCircleElement,
-        _,
-        data: TreeNode<TreeDataType>
-      ) {
-        hideNodeInfoInteractivity(this, data);
-      }
-    );
 
   const dendrogramMarkersUpdate = dendrogramMarkers.attr(
     "transform",

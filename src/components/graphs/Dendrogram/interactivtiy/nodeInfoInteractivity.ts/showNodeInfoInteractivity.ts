@@ -1,9 +1,9 @@
 import * as d3 from "d3";
-import { TreeDataType, TreeNode } from "../dendrogram.types";
+import { TreeDataType, TreeNode } from "../../dendrogram.types";
 import { dendrogramClassNames } from "src/data/idClassNames";
 import { dendrogramParameters } from "src/data/constants";
 
-const addLabel = (
+export const addLabel = (
   element: HTMLElement | null,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   node: any
@@ -16,7 +16,7 @@ const addLabel = (
     .select(element)
     .append("g")
     .attr("class", dendrogramClassNames.markerLabel)
-    .attr("transform", `translate(0,-${fontSize})`);
+    .attr("transform", `translate(0,-${0.8 * fontSize})`);
   const labelText = label
     .append("text")
     .text(node.name || node.data[0] || "")

@@ -191,3 +191,52 @@ export const makeNodesCollapsible = (parentRef: SVGSVGElement) => {
       });
     });
 };
+
+export const expandAllMarkers = (parentRef: SVGSVGElement) => {
+  const dendrogramMarkers = d3
+    .select(parentRef)
+    .selectAll<SVGGElement, TreeNode<TreeDataType>>(
+      `.${dendrogramClassNames.markerGroup}`
+    );
+  dendrogramMarkers
+    .selectAll<SVGSVGElement, TreeNode<TreeDataType>>(
+      `.${dendrogramClassNames.markerNode}`
+    )
+    .each(function (dataPoint) {
+      if (dataPoint.expanded || !dataPoint.children) {
+        return;
+      }
+      dataPoint.expanded = true;
+      expandNode(dataPoint);
+      expandTransition(dendrogramMarkers, {
+        radius: d3
+          .select(parentRef)
+          .select(`.${dendrogramClassNames.markerNode}`)
+          .attr("r"),
+        strokeWidth: d3
+          .select(parentRef)
+          .select(`.${dendrogramClassNames.markerLink}`)
+          .attr("stroke-width"),
+      });
+    });
+};
+
+export const collapseAllMarkers = (parentRef: SVGSVGElement) => {
+  const dendrogramMarkers = d3
+    .select(parentRef)
+    .selectAll<SVGGElement, TreeNode<TreeDataType>>(
+      `.${dendrogramClassNames.markerGroup}`
+    );
+  dendrogramMarkers
+    .selectAll<SVGSVGElement, TreeNode<TreeDataType>>(
+      `.${dendrogramClassNames.markerNode}`
+    )
+    .each(function (dataPoint) {
+      if (!dataPoint.expanded || !dataPoint.parentNode) {
+        return;
+      }
+      dataPoint.expanded = false;
+      collapseNode(dataPoint);
+      collapseTransition(dendrogramMarkers, [dataPoint.x, dataPoint.y]);
+    });
+};
