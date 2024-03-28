@@ -30,6 +30,9 @@ export const LineChart: FC<LineChartProps> = ({
   data,
   isBrushInteractive,
   isCursorInteractive,
+  axisTitles,
+  axesParameters,
+  shouldAddLegend,
 }) => {
   const { brushExtent, lineChartBrushInteractivity } =
     useLineChartBrushInteractivity();
@@ -58,7 +61,7 @@ export const LineChart: FC<LineChartProps> = ({
       [xScale, yScale],
       realDimensions,
       lineChartParameters.axesParameters,
-      ["time (s)", "sound"]
+      axisTitles ?? ["time (s)", "sound"]
     );
     drawLines(node.current, scaledData, colorScale);
     if (isCursorInteractive) {
@@ -93,7 +96,7 @@ export const LineChart: FC<LineChartProps> = ({
         node.current,
         [xScale, yScale],
         realDimensions,
-        lineChartParameters.axesParameters
+        axesParameters ?? lineChartParameters.axesParameters
       );
 
       const scaledData = data
@@ -127,7 +130,7 @@ export const LineChart: FC<LineChartProps> = ({
   return (
     <StyledContainer>
       <StyledLineChartContainer ref={node} id="lineChart" />
-      {lineChartParameters.legend.isPresent && !!data && scales.current && (
+      {shouldAddLegend && !!data && scales.current && (
         <Legend
           keys={getUniqueIds(
             data.map((dataPoint) => ({ id: dataPoint.group }))

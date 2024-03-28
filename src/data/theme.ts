@@ -40,6 +40,10 @@ export const themeSizes = {
     md: "12px",
     lg: "24px",
   },
+  graphCardPaddings: {
+    vert: "0.5rem",
+    hor: "1rem",
+  },
 };
 
 export const themeFont = {

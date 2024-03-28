@@ -6,7 +6,10 @@ export const StyledGraphCard = styled.div<{
   $hasTitle?: boolean;
 }>`
   height: 100%;
-  padding: 0.5rem 1rem;
+  padding-top: ${themeSizes.graphCardPaddings.vert};
+  padding-bottom: ${themeSizes.graphCardPaddings.vert};
+  padding-left: ${themeSizes.graphCardPaddings.hor};
+  padding-right: ${themeSizes.graphCardPaddings.hor};
   background-color: inherit;
   color: ${themeColors.card.font};
   display: grid;

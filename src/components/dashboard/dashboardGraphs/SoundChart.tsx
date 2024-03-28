@@ -20,6 +20,7 @@ export const SoundChart: FC<GraphProps> = ({
           data={data}
           isBrushInteractive={isFullInteractive}
           isCursorInteractive={isFullInteractive}
+          shouldAddLegend
         />
       ) : (
         <div>LOADING LINE CHART DATA...</div>

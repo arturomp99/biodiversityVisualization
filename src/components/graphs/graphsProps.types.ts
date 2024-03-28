@@ -1,3 +1,4 @@
+import { lineChartParameters } from "src/data/constants";
 import {
   DendrogramSettingsType,
   SettingActions,
@@ -23,6 +24,9 @@ export type LineChartProps = GraphProps & {
   data: LineChartDataType[];
   isBrushInteractive?: boolean;
   isCursorInteractive?: boolean;
+  axesParameters?: typeof lineChartParameters.axesParameters;
+  axisTitles?: [string, string];
+  shouldAddLegend?: boolean;
 };
 
 export type BarChartProps = GraphProps & {
