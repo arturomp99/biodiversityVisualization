@@ -12,14 +12,13 @@ import { useApplyFilters } from "../useApplyFilters/useApplyFilters";
 import {
   LineChartDataType,
   MapChartDataType,
-  TimelineChartDataType,
 } from "src/components/graphs/graphsData.types";
 
 const useReadLineChartData = () => {
   const { dataRef, data, loading, setData } = useFetchDSV<
     LineChartDataType,
     SoundHeaders
-  >(",", "/sampleData/testBioacustic.csv", (soundData) => {
+  >(",", "/sampleData/bioacoustic.csv", (soundData) => {
     return {
       timeStamp: Number(soundData.timeStamp),
       value: Number(soundData.soundMax),
@@ -62,15 +61,6 @@ const useReadPositionsData = (fileName: string) => {
   );
 
   return { data, loading };
-};
-
-const useReadTimeLineData = () => {
-  const { dataRef, data, setData, loading } = useFetchJSON<
-    TimelineChartDataType[]
-  >("/sampleData/sampleTimelineData.json");
-
-  useApplyFilters(dataRef.current, setData);
-  return { data, loading, readData: dataRef.current };
 };
 
 const arrayProperties: Array<CleanDataFileHeaders> = [
@@ -119,7 +109,6 @@ export const useReadData = () => {
   const detectionsPositionsData = useReadPositionsData(
     "/sampleData/positions.csv"
   );
-  const timeLineData = useReadTimeLineData();
   const complexData = useReadComplexData();
   const geoJsonData = {
     dronePaths: [
@@ -154,7 +143,6 @@ export const useReadData = () => {
   return {
     lineChartData,
     mapData,
-    timeLineData,
     detectionsPositionsData,
     complexData,
     taxonomicClassification: {
