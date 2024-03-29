@@ -36,10 +36,10 @@ export const Catalog = () => {
             catalogEntry && (
               <Card key={index}>
                 <CardHeader className="flex gap-3">
-                  <CatalogCardTitle>{catalogEntry.species}</CatalogCardTitle>
-                  <p>
+                  <CatalogCardTitle>
                     {getEnglishVernacularName(catalogEntry.vernacularNames)}
-                  </p>
+                  </CatalogCardTitle>
+                  <p>- {catalogEntry.species}</p>
                 </CardHeader>
                 <Divider />
                 <CardBody className="flex gap-3">
