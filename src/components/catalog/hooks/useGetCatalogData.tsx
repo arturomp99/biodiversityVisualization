@@ -11,7 +11,7 @@ import { DataType } from "src/data/data.types";
 
 const getGBIFData = (pageReadData: DataType[]) => {
   return pageReadData.map(async (dataEntry) => {
-    const species = dataEntry.species as string;
+    const species = dataEntry.scientificName as string;
     const { usageKey } = (await getUsageKey(species)) || "";
     if (!usageKey) return undefined;
     const { results: vernacularNames } = await getVernacularNames(usageKey);
@@ -38,9 +38,11 @@ export const useGetCatalogData = () => {
     const pageComplexData = complexData.data.slice(initIndex, endIndex);
     const gbifData = getGBIFData(pageComplexData);
     Promise.all(gbifData)
-      .then((data) => setCatalogData(data))
+      .then((data) => {
+        setCatalogData(data);
+      })
       .catch((error) => console.log(error));
-  }, [page, complexData]);
+  }, [page, complexData.data, complexData.loading]);
 
   useEffect(() => {
     totalPages.current = complexData.data?.length
