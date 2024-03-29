@@ -14,7 +14,7 @@ export const Detail = (props: { graphName: string }) => {
       <DetailHeaderStyled>
         <Button
           color="success"
-          variant="ghost"
+          variant="light"
           className="text-black"
           startContent={<BackIcon />}
           onPress={() => {
