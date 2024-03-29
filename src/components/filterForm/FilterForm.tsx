@@ -3,6 +3,7 @@ import { StyledFilterFormLayout } from "./styles";
 import { Button } from "@nextui-org/react";
 import { InputAccordion } from "./formInput/InputAccordion";
 import { useFiltersContext } from "src/contexts/filtersContext";
+import { SummaryInfo } from "../summaryInfo/SummaryInfo";
 
 export const FilterForm = () => {
   const { filters, removeAllFilters } = useFiltersContext();
@@ -17,6 +18,7 @@ export const FilterForm = () => {
       >
         Clear all filters
       </Button>
+      <SummaryInfo shouldAddFilteredInfo={filters.length !== 0} />
     </StyledFilterFormLayout>
   );
 };
