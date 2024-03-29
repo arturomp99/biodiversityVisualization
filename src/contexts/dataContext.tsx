@@ -5,7 +5,6 @@ const defaultData = { data: undefined, loading: true };
 const dataContext = createContext<ReturnType<typeof useReadData>>({
   lineChartData: { ...defaultData, readData: undefined },
   mapData: defaultData,
-  timeLineData: { ...defaultData, readData: undefined },
   detectionsPositionsData: defaultData,
   complexData: { ...defaultData, readData: undefined },
   taxonomicClassification: defaultData,
