@@ -44,6 +44,8 @@ export const Graph = (props: {
           <ConditionalLink condition={!!to} to={to}>
             <Button
               variant="light"
+              color="success"
+              className="text-black"
               endContent={<ForwardIcon />}
               onPress={() => {
                 !!to && navigate(to);
