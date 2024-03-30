@@ -116,6 +116,7 @@ export const mapChartParameters = {
 
 export const catalogParameters = {
   animalsPerPage: 10,
+  gbifImagesCount: 5,
 };
 
 export const barChartParameters = {

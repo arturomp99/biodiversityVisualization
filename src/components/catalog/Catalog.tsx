@@ -6,7 +6,6 @@ import {
   Spinner,
   CardHeader,
   Divider,
-  Image,
 } from "@nextui-org/react";
 
 import { CatalogContainer } from "./CatalogContainer";
@@ -14,6 +13,7 @@ import { useGetCatalogData } from "./hooks/useGetCatalogData";
 import { getEnglishVernacularName } from "./utils/getEnglishVernacularName";
 import { CatalogCardTitle, CatalogDescription } from "./styles";
 import { isStringHTML } from "src/utils/isStringHTML";
+import { ImageCarousel } from "./components/ImageCarousel";
 
 export const Catalog = () => {
   const { loading, catalogData, page, setPage, totalPages } =
@@ -44,13 +44,7 @@ export const Catalog = () => {
                 <Divider />
                 <CardBody className="flex gap-3">
                   {catalogEntry?.images && catalogEntry.images.length !== 0 && (
-                    <div className="mx-auto">
-                      <Image
-                        alt={catalogEntry.images[0]?.description || ""}
-                        src={catalogEntry.images[0].identifier}
-                        className="w-full max-w-xl"
-                      />
-                    </div>
+                    <ImageCarousel images={catalogEntry.images} />
                   )}
                   <p>{catalogEntry.usageKey}</p>
                   {isStringHTML(
