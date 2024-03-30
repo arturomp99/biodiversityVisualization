@@ -44,7 +44,10 @@ export const Catalog = () => {
                 <Divider />
                 <CardBody className="flex gap-3">
                   {catalogEntry?.images && catalogEntry.images.length !== 0 && (
-                    <ImageCarousel images={catalogEntry.images} />
+                    <ImageCarousel
+                      mainImage={catalogEntry.wikipediaImageUrl}
+                      images={catalogEntry.images}
+                    />
                   )}
                   <p>{catalogEntry.usageKey}</p>
                   {isStringHTML(
