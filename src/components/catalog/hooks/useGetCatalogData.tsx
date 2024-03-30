@@ -18,7 +18,7 @@ const getGBIFData = (pageReadData: DataType[]) => {
     const { results: vernacularNames } = await getVernacularNames(usageKey);
     const { results: descriptions } = await getDescription(usageKey);
     const { results: images } = await getImages(usageKey);
-    const wikipediaImageUrl = undefined; //await getWikipediaImage(species);
+    const wikipediaImageUrl = undefined; //await getWikipediaImage(species); CORS error
 
     return {
       species,
