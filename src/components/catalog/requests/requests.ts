@@ -3,6 +3,7 @@ import {
   gbifSpeciesAPIUrl,
   vernacularNamesQuery,
 } from "src/data/catalogAPI";
+import { catalogParameters } from "src/data/constants";
 
 type GBIFNameMatchType = { usageKey: number };
 
@@ -81,7 +82,11 @@ type GBIFImageType = {
 
 export const getImages = async (usageKey: number): Promise<GBIFImageType> => {
   const response = await fetch(
-    gbifSpeciesAPIUrl + gbifGetSlugs.image(usageKey)
+    gbifSpeciesAPIUrl +
+      gbifGetSlugs.image(usageKey, {
+        limit: catalogParameters.gbifImagesCount,
+        offset: 0,
+      })
   );
   if (!response.ok)
     throw new Error(
