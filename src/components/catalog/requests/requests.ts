@@ -95,3 +95,22 @@ export const getImages = async (usageKey: number): Promise<GBIFImageType> => {
 
   return await response.json();
 };
+
+export const getWikipediaImage = async (
+  scientificName: string
+): Promise<string> => {
+  const formattedName = scientificName.replace(" ", "-");
+
+  const response = await fetch(gbifGetSlugs.wikipedia(formattedName));
+
+  const data = await response.json();
+
+  // Extract image URL from the API response
+  const pages = data.query.pages;
+  const pageId = Object.keys(pages)[0];
+  const imageUrl = pages[pageId].thumbnail
+    ? pages[pageId].thumbnail.source
+    : null;
+
+  return imageUrl;
+};

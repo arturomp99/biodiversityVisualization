@@ -6,6 +6,7 @@ import {
   getImages,
   getUsageKey,
   getVernacularNames,
+  // getWikipediaImage,
 } from "../requests/requests";
 import { DataType } from "src/data/data.types";
 
@@ -17,8 +18,16 @@ const getGBIFData = (pageReadData: DataType[]) => {
     const { results: vernacularNames } = await getVernacularNames(usageKey);
     const { results: descriptions } = await getDescription(usageKey);
     const { results: images } = await getImages(usageKey);
+    const wikipediaImageUrl = undefined; //await getWikipediaImage(species);
 
-    return { species, usageKey, vernacularNames, descriptions, images };
+    return {
+      species,
+      usageKey,
+      vernacularNames,
+      descriptions,
+      images,
+      wikipediaImageUrl,
+    };
   });
 };
 
