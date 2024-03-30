@@ -47,7 +47,7 @@ export const drawLegend = (
     })
     .style("cursor", "pointer")
     .text(function (dataLine) {
-      return `sensor ${dataLine}`;
+      return `${dataLine}`;
     })
     .attr("text-anchor", "left")
     .style("alignment-baseline", "middle");
