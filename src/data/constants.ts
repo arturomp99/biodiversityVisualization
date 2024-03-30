@@ -111,6 +111,13 @@ export const mapChartParameters = {
       iconSize: [32, 32],
       iconAnchor: [16, 16],
     }),
+    colorable: (markerHtmlStyles: string) =>
+      L.divIcon({
+        iconSize: [12, 12],
+        iconAnchor: [6, 6],
+        popupAnchor: [0, -36],
+        html: `<span style="${markerHtmlStyles}" />`,
+      }),
   },
 };
 
