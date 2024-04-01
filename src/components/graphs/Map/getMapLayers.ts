@@ -21,7 +21,7 @@ const getMarkerHtmlStyles = (
   transform: rotate(45deg);
   border: 1px solid #FFFFFF`;
 
-export const drawGeoJson = <
+export const getGeoJsonLayers = <
   T extends {
     data:
       | d3.ExtendedFeatureCollection<
@@ -36,7 +36,7 @@ export const drawGeoJson = <
 ) => {
   const geoJsonLayer = L.geoJSON().addTo(map);
 
-  data.forEach((dronePath, key) =>
+  const dronePathLayers = data.map((dronePath, key) =>
     L.geoJSON(dronePath.data, {
       style: (feature) => {
         if (feature?.geometry.type !== "LineString") {
@@ -79,25 +79,28 @@ export const drawGeoJson = <
           });
         }
       },
-    }).addTo(geoJsonLayer)
+    })
   );
 
-  return geoJsonLayer;
+  dronePathLayers.forEach((layer) => layer.addTo(geoJsonLayer));
+
+  return { geoJsonLayer, children: dronePathLayers };
 };
 
-export const drawDetections = (
+export const getDetectionsLayer = (
   map: L.Map,
   data: MapChartDataType[] | undefined
 ) => {
   const detectionsLayer = L.layerGroup().addTo(map);
 
-  data?.forEach((detection) => {
-    L.marker([detection.latitude, detection.longitude], {
+  const eachDetectionLayer = data?.map((detection) => {
+    return L.marker([detection.latitude, detection.longitude], {
       icon: mapChartParameters.icons.detection,
-    })
-      .bindPopup(`${detection.observationsNum} detections`)
-      .addTo(detectionsLayer);
+    }).bindPopup(`${detection.observationsNum} detections`);
   });
 
-  return detectionsLayer;
+  eachDetectionLayer &&
+    eachDetectionLayer.forEach((layer) => layer.addTo(detectionsLayer));
+
+  return { detectionsLayer, children: eachDetectionLayer };
 };

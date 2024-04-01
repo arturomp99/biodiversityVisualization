@@ -16,7 +16,6 @@ export const TimeLineDetails = () => {
 
   useEffect(() => setLinechartData(getLinechartData(data)), [data]);
 
-  console.log("arturo linechart data", linechartData);
   return (
     <StyledDetailChart ref={resizeContainerRef}>
       {!loading &&

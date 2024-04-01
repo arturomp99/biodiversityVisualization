@@ -56,7 +56,7 @@ export const Graph = (props: {
           </ConditionalLink>
         </GraphCardHeaderLayout>
       )}
-      <div ref={resizeContainerRef}>
+      <div ref={resizeContainerRef} className="relative">
         {renderGraph(
           <DashboardGraph graphName={graphName} graphProps={graphProps} />,
           dimensions

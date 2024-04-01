@@ -48,6 +48,7 @@ export const axes = {
 export const legend = {
   dots: { class: "legendDots" },
   labels: { class: "legendLabels" },
+  checkbox: { class: "legendCheckbox" },
 };
 
 export const tooltipInteractiveClass = "tooltipInteractive";
