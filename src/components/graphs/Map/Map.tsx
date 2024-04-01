@@ -1,4 +1,11 @@
-import React, { FC, useEffect, createRef, useState, useRef } from "react";
+import React, {
+  FC,
+  useEffect,
+  createRef,
+  useState,
+  useRef,
+  useCallback,
+} from "react";
 import L from "leaflet";
 import { GraphProps } from "../graphsProps.types";
 import { StyledMapContainer } from "./styles";
@@ -6,11 +13,17 @@ import { mapIdNames } from "src/data/idClassNames";
 import { useDataContext } from "src/contexts/dataContext";
 import { mapChartParameters } from "src/data/constants";
 import { getMapScales } from "./getMapScales";
-import { drawDetections, drawGeoJson } from "./drawMap";
+import { getDetectionsLayer, getGeoJsonLayers } from "./getMapLayers";
+import { MapLegend } from "./interactivity/mapLegend/MapLegend";
+import { drawMapLayers } from "./drawMapLayers";
 
 export const Map: FC<GraphProps> = () => {
   const { geoJsonData, detectionsPositionsData } = useDataContext();
   const mapScalesRef = useRef(getMapScales());
+  const mapLayers = useRef<{
+    geojson: ReturnType<typeof getGeoJsonLayers> | undefined;
+    detections: ReturnType<typeof getDetectionsLayer> | undefined;
+  }>({ geojson: undefined, detections: undefined });
   const [map, setMap] = useState<L.Map | undefined>();
   const node = createRef<HTMLDivElement>();
 
@@ -19,14 +32,11 @@ export const Map: FC<GraphProps> = () => {
       return;
     }
 
-    const geoJsonLayer = drawGeoJson(
+    mapLayers.current.geojson = getGeoJsonLayers(
       map,
       geoJsonData.dronePaths,
       mapScalesRef.current.dronePathColorScale
     );
-
-    geoJsonLayer.getBounds().isValid() &&
-      map.fitBounds(geoJsonLayer.getBounds());
   }, [map, geoJsonData.dronePaths]);
 
   useEffect(() => {
@@ -34,8 +44,25 @@ export const Map: FC<GraphProps> = () => {
       return;
     }
 
-    drawDetections(map, detectionsPositionsData.data);
+    mapLayers.current.detections = getDetectionsLayer(
+      map,
+      detectionsPositionsData.data
+    );
   }, [map, detectionsPositionsData.data]);
+
+  useEffect(() => {
+    if (!map) {
+      return;
+    }
+    if (mapLayers.current.detections) {
+      drawMapLayers(mapLayers.current.detections.detectionsLayer, map);
+    }
+    if (mapLayers.current.geojson) {
+      drawMapLayers(mapLayers.current.geojson.geoJsonLayer, map);
+      mapLayers.current.geojson.geoJsonLayer.getBounds().isValid() &&
+        map.fitBounds(mapLayers.current.geojson.geoJsonLayer.getBounds());
+    }
+  }, [map, mapLayers.current]);
 
   useEffect(() => {
     setMap(() => {
@@ -53,9 +80,47 @@ export const Map: FC<GraphProps> = () => {
     });
   }, []);
 
+  const onLegendChangeHandler = useCallback(
+    (isSelected: boolean, isDronePaths: boolean, layerIndex: number) => {
+      if (
+        !mapLayers.current.geojson ||
+        !mapLayers.current.detections ||
+        !mapLayers.current.geojson.children ||
+        !mapLayers.current.detections.children ||
+        !map
+      ) {
+        return;
+      }
+      if (isDronePaths) {
+        isSelected
+          ? mapLayers.current.geojson.children[layerIndex].addTo(
+              mapLayers.current.geojson.geoJsonLayer
+            )
+          : mapLayers.current.geojson.geoJsonLayer.removeLayer(
+              mapLayers.current.geojson.children[layerIndex]
+            );
+      } else if (!isDronePaths) {
+        isSelected
+          ? mapLayers.current.detections.detectionsLayer.addTo(map)
+          : map.removeLayer(mapLayers.current.detections.detectionsLayer);
+      }
+    },
+    [map, mapLayers.current]
+  );
+
   return (
     <>
       <StyledMapContainer ref={node} id={`${mapIdNames.container}`} />
+      {!!geoJsonData && mapScalesRef.current && (
+        <MapLegend
+          keys={[
+            ...geoJsonData.dronePaths.map((_, index) => `Drone path ${index}`),
+          ]}
+          onValueChange={onLegendChangeHandler}
+          colorScale={mapScalesRef.current.dronePathColorScale}
+          filterable
+        />
+      )}
     </>
   );
 };

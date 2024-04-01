@@ -119,6 +119,11 @@ export const mapChartParameters = {
         html: `<span style="${markerHtmlStyles}" />`,
       }),
   },
+  iconsData: {
+    detection: {
+      url: "https://cdn-icons-png.flaticon.com/512/3720/3720102.png",
+    },
+  },
 };
 
 export const catalogParameters = {

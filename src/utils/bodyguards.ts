@@ -1,9 +1,11 @@
+import { ScaleSequential } from "d3";
 import {
   DashboardGraphSettingsType,
   DendrogramSettingsType,
 } from "src/components/dashboard/dashboardGraphSettings/types";
 import { DashboardGraphName } from "src/components/dashboard/dashboardGraphs/DashboardGraph";
 import { TimelineChartDataType } from "src/components/graphs";
+import { LegendProps } from "src/components/graphs/shared/Legend/Legend.types";
 import { DataType } from "src/data/data.types";
 import {
   DropFilterType,
@@ -51,4 +53,10 @@ export const isDendrogramSettings = (
   settings: DashboardGraphSettingsType
 ): settings is DendrogramSettingsType => {
   return settings.type === DashboardGraphName.DENDROGRAM;
+};
+
+export const isSequentialScale = (
+  scale: LegendProps["colorScale"]
+): scale is ScaleSequential<string, never> => {
+  return typeof scale !== undefined && "interpolator" in scale;
 };

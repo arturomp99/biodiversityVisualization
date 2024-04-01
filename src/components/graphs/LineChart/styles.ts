@@ -14,6 +14,7 @@ export const StyledLegendContainer = styled.svg`
   padding: ${lineChartParameters.legend.margin}px;
   border-radius: 8px;
   background-color: ${lineChartParameters.legend.backgroundColor};
+  z-index: 100;
 `;
 
 export const StyledLineChartContainer = styled.svg`
