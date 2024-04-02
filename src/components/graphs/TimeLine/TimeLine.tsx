@@ -22,7 +22,7 @@ export const TimeLine: FC<GraphProps> = ({ dimensions }) => {
       return;
     }
     scaling.current = getTimeLineScales(data, realDimensions);
-    if (!scaling.current?.scales) return;
+    if (!scaling.current?.xScale || !scaling.current.yScale) return;
     const scaledData = scaling.current.scaleData(data);
     if (!scaledData) {
       return;
@@ -30,23 +30,34 @@ export const TimeLine: FC<GraphProps> = ({ dimensions }) => {
     const [, graphHeight] = realDimensions;
     createAxes(
       node.current,
-      scaling.current.scales,
+      [scaling.current.xScale, scaling.current.yScale],
       realDimensions,
       timeLineParameters.axesParameters,
       ["Time", ""]
     );
-    drawMarkers(node.current, scaledData, graphHeight);
+    drawMarkers(
+      node.current,
+      scaledData,
+      graphHeight,
+      scaling.current.colorScale
+    );
   }, [data]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (loading || !data || !node.current || !scaling.current?.scales) {
+      if (
+        loading ||
+        !data ||
+        !node.current ||
+        !scaling.current?.xScale ||
+        !scaling.current.yScale
+      ) {
         return;
       }
       // So that it only happens after a time delay
       giveSizeToAxes(
         node.current,
-        scaling.current.scales,
+        [scaling.current.xScale, scaling.current.yScale],
         realDimensions,
         timeLineParameters.axesParameters
       );
@@ -55,7 +66,12 @@ export const TimeLine: FC<GraphProps> = ({ dimensions }) => {
         return;
       }
       const [, graphHeight] = realDimensions;
-      drawMarkers(node.current, scaledData, graphHeight);
+      drawMarkers(
+        node.current,
+        scaledData,
+        graphHeight,
+        scaling.current.colorScale
+      );
     }, resizeTimeout);
 
     return () => {

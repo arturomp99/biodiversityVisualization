@@ -1,6 +1,8 @@
 import * as d3 from "d3";
+import { uniq } from "lodash";
 import { TimelineChartDataType } from "../graphsData.types";
 import { TimelineChartPointType } from "../graphsPoints.types";
+import { timeLineParameters } from "src/data/constants";
 
 type TimeLineScalesType = [
   d3.ScaleTime<number, number, never>,
@@ -57,6 +59,7 @@ const getDataScaling = (scales: TimeLineScalesType) => {
             scaledY: scaledY || 0,
             width,
             getHeight,
+            group: dataPoint.class as string,
           };
         }
       );
@@ -90,5 +93,10 @@ export const getTimeLineScales = <T extends TimelineChartDataType[]>(
     yScale.range([0, height]);
   }
 
-  return { scales: [xScale, yScale], scaleData };
+  const colorScale = d3
+    .scaleOrdinal<string>()
+    .domain(uniq(data.map((dataRow) => dataRow.class as string)))
+    .range(timeLineParameters.colorScheme);
+
+  return { xScale, yScale, colorScale, scaleData };
 };

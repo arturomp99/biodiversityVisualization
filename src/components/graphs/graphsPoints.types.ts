@@ -10,6 +10,7 @@ export interface TimelineChartPointType {
   scaledX: number;
   scaledY: number;
   width: number;
+  group: string;
   // function to get the marker height as a function of the total graph height
   getHeight: (graphHeight: number) => number;
 }

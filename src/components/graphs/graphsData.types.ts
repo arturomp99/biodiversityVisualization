@@ -15,6 +15,7 @@ export type MapChartDataType = {
 
 export type TimelineChartDataType = {
   species: string | string[];
+  class: string | string[];
   // species?: string;
   // start_time: string;
   // finish_time: string;
