@@ -1,3 +1,5 @@
+import { DataType } from "src/data/data.types";
+
 export interface LineChartDataType {
   timeStamp: number;
   value: number;
@@ -27,3 +29,5 @@ export type BarChartDataType = {
 export type StackedBarChartDataType = BarChartDataType & {
   children: BarChartDataType[];
 };
+
+export type HistogramDataType<T> = Pick<DataType, "eventDate"> & T;

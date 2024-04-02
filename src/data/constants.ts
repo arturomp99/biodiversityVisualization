@@ -154,3 +154,23 @@ export const barChartParameters = {
     inactiveColor: "#6c7a89",
   },
 };
+
+export const histogramParameters = {
+  axesParameters: {
+    ticks: {
+      x: 4,
+      y: 4,
+    },
+    labels: {
+      x: "Date",
+      y: "Observations",
+    },
+    grid: false,
+    title: {
+      anchor: { hAxis: "end", vAxis: "middle" },
+      fontColor: "black",
+      fontSize: "1rem",
+    },
+  },
+  thresholds: 15,
+};

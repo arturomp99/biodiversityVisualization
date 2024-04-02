@@ -33,6 +33,10 @@ export const stackedBarChartClassNames = {
   stackedBar: "stackedBar",
 };
 
+export const histogramClassNames = {
+  bar: "bar",
+};
+
 export const axes = {
   class: "axis",
   id: {

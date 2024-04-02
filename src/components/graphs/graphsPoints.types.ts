@@ -26,3 +26,10 @@ export type StackedBarChartPointType = BarChartPointType & {
   scaledLength: number;
   color: string;
 };
+
+export type HistogramPointType = {
+  scaledX0: number | null;
+  scaledX1: number | null;
+  scaledY0: number;
+  scaledY1: number;
+};
