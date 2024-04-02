@@ -7,6 +7,6 @@ export type FilterInputProps<
 > = {
   filtersData: FilterDataType | undefined;
   addFilter?: FiltersContextType["addFilter"];
-  removeFilter?: FiltersContextType["addFilter"];
+  removeFilter?: FiltersContextType["removeFilter"];
   selectedFilters?: T[];
 };

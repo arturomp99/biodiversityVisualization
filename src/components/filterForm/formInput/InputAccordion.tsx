@@ -7,8 +7,17 @@ import { MemoDropInput } from "./DropInput";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { useDataContext } from "src/contexts/dataContext";
 import { useFiltersContext } from "src/contexts/filtersContext";
-import { isDropFilterType, isTemporalFilterType } from "src/utils/bodyguards";
-import { DropFilterType, TemporalFilterType } from "src/data/filters.types";
+import {
+  isConfidenceFilterType,
+  isDropFilterType,
+  isTemporalFilterType,
+} from "src/utils/bodyguards";
+import {
+  ConfidenceFilterType,
+  DropFilterType,
+  TemporalFilterType,
+} from "src/data/filters.types";
+import { MemoConfidenceInput } from "./ConfidenceInput";
 
 export const InputAccordion = () => {
   const { filtersData } = useDataContext();
@@ -46,6 +55,16 @@ export const InputAccordion = () => {
             filters.filter((filter) =>
               isDropFilterType(filter)
             ) as DropFilterType[]
+          }
+        />
+      </AccordionItem>
+      <AccordionItem aria-label="Confidence %" title={"Confidence %"}>
+        <MemoConfidenceInput
+          addFilter={addFilter}
+          selectedFilters={
+            filters.filter((filter) =>
+              isConfidenceFilterType(filter)
+            ) as ConfidenceFilterType[]
           }
         />
       </AccordionItem>
