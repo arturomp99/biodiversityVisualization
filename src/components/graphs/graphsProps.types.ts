@@ -5,6 +5,7 @@ import {
 } from "../dashboard/dashboardGraphSettings/types";
 import {
   BarChartDataType,
+  HistogramDataType,
   LineChartDataType,
   StackedBarChartDataType,
 } from "./graphsData.types";
@@ -36,4 +37,9 @@ export type BarChartProps = GraphProps & {
 export type StackedBarChartProps = GraphProps & {
   data: StackedBarChartDataType[];
   onBarClick: (id?: string) => void;
+};
+
+export type HistogramProps<T> = GraphProps & {
+  data: HistogramDataType<T>[];
+  xExtent?: [Date, Date];
 };

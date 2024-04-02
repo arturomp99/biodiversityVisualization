@@ -9,7 +9,7 @@ import {
 export const getGraphDetails = (graphName: string | undefined) => {
   return (
     (graphName === "Dendrogram" && <DendrogramDetails />) ||
-    (graphName === "Timeline" && <TimeLineDetails />) ||
+    (graphName === "Timeline" && <TimeLineDetails isHistogram />) ||
     (graphName === "Map" && <MapDetails />) ||
     (graphName === "LineChart" && <LineChartDetails />) || (
       <div>GRAPH NOT FOUND</div>
