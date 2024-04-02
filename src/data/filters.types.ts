@@ -4,6 +4,7 @@ export enum TypeOfFilter {
   Taxonomic = "Taxonomic",
   Temporal = "Temporal",
   Drop = "Drop",
+  Confidence = "Confidence",
 }
 
 export type FiltersBaseType = {
@@ -24,7 +25,12 @@ export type DropFilterType = FiltersBaseType & {
   dropId: string;
 };
 
+export type ConfidenceFilterType = FiltersBaseType & {
+  confidenceLevel: number;
+};
+
 export type FiltersType =
   | TaxonomicFilterType
   | TemporalFilterType
-  | DropFilterType;
+  | DropFilterType
+  | ConfidenceFilterType;

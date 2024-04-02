@@ -1,5 +1,6 @@
 import { DataType } from "src/data/data.types";
 import {
+  ConfidenceFilterType,
   DropFilterType,
   FiltersType,
   TaxonomicFilterType,
@@ -52,6 +53,24 @@ const applyDropFilter = (data: DataType[], filters: DropFilterType[]) => {
   );
 };
 
+const applyConfidenceFilter = (
+  data: DataType[],
+  filters: ConfidenceFilterType[]
+) => {
+  if (!filters.length) {
+    return data;
+  }
+  const filteredData = data.filter((dataEntry) =>
+    filters.some((filter) => {
+      const confidences = dataEntry["Confidence%"] as string[];
+      return confidences.some(
+        (confidence) => filter.confidenceLevel <= +confidence
+      );
+    })
+  );
+  return filteredData;
+};
+
 export const filterTaxonomicData = (
   data: DataType[],
   filters: FiltersType[]
@@ -65,11 +84,21 @@ export const filterTaxonomicData = (
   const dropFilters = filters.filter(
     (filter) => filter.type === TypeOfFilter.Drop
   ) as DropFilterType[];
+  const confidenceFilters = filters.filter(
+    (filter) => filter.type === TypeOfFilter.Confidence
+  ) as ConfidenceFilterType[];
+
+  console.log("arturo confidenceFilters", confidenceFilters);
 
   const taxonomicFilteredData = applyTaxonomicFilter(data, taxonomicFilters);
   const temporalFilteredData = applyTemporalFilter(
     taxonomicFilteredData,
     temporalFilters
   );
-  return applyDropFilter(temporalFilteredData, dropFilters);
+  const dropFilteredData = applyDropFilter(temporalFilteredData, dropFilters);
+  const confidenceFilteredData = applyConfidenceFilter(
+    dropFilteredData,
+    confidenceFilters
+  );
+  return confidenceFilteredData;
 };

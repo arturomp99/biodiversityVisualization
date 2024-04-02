@@ -8,6 +8,7 @@ import { TimelineChartDataType } from "src/components/graphs";
 import { LegendProps } from "src/components/graphs/shared/Legend/Legend.types";
 import { DataType } from "src/data/data.types";
 import {
+  ConfidenceFilterType,
   DropFilterType,
   FiltersType,
   TaxonomicFilterType,
@@ -47,6 +48,12 @@ export const isDropFilterType = (
   filter: FiltersType
 ): filter is DropFilterType => {
   return filter.type === TypeOfFilter.Drop;
+};
+
+export const isConfidenceFilterType = (
+  filter: FiltersType
+): filter is ConfidenceFilterType => {
+  return filter.type === TypeOfFilter.Confidence;
 };
 
 export const isDendrogramSettings = (

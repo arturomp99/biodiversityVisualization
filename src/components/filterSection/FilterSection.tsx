@@ -4,6 +4,7 @@ import { useFiltersContext } from "src/contexts/filtersContext";
 import { Chip } from "@nextui-org/react";
 import { FiltersType } from "src/data/filters.types";
 import {
+  isConfidenceFilterType,
   isDropFilterType,
   isTaxonomicFilterType,
   isTemporalFilterType,
@@ -22,6 +23,9 @@ const getFilterString = (filter: FiltersType) => {
   }
   if (isDropFilterType(filter)) {
     return `DROP: ${filter.dropId}`;
+  }
+  if (isConfidenceFilterType(filter)) {
+    return `Confidence > ${(filter.confidenceLevel * 100) | 0}%`;
   }
   return "unrecognized filter";
 };
