@@ -7,7 +7,8 @@ import { isSequentialScale } from "src/utils/bodyguards";
 export const drawLegend = (
   node: SVGSVGElement,
   keys: string[],
-  colorScale: LegendProps["colorScale"]
+  colorScale: LegendProps["colorScale"],
+  interactive?: boolean
 ) => {
   d3.select(node)
     .selectAll(`.${legend.dots.class}`)
@@ -29,7 +30,7 @@ export const drawLegend = (
       }
       return colorScale(dataLine);
     })
-    .style("cursor", "pointer");
+    .style("cursor", interactive ? "pointer" : "default");
 
   d3.select(node)
     .selectAll(`.${legend.labels.class}`)
@@ -53,7 +54,7 @@ export const drawLegend = (
       }
       return colorScale(dataLine);
     })
-    .style("cursor", "pointer")
+    .style("cursor", interactive ? "pointer" : "default")
     .text(function (dataLine) {
       return `${dataLine}`;
     })

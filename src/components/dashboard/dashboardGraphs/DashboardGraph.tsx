@@ -59,7 +59,7 @@ export const DashboardGraph: FC<DashboardGraphProps> = ({
       </>
     )) ||
     (graphName === DashboardGraphName.TIMELINE && (
-      <TimeLine dimensions={dimensions} />
+      <TimeLine dimensions={dimensions} shouldAddLegend={isFullInteractive} />
     )) ||
     (graphName === DashboardGraphName.MAP && (
       <Map isBasicInteractive dimensions={dimensions} />

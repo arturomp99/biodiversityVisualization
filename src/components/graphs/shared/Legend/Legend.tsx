@@ -12,7 +12,7 @@ export const Legend: FC<LegendProps> = (props) => {
 
   useEffect(() => {
     if (legendRef.current) {
-      drawLegend(legendRef.current, keys, colorScale);
+      drawLegend(legendRef.current, keys, colorScale, !!interactivity);
       addLegendInteraction(
         legendRef.current,
         interactivity?.clickHandler,

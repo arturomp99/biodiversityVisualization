@@ -1,4 +1,5 @@
 import React, { createRef, useEffect, FC, useRef } from "react";
+import { uniq } from "lodash";
 import { StyledTimeLineContainer } from "./styles";
 import { getTimeLineScales } from "./getTimeLineScales";
 import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
@@ -7,8 +8,13 @@ import { drawMarkers } from "./drawMarkers";
 import { useDataContext } from "src/contexts/dataContext";
 import { GraphProps } from "../graphsProps.types";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
+import { StyledContainer } from "../LineChart/styles";
+import { Legend } from "../shared/Legend/Legend";
 
-export const TimeLine: FC<GraphProps> = ({ dimensions }) => {
+export const TimeLine: FC<GraphProps & { shouldAddLegend?: boolean }> = ({
+  dimensions,
+  shouldAddLegend,
+}) => {
   const {
     complexData: { data, loading },
   } = useDataContext();
@@ -79,5 +85,15 @@ export const TimeLine: FC<GraphProps> = ({ dimensions }) => {
     };
   }, [realDimensions]);
 
-  return <StyledTimeLineContainer ref={node} id="lineChart" />;
+  return (
+    <StyledContainer>
+      <StyledTimeLineContainer ref={node} id="lineChart" />
+      {shouldAddLegend && !!data && scaling.current && (
+        <Legend
+          keys={uniq(data.map((dataPoint) => dataPoint.class as string))}
+          colorScale={scaling.current.colorScale}
+        />
+      )}
+    </StyledContainer>
+  );
 };
