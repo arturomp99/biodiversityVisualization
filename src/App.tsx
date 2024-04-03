@@ -4,6 +4,7 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./pages/routes/router";
 import { DataContextProvider } from "./contexts/dataContext";
 import "tippy.js/dist/tippy.css";
+import "tippy.js/themes/light.css";
 import { FiltersContextProvider } from "./contexts/filtersContext";
 import styled from "styled-components";
 import { themeColors } from "./data/theme";

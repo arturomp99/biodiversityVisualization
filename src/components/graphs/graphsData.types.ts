@@ -20,7 +20,17 @@ export type TimelineChartDataType = {
   // start_time: string;
   // finish_time: string;
   eventDate: string | string[];
-};
+} & Pick<
+  DataType,
+  | "phylum"
+  | "order"
+  | "family"
+  | "genus"
+  | "species"
+  | "scientificName"
+  | "eventDate"
+  | "observationsNum"
+>;
 
 export type BarChartDataType = {
   id: string;

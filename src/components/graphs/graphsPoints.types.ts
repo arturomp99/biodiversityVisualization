@@ -13,6 +13,17 @@ export interface TimelineChartPointType {
   group: string;
   // function to get the marker height as a function of the total graph height
   getHeight: (graphHeight: number) => number;
+  tooltipContent?: {
+    phylum?: string;
+    class?: string;
+    order?: string;
+    family?: string;
+    genus?: string;
+    species?: string;
+    scientificName?: string;
+    timeDetected?: string;
+    numDetections?: string;
+  };
 }
 
 export type BarChartPointType = {
