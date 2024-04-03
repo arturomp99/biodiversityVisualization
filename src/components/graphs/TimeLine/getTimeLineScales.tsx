@@ -60,6 +60,17 @@ const getDataScaling = (scales: TimeLineScalesType) => {
             width,
             getHeight,
             group: dataPoint.class as string,
+            tooltipContent: {
+              phylum: dataPoint.phylum as string,
+              class: dataPoint.class as string,
+              order: dataPoint.order as string,
+              family: dataPoint.family as string,
+              genus: dataPoint.genus as string,
+              species: dataPoint.species as string,
+              scientificName: dataPoint.species as string,
+              timeDetected: dataPointEventDate.toString(),
+              numDetections: dataPoint.observationsNum.toString(),
+            },
           };
         }
       );

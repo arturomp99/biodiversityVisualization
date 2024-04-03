@@ -3,6 +3,8 @@ import { ScaleOrdinal } from "d3";
 import { TimelineChartPointType } from "..";
 import { getGraphMargins } from "src/utils/getGraphMargins";
 import { timeLineParameters } from "src/data/constants";
+import tippy from "tippy.js";
+import { getTimelineTooltip } from "./interactivity/TimelineTooltip";
 
 export const drawMarkers = (
   parentRef: SVGSVGElement | null,
@@ -12,7 +14,7 @@ export const drawMarkers = (
 ) => {
   const margins = getGraphMargins();
   d3.select(parentRef)
-    .selectAll(".dataMarker")
+    .selectAll<SVGRectElement, unknown>(".dataMarker")
     .data(data)
     .join("rect")
     .attr("class", "dataMarker")
@@ -26,6 +28,14 @@ export const drawMarkers = (
     .attr("fill", (dataPoint) =>
       colorScale ? colorScale(dataPoint.group) : "black"
     )
-    .attr("transform", `translate(${margins.left},${margins.top})`);
-  // TODO: Include CONSTANTS edge rounding, stroke none, fill color scale, add margin
+    .attr("transform", `translate(${margins.left},${margins.top})`)
+    .attr("cursor", "pointer")
+    .each(function (dataPoint) {
+      tippy(this, {
+        content: getTimelineTooltip(dataPoint.tooltipContent),
+        allowHTML: true,
+        theme: "light",
+        trigger: "click",
+      });
+    });
 };
