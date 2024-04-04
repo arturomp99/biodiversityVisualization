@@ -7,10 +7,12 @@ import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { histogramParameters, resizeTimeout } from "src/data/constants";
 import { drawHistogram } from "./drawHistogram";
 import { DataType } from "src/data/data.types";
+import { histogramHoverInteraction } from "./Interaction/histogramHoverInteraction";
 
 export const Histogram: FC<HistogramProps<DataType>> = ({
   data,
   dimensions,
+  onHover,
   xExtent,
 }) => {
   const node = useRef<SVGSVGElement>(null);
@@ -33,6 +35,9 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
         scaledX1: dataPoint.x1 ? xScale(new Date(dataPoint.x1)) : null,
         scaledY0: yScale(0),
         scaledY1: yScale(dataPoint.length),
+        ids: dataPoint.flatMap(
+          (dataPointObservation) => dataPointObservation.occurrenceID ?? ""
+        ),
       };
     });
     createAxes(
@@ -42,6 +47,9 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
       histogramParameters.axesParameters
     );
     drawHistogram(node.current, scaledData);
+    if (onHover) {
+      histogramHoverInteraction(node.current, onHover);
+    }
     // if (isCursorInteractive) {
     //   mouseCursor(node.current);
     // }
@@ -66,6 +74,9 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
           scaledX1: dataPoint.x1 ? xScale(new Date(dataPoint.x1)) : null,
           scaledY0: yScale(0),
           scaledY1: yScale(dataPoint.length),
+          ids: dataPoint.flatMap(
+            (dataPointObservation) => dataPointObservation.species ?? ""
+          ),
         };
       });
       giveSizeToAxes(

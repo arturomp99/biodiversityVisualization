@@ -73,6 +73,9 @@ export const timeLineParameters = {
   },
   markers: { width: 10, borderRadius: 3 },
   colorScheme: ["#e41a1c", "#377eb8", "#4daf4a", "#984ea3", "#ff7f00"],
+  detailInteraction: {
+    unhoveredOpacity: "0.2",
+  },
 };
 
 export const dendrogramParameters = {

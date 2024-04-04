@@ -42,4 +42,5 @@ export type StackedBarChartProps = GraphProps & {
 export type HistogramProps<T> = GraphProps & {
   data: HistogramDataType<T>[];
   xExtent?: [Date, Date];
+  onHover?: (hovered: string[]) => void;
 };

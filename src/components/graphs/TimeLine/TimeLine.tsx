@@ -10,6 +10,7 @@ import { GraphProps } from "../graphsProps.types";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
 import { StyledContainer } from "../LineChart/styles";
 import { Legend } from "../shared/Legend/Legend";
+import { useTimelineDetailInteraction } from "./interactivity/useTimelineDetailInteraction";
 
 export const TimeLine: FC<GraphProps & { shouldAddLegend?: boolean }> = ({
   dimensions,
@@ -22,6 +23,8 @@ export const TimeLine: FC<GraphProps & { shouldAddLegend?: boolean }> = ({
   const scaling = useRef(getTimeLineScales(data));
 
   const realDimensions = getDimensionsWithoutMargin(dimensions);
+
+  useTimelineDetailInteraction(node);
 
   useEffect(() => {
     if (!data || !node.current) {
