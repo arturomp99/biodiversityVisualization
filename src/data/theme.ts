@@ -37,8 +37,9 @@ export const themeSizes = {
   },
   elementsMargins: {
     sm: "8px",
-    md: "12px",
-    lg: "24px",
+    md: "16px",
+    lg: "32px",
+    xl: "48px",
   },
   graphCardPaddings: {
     vert: "0.5rem",

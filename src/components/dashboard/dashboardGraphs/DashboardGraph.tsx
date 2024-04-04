@@ -10,12 +10,14 @@ import {
   getInitialSettings,
 } from "../dashboardGraphSettings/dashboardSettingsReducer";
 import { SettingActions } from "../dashboardGraphSettings/types";
+import { OnGroundChart } from "./OnGroundChart/OnGroundChart";
 
 export enum DashboardGraphName {
   DENDROGRAM = "Dendrogram",
   TIMELINE = "Timeline",
   MAP = "Map",
   LINECHART = "LineChart",
+  ONGROUND = "OnGround",
 }
 
 type DashboardGraphProps = {
@@ -60,6 +62,13 @@ export const DashboardGraph: FC<DashboardGraphProps> = ({
     )) ||
     (graphName === DashboardGraphName.TIMELINE && (
       <TimeLine dimensions={dimensions} shouldAddLegend={isFullInteractive} />
+    )) ||
+    (graphName === DashboardGraphName.ONGROUND && (
+      <OnGroundChart
+        isBasicInteractive
+        dimensions={dimensions}
+        isFullInteractive={isFullInteractive}
+      />
     )) ||
     (graphName === DashboardGraphName.MAP && (
       <Map isBasicInteractive dimensions={dimensions} />

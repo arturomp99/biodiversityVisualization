@@ -14,11 +14,16 @@ export const DetailLayout = styled.div`
   padding-bottom: ${themeSizes.elementsMargins.lg};
   padding-left: ${themeSizes.appPaddings.xs};
   padding-right: ${themeSizes.appPaddings.md};
+  row-gap: ${themeSizes.elementsMargins.xl};
 `;
 
-export const ExpandedView = styled.div`
+export const ExpandedView = styled.div<{ isOnGroundChart: boolean }>`
   grid-area: ${detailGridAreas.expanded};
-  height: 75vh;
+  ${({ isOnGroundChart }) =>
+    !isOnGroundChart &&
+    css`
+      height: 75vh;
+    `}
 `;
 
 export const GraphDetailsView = styled.div<{ graphName: string }>`

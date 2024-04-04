@@ -1,3 +1,9 @@
+export const dashboardAreas = {
+  dendrogram: "dendrogram",
+  timeline: "timeline",
+  onground: "onground",
+};
+
 export const detailGridAreas = {
   expanded: "exp",
   options: "opt",
