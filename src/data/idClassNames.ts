@@ -37,6 +37,8 @@ export const histogramClassNames = {
   bar: "bar",
 };
 
+export const timelineClassNames = { marker: "dataMarker" };
+
 export const axes = {
   class: "axis",
   id: {

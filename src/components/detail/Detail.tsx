@@ -6,6 +6,7 @@ import { Graph } from "../shared/containers/Card";
 import { GraphDetails } from "./GraphDetails";
 import { Button } from "@nextui-org/react";
 import { BackIcon } from "src/icons";
+import { DetailInteractionContextProvider } from "src/contexts/detailInteractionContext";
 
 export const Detail = (props: { graphName: string }) => {
   const navigate = useNavigate();
@@ -25,12 +26,14 @@ export const Detail = (props: { graphName: string }) => {
         </Button>
       </DetailHeaderStyled>
       <DetailLayout>
-        <ExpandedView>
-          <Graph graphName={props.graphName} expanded />
-        </ExpandedView>
-        <GraphDetailsView graphName={props.graphName}>
-          <GraphDetails graphName={props.graphName} />
-        </GraphDetailsView>
+        <DetailInteractionContextProvider>
+          <ExpandedView>
+            <Graph graphName={props.graphName} expanded />
+          </ExpandedView>
+          <GraphDetailsView graphName={props.graphName}>
+            <GraphDetails graphName={props.graphName} />
+          </GraphDetailsView>
+        </DetailInteractionContextProvider>
       </DetailLayout>
     </div>
   );

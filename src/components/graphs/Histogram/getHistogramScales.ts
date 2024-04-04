@@ -14,7 +14,10 @@ export const getHistogramScales = (
   | {
       xScale: ScaleTime<number, number, never>;
       yScale: ScaleLinear<number, number, never>;
-      binnedData: Bin<Pick<DataType, "occurrenceID" | "eventDate">, Date>[];
+      binnedData: Bin<
+        Pick<DataType, "occurrenceID" | "eventDate" | "species">,
+        Date
+      >[];
     }
   | undefined => {
   if (!data) {
@@ -40,7 +43,10 @@ export const getHistogramScales = (
     xExtent,
     thresholds ?? (histogramParameters.thresholds || 1)
   );
-  const binGenerator = bin<Pick<DataType, "eventDate" | "occurrenceID">, Date>()
+  const binGenerator = bin<
+    Pick<DataType, "eventDate" | "occurrenceID" | "species">,
+    Date
+  >()
     .value((dataPoint) => new Date(dataPoint.eventDate as string))
     .thresholds(thresholdsArray ?? [new Date(0)]);
   const binnedData = binGenerator(data);
