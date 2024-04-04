@@ -57,4 +57,6 @@ export const drawMarkers = (
     .attr("transform", `translate(${margins.left},${margins.top})`);
 
   timelineMarkersEnter.merge(timelineMarkersUpdate);
+
+  timelineMarkers.exit().remove();
 };

@@ -1,4 +1,5 @@
 import { audioPlayerAreas } from "src/data/layoutsConstants";
+import { themeSizes } from "src/data/theme";
 import styled from "styled-components";
 
 export const StyledAudioPlayer = styled.div`
@@ -25,10 +26,32 @@ export const StyledSpectrogram = styled.div`
 export const Audio = styled.audio`
   width: 100%;
   max-width: 600px;
+  outline: none;
+
+  &::-webkit-media-controls-panel {
+    background-color: black;
+  }
+
+  &::-webkit-media-controls-play-button,
+  &::-webkit-media-controls-mute-button {
+    background-color: #d4d4d8;
+    border-radius: 50%;
+  }
+
+  &::-webkit-media-controls-current-time-display,
+  &::-webkit-media-controls-time-remaining-display {
+    color: #d4d4d8;
+  }
+
+  &::-webkit-media-controls-timeline,
+  &::-webkit-media-controls-volume-slider {
+    margin-left: ${themeSizes.elementsMargins.sm};
+    border-radius: 25px;
+    background-color: #d4d4d8;
+  }
 `;
 
 export const Image = styled.img`
-  width: 100%;
-  height: 100%;
-  max-height: 150px;
+  aspect-ratio: 16/9;
+  max-height: 100px;
 `;

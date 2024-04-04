@@ -7,6 +7,7 @@ import { GraphDetails } from "./GraphDetails";
 import { Button } from "@nextui-org/react";
 import { BackIcon } from "src/icons";
 import { DetailInteractionContextProvider } from "src/contexts/detailInteractionContext";
+import { DashboardGraphName } from "../dashboard/dashboardGraphs/DashboardGraph";
 
 export const Detail = (props: { graphName: string }) => {
   const navigate = useNavigate();
@@ -27,7 +28,9 @@ export const Detail = (props: { graphName: string }) => {
       </DetailHeaderStyled>
       <DetailLayout>
         <DetailInteractionContextProvider>
-          <ExpandedView>
+          <ExpandedView
+            isOnGroundChart={props.graphName === DashboardGraphName.ONGROUND}
+          >
             <Graph graphName={props.graphName} expanded />
           </ExpandedView>
           <GraphDetailsView graphName={props.graphName}>

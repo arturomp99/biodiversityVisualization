@@ -6,19 +6,14 @@
       "description": "Dendrogram showing all of the observations in a tree view. It shows the taxonomic classification of collected species"
     },
     {
-      "id": "Map",
-      "title": "Map",
-      "description": "This is a Map."
-    },
-    {
       "id": "Timeline",
       "title": "Timeline",
       "description": "This is a timeline."
     },
     {
-      "id": "LineChart",
-      "title": "Sensors signal",
-      "description": "This is a line plot."
+      "id": "OnGround",
+      "title": "On-ground activity",
+      "description": "It shows the data from the operations on-ground. On the left-hand a map with the drone paths. On the right hand a series of collected signals by the sensors."
     }
   ]
 }
