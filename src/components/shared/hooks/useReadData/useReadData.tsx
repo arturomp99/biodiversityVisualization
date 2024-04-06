@@ -1,10 +1,7 @@
 import { ExtendedFeatureCollection, group } from "d3";
+import config from "src/config.json";
 import { SoundHeaders } from "src/data/sampleData/sampleData.types";
-import {
-  CleanDataFileHeaders,
-  DataType,
-  PositionsFileHeaders,
-} from "src/data/data.types";
+import { DataType, PositionsFileHeaders } from "src/data/data.types";
 import { useGetFiltersData } from "../useGetFiltersData/useGetFiltersData";
 import { useFetchJSON } from "./useFetchJson";
 import { useFetchDSV } from "./useFetchDSV";
@@ -13,6 +10,7 @@ import {
   LineChartDataType,
   MapChartDataType,
 } from "src/components/graphs/graphsData.types";
+import { useFetch } from "./useFetch";
 
 const useReadLineChartData = () => {
   const { dataRef, data, loading, setData } = useFetchDSV<
@@ -63,40 +61,10 @@ const useReadPositionsData = (fileName: string) => {
   return { data, loading };
 };
 
-const arrayProperties: Array<CleanDataFileHeaders> = [
-  "occurrenceID",
-  "basisOfRecord",
-  "eventDate",
-  "identifiedBy",
-  "AI Detection Method/Model",
-  "Confidence%",
-  "Verification Method",
-  "Verification Name",
-  "dateIdentified",
-  "individualCount",
-  "organismQuantity",
-  "organismQuantityType",
-  "decimalLatitude",
-  "decimalLongitude",
-  "geodeticDatum",
-  "coordinateUncertaintyInMeters",
-  "verbatimCoordinates",
-  "verbatimCoordinateSystem",
-  "occurrenceRemarks",
-  "references",
-];
-
 const useReadComplexData = () => {
-  const { dataRef, data, setData, loading } = useFetchDSV<
-    DataType,
-    CleanDataFileHeaders
-  >(",", "/sampleData/clean_IdentifiedSpeciesTime.csv", (dataEntry) => {
-    const cleanEntry: DataType = { ...dataEntry };
-    for (const property of arrayProperties) {
-      cleanEntry[property] = dataEntry[property].split(",") as string[];
-    }
-    return cleanEntry;
-  });
+  const { dataRef, data, setData, loading } = useFetch<DataType>(
+    config.BACKEND_URL + config.DATA_KEY
+  );
 
   useApplyFilters(dataRef.current, setData);
 
@@ -108,6 +76,10 @@ export const useReadData = () => {
   const mapData = useReadMapData();
   const detectionsPositionsData = useReadPositionsData(
     "/sampleData/positions.csv"
+  );
+  console.log(config.BACKEND_URL + config.DATA_KEY);
+  fetch(config.BACKEND_URL + config.GEOJSON_KEY).then((response) =>
+    response.json().then(() => console.log("arturo geojson response", response))
   );
   const complexData = useReadComplexData();
   const geoJsonData = {

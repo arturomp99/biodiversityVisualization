@@ -7,45 +7,42 @@ export type TaxonomicLevelsType =
   | "species"
   | "scientificName";
 
-export type CleanDataFileHeaders =
-  | TaxonomicLevelsType
-  | "id"
-  | "occurrenceID"
-  | "basisOfRecord"
-  | "Preparations (Physical Samples)"
-  | "eventDate"
-  | "kingdom"
-  | "taxonRank"
-  | "identifiedBy"
-  | "AI Detection Method/Model"
-  | "Confidence%"
-  | "Verification Name"
-  | "Verification Method"
-  | "dateIdentified"
-  | "nomenclaturalCode"
-  | "individualCount"
-  | "organismQuantity"
-  | "organismQuantityType"
-  | "decimalLatitude"
-  | "decimalLongitude"
-  | "geodeticDatum"
-  | "coordinateUncertaintyInMeters"
-  | "verbatimCoordinates"
-  | "verbatimCoordinateSystem"
-  | "higherGeography"
-  | "continent"
-  | "country"
-  | "countryCode"
-  | "stateProvince"
-  | "county"
-  | "locality"
-  | "verbatimLocality"
-  | "occurrenceRemarks"
-  | "references"
-  | "observationsNum"
-  | "dropId";
-
-export type DataType = Record<CleanDataFileHeaders, string | string[]>;
+export type DataType = Record<TaxonomicLevelsType, string> & {
+  occurrenceID: string[];
+  basisOfRecord: string[];
+  "Preparations (Physical Samples)": string;
+  eventDate: string[];
+  kingdom: string;
+  taxonRank: string;
+  identifiedBy: string[];
+  "AI Detection Method/Model": string[];
+  "Confidence%": string[];
+  "Verification Method": string[];
+  "Verification Name": string[];
+  dateIdentified: string[];
+  nomenclaturalCode: string;
+  individualCount: string[];
+  organismQuantity: string[];
+  organismQuantityType: string[];
+  decimalLatitude: string[];
+  decimalLongitude: string[];
+  geodeticDatum: string[];
+  coordinateUncertaintyInMeters: string[];
+  verbatimCoordinates: string[];
+  verbatimCoordinateSystem: string[];
+  higherGeography: string;
+  continent: string;
+  country: string;
+  countryCode: string;
+  stateProvince: string;
+  county: string;
+  locality: string;
+  verbatimLocality: string;
+  occurrenceRemarks: string[];
+  references: string[];
+  dropId: string;
+  observationsNum: number;
+};
 
 export type PositionsFileHeaders =
   | "occurrenceID"

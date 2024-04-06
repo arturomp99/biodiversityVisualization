@@ -1,5 +1,5 @@
 import { InternMap } from "d3";
-import { CleanDataFileHeaders } from "src/data/data.types";
+import { DataType } from "src/data/data.types";
 
 export interface TreeNode<T> {
   new (data: T): this;
@@ -57,7 +57,7 @@ export type TreeDataType = InternMap<
             string | string[],
             InternMap<
               string | string[],
-              Record<CleanDataFileHeaders, string | string[]>[]
+              DataType[]
               // TODO: THIS IS HARDCODED
             >
           >

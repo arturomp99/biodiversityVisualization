@@ -1,0 +1,5 @@
+{
+  "BACKEND_URL": "http://localhost:4000",
+  "DATA_KEY": "/data",
+  "GEOJSON_KEY": "/geojson"
+}
