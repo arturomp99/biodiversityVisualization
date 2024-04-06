@@ -8,8 +8,10 @@ export const useFetch = <DataType extends object>(url: string) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const readData = (await (await fetch(url)).json()).data as DataType[];
-        if (!readData) throw "empty data";
+        const readData =
+          (await (await fetch(url)).json()).data ??
+          ((await (await fetch(url)).json()) as DataType[]);
+        console.log("arturo read data", readData);
         setLoading(false);
         dataRef.current = readData;
         setData(dataRef.current);

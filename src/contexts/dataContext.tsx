@@ -9,20 +9,7 @@ const dataContext = createContext<ReturnType<typeof useReadData>>({
   complexData: { ...defaultData, readData: undefined },
   taxonomicClassification: defaultData,
   filtersData: undefined,
-  geoJsonData: {
-    dronePaths: [
-      defaultData,
-      defaultData,
-      defaultData,
-      defaultData,
-      defaultData,
-      defaultData,
-      defaultData,
-      defaultData,
-      defaultData,
-      defaultData,
-    ],
-  },
+  geoJsonData: defaultData,
 });
 
 export const DataContextProvider = (props: { children: ReactNode }) => {

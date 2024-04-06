@@ -38,7 +38,7 @@ const useReadMapData = () => {
 };
 
 const useReadGeoJsonData = (filePath: string) => {
-  const { data, loading } = useFetchJSON<ExtendedFeatureCollection>(filePath);
+  const { data, loading } = useFetch<ExtendedFeatureCollection>(filePath);
 
   return { data, loading };
 };
@@ -77,25 +77,10 @@ export const useReadData = () => {
   const detectionsPositionsData = useReadPositionsData(
     "/sampleData/positions.csv"
   );
-  console.log(config.BACKEND_URL + config.DATA_KEY);
-  fetch(config.BACKEND_URL + config.GEOJSON_KEY).then((response) =>
-    response.json().then(() => console.log("arturo geojson response", response))
-  );
   const complexData = useReadComplexData();
-  const geoJsonData = {
-    dronePaths: [
-      useReadGeoJsonData("/geoJson/dronePath0.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath1.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath2.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath3.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath4.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath5.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath6.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath7.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath8.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath9.geojson"),
-    ],
-  };
+  const geoJsonData = useReadGeoJsonData(
+    config.BACKEND_URL + config.GEOJSON_KEY
+  );
 
   const filtersData = useGetFiltersData(complexData);
 
