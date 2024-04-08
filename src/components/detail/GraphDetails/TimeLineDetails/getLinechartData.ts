@@ -8,8 +8,7 @@ export const getLinechartData = (
     return;
   }
   const timeData: LineChartDataType[] = data.flatMap((dataRow) => {
-    const eventDates = dataRow.eventDate as string[];
-    return eventDates.map((date) => ({
+    return dataRow.eventDate.map((date) => ({
       timeStamp: new Date(date).getTime(),
       value: 1,
       group: "",

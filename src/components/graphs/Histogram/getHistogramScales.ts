@@ -25,7 +25,7 @@ export const getHistogramScales = (
   }
 
   const flattenedData = data.flatMap((dataRow) =>
-    (dataRow.eventDate as string[]).map((dataRowDate) => ({
+    dataRow.eventDate.map((dataRowDate) => ({
       eventDate: dataRowDate,
       occurrenceID: dataRow.occurrenceID,
     }))
@@ -47,7 +47,7 @@ export const getHistogramScales = (
     Pick<DataType, "eventDate" | "occurrenceID" | "species">,
     Date
   >()
-    .value((dataPoint) => new Date(dataPoint.eventDate as string))
+    .value((dataPoint) => new Date(dataPoint.eventDate[0]))
     .thresholds(thresholdsArray ?? [new Date(0)]);
   const binnedData = binGenerator(data);
 

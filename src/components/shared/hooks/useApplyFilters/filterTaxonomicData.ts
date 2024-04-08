@@ -34,7 +34,7 @@ const applyTemporalFilter = (
   }
   return data.filter((dataEntry) =>
     filters.some((filter) => {
-      const eventDates = dataEntry.eventDate as string[];
+      const eventDates = dataEntry.eventDate;
       return eventDates.some(
         (eventDate) =>
           filter.minTime < new Date(eventDate).getTime() &&
@@ -87,8 +87,6 @@ export const filterTaxonomicData = (
   const confidenceFilters = filters.filter(
     (filter) => filter.type === TypeOfFilter.Confidence
   ) as ConfidenceFilterType[];
-
-  console.log("arturo confidenceFilters", confidenceFilters);
 
   const taxonomicFilteredData = applyTaxonomicFilter(data, taxonomicFilters);
   const temporalFilteredData = applyTemporalFilter(

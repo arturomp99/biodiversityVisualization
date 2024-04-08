@@ -1,44 +1,14 @@
 import { ExtendedFeatureCollection, group } from "d3";
 import config from "src/config.json";
-import { SoundHeaders } from "src/data/sampleData/sampleData.types";
 import { DataType, PositionsFileHeaders } from "src/data/data.types";
-import { useGetFiltersData } from "../useGetFiltersData/useGetFiltersData";
-import { useFetchJSON } from "./useFetchJson";
 import { useFetchDSV } from "./useFetchDSV";
 import { useApplyFilters } from "../useApplyFilters/useApplyFilters";
-import {
-  LineChartDataType,
-  MapChartDataType,
-} from "src/components/graphs/graphsData.types";
+import { MapChartDataType } from "src/components/graphs/graphsData.types";
 import { useFetch } from "./useFetch";
-
-const useReadLineChartData = () => {
-  const { dataRef, data, loading, setData } = useFetchDSV<
-    LineChartDataType,
-    SoundHeaders
-  >(",", "/sampleData/bioacoustic.csv", (soundData) => {
-    return {
-      timeStamp: Number(soundData.timeStamp),
-      value: Number(soundData.soundMax),
-      group: soundData.sensorID,
-    };
-  });
-
-  useApplyFilters(dataRef.current, setData);
-
-  return { data, loading, readData: dataRef.current };
-};
-
-const useReadMapData = () => {
-  const { data, loading } = useFetchJSON<ExtendedFeatureCollection>(
-    "/geoJson/Singapore.geojson"
-  );
-
-  return { data, loading };
-};
+import { FiltersDataType } from "./types";
 
 const useReadGeoJsonData = (filePath: string) => {
-  const { data, loading } = useFetch<ExtendedFeatureCollection>(filePath);
+  const { data, loading } = useFetch<ExtendedFeatureCollection[]>(filePath);
 
   return { data, loading };
 };
@@ -62,7 +32,7 @@ const useReadPositionsData = (fileName: string) => {
 };
 
 const useReadComplexData = () => {
-  const { dataRef, data, setData, loading } = useFetch<DataType>(
+  const { dataRef, data, setData, loading } = useFetch<DataType[]>(
     config.BACKEND_URL + config.DATA_KEY
   );
 
@@ -72,8 +42,6 @@ const useReadComplexData = () => {
 };
 
 export const useReadData = () => {
-  const lineChartData = useReadLineChartData();
-  const mapData = useReadMapData();
   const detectionsPositionsData = useReadPositionsData(
     "/sampleData/positions.csv"
   );
@@ -82,7 +50,21 @@ export const useReadData = () => {
     config.BACKEND_URL + config.GEOJSON_KEY
   );
 
-  const filtersData = useGetFiltersData(complexData);
+  const { data: readFiltersData } = useFetch<FiltersDataType>(
+    config.BACKEND_URL + config.FILTERS_KEY
+  );
+  const filtersData = {
+    ...readFiltersData,
+    temporal:
+      !!readFiltersData?.temporal &&
+      !!readFiltersData?.temporal[0] &&
+      !!readFiltersData?.temporal[1]
+        ? [
+            new Date(readFiltersData?.temporal[0]),
+            new Date(readFiltersData?.temporal[1]),
+          ]
+        : readFiltersData?.temporal,
+  };
 
   const taxonomicClassification = !complexData.data
     ? undefined
@@ -98,8 +80,6 @@ export const useReadData = () => {
       );
 
   return {
-    lineChartData,
-    mapData,
     detectionsPositionsData,
     complexData,
     taxonomicClassification: {

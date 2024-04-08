@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
 export const useFetch = <DataType extends object>(url: string) => {
-  const [data, setData] = useState<DataType[] | undefined>();
+  const [data, setData] = useState<DataType | undefined>();
   const [loading, setLoading] = useState(true);
-  const dataRef = useRef<DataType[] | undefined>();
+  const dataRef = useRef<DataType | undefined>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -11,7 +11,6 @@ export const useFetch = <DataType extends object>(url: string) => {
         const readData =
           (await (await fetch(url)).json()).data ??
           ((await (await fetch(url)).json()) as DataType[]);
-        console.log("arturo read data", readData);
         setLoading(false);
         dataRef.current = readData;
         setData(dataRef.current);

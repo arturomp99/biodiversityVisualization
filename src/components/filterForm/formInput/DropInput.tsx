@@ -2,14 +2,11 @@ import { Checkbox } from "@nextui-org/react";
 import React, { FC, useCallback } from "react";
 import { DropFilterType, TypeOfFilter } from "src/data/filters.types";
 import { FilterInputProps } from "./types";
-import { DropFiltersDataType } from "src/components/shared/hooks/useGetFiltersData/asyncGetDropFiltersData";
+import { FiltersDataType } from "src/components/shared/hooks/useReadData/types";
 
-const DropInput: FC<FilterInputProps<DropFiltersDataType, DropFilterType>> = ({
-  filtersData,
-  addFilter,
-  removeFilter,
-  selectedFilters,
-}) => {
+const DropInput: FC<
+  FilterInputProps<FiltersDataType["drop"], DropFilterType>
+> = ({ filtersData, addFilter, removeFilter, selectedFilters }) => {
   const checkboxHandler = useCallback(
     (selectedDrop: string, isSelected: boolean) => {
       if (!addFilter || !removeFilter) {
@@ -27,7 +24,7 @@ const DropInput: FC<FilterInputProps<DropFiltersDataType, DropFilterType>> = ({
 
   return (
     <>
-      {filtersData?.data.map((dropFilterData, key) => (
+      {filtersData?.map((dropFilterData, key) => (
         <Checkbox
           key={key}
           value="sensor-1"

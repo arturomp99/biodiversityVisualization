@@ -1,6 +1,4 @@
-import * as d3 from "d3";
 import { ScaleSequential } from "d3";
-import { GeoJsonProperties } from "geojson";
 import L from "leaflet";
 import { mapChartParameters } from "src/data/constants";
 import { MapChartDataType } from "..";

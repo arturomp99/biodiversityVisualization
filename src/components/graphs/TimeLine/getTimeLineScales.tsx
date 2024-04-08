@@ -39,7 +39,7 @@ const getDataScaling = (scales: TimeLineScalesType) => {
     const [xScale, yScale] = scales;
 
     const scaledData = data.flatMap((dataPoint): TimelineChartPointType[] => {
-      const dataPointDates = dataPoint.eventDate as string[];
+      const dataPointDates = dataPoint.eventDate;
 
       const scaledDataPointObservations = dataPointDates.map(
         (dataPointEventDateString) => {

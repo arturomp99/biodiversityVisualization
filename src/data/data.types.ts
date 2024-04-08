@@ -1,3 +1,13 @@
+export const taxonomicLevels: TaxonomicLevelsType[] = [
+  "phylum",
+  "class",
+  "order",
+  "family",
+  "genus",
+  "species",
+  "scientificName",
+];
+
 export type TaxonomicLevelsType =
   | "phylum"
   | "class"

@@ -3,12 +3,10 @@ import { useReadData } from "src/components/shared/hooks/useReadData/useReadData
 
 const defaultData = { data: undefined, loading: true };
 const dataContext = createContext<ReturnType<typeof useReadData>>({
-  lineChartData: { ...defaultData, readData: undefined },
-  mapData: defaultData,
   detectionsPositionsData: defaultData,
   complexData: { ...defaultData, readData: undefined },
   taxonomicClassification: defaultData,
-  filtersData: undefined,
+  filtersData: { taxonomic: undefined, temporal: undefined, drop: undefined },
   geoJsonData: defaultData,
 });
 
