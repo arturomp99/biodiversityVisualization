@@ -1,70 +1,24 @@
-import { useEffect, useRef, useState } from "react";
-import { useDataContext } from "src/contexts/dataContext";
-import { catalogParameters } from "src/data/constants";
-import {
-  getDescription,
-  getImages,
-  getUsageKey,
-  getVernacularNames,
-  // getWikipediaImage,
-} from "../requests/requests";
-import { DataType } from "src/data/data.types";
-
-const getGBIFData = (pageReadData: DataType[]) => {
-  return pageReadData.map(async (dataEntry) => {
-    const species = dataEntry.scientificName as string;
-    const { usageKey } = (await getUsageKey(species)) || "";
-    if (!usageKey) return undefined;
-    const { results: vernacularNames } = await getVernacularNames(usageKey);
-    const { results: descriptions } = await getDescription(usageKey);
-    const { results: images } = await getImages(usageKey);
-    const wikipediaImageUrl = undefined; //await getWikipediaImage(species); CORS error
-
-    return {
-      species,
-      usageKey,
-      vernacularNames,
-      descriptions,
-      images,
-      wikipediaImageUrl,
-    };
-  });
-};
+import { useState } from "react";
+import config from "src/config.json";
+import { useFetch } from "src/components/shared/hooks/useReadData/useFetch";
+import { CatalogDataType, TotalCatalogInfoType } from "../types";
 
 export const useGetCatalogData = () => {
-  const { complexData } = useDataContext();
-  const totalPages = useRef<number | undefined>();
+  const { data: totalData, loading: totalDataLoading } =
+    useFetch<TotalCatalogInfoType>(
+      config.BACKEND_URL + config.CATALOG_TOTAL_KEY
+    );
+
   const [page, setPage] = useState(1);
-  const [catalogData, setCatalogData] =
-    useState<Awaited<ReturnType<typeof getGBIFData>[number]>[]>();
-
-  useEffect(() => {
-    if (!complexData.data || complexData.loading) {
-      return;
-    }
-    const initIndex = (page - 1) * catalogParameters.animalsPerPage;
-    const endIndex = page * catalogParameters.animalsPerPage;
-    const pageComplexData = complexData.data.slice(initIndex, endIndex);
-    const gbifData = getGBIFData(pageComplexData);
-    Promise.all(gbifData)
-      .then((data) => {
-        setCatalogData(data);
-      })
-      .catch((error) => console.log(error));
-  }, [page, complexData.data, complexData.loading]);
-
-  useEffect(() => {
-    totalPages.current = complexData.data?.length
-      ? Math.floor(complexData.data.length / catalogParameters.animalsPerPage) +
-        1
-      : undefined;
-  }, [complexData.data]);
+  const { data: pageData, loading: pageDataLoading } = useFetch<
+    CatalogDataType[]
+  >(config.BACKEND_URL + config.CATALOG_KEY + `/${page}`);
 
   return {
-    loading: complexData.loading,
-    catalogData,
+    loading: totalDataLoading || pageDataLoading,
+    pageData,
     page,
     setPage,
-    totalPages: totalPages.current,
+    totalPages: totalData?.totalPages,
   };
 };

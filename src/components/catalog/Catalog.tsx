@@ -6,18 +6,16 @@ import {
   Spinner,
   CardHeader,
   Divider,
+  Image,
 } from "@nextui-org/react";
 
 import { CatalogContainer } from "./CatalogContainer";
 import { useGetCatalogData } from "./hooks/useGetCatalogData";
-import { getEnglishVernacularName } from "./utils/getEnglishVernacularName";
 import { CatalogCardTitle, CatalogDescription } from "./styles";
 import { isStringHTML } from "src/utils/isStringHTML";
-import { ImageCarousel } from "./components/ImageCarousel";
 
 export const Catalog = () => {
-  const { loading, catalogData, page, setPage, totalPages } =
-    useGetCatalogData();
+  const { loading, pageData, page, setPage, totalPages } = useGetCatalogData();
 
   const onPaginationChange = useCallback(
     (pageNum: number) => {
@@ -28,45 +26,43 @@ export const Catalog = () => {
 
   return (
     <CatalogContainer>
-      {loading || !catalogData ? (
+      {loading || !pageData ? (
         <Spinner label="gathering animals data..." />
       ) : (
-        catalogData.map(
+        pageData.map(
           (catalogEntry, index) =>
             catalogEntry && (
               <Card key={index}>
                 <CardHeader className="flex gap-3">
                   <CatalogCardTitle>
-                    {getEnglishVernacularName(catalogEntry.vernacularNames)}
+                    {catalogEntry.vernacularName}
                   </CatalogCardTitle>
                   <p>- {catalogEntry.species}</p>
                 </CardHeader>
                 <Divider />
                 <CardBody className="flex gap-3">
-                  {catalogEntry?.images && catalogEntry.images.length !== 0 && (
-                    <ImageCarousel
-                      mainImage={catalogEntry.wikipediaImageUrl}
-                      images={catalogEntry.images}
-                    />
+                  {catalogEntry?.wikipediaImage && (
+                    <Image src={catalogEntry.wikipediaImage} />
                   )}
                   <p>{catalogEntry.usageKey}</p>
-                  {isStringHTML(
-                    catalogEntry.descriptions[0]?.description || ""
-                  ) ? (
-                    <CatalogDescription
-                      dangerouslySetInnerHTML={{
-                        __html: catalogEntry.descriptions[0]?.description,
-                      }}
-                    ></CatalogDescription>
-                  ) : (
-                    catalogEntry.descriptions[0]?.description || ""
-                  )}
+                  {catalogEntry.descriptions &&
+                    (isStringHTML(
+                      catalogEntry.descriptions[0]?.description || ""
+                    ) ? (
+                      <CatalogDescription
+                        dangerouslySetInnerHTML={{
+                          __html: catalogEntry.descriptions[0]?.description,
+                        }}
+                      ></CatalogDescription>
+                    ) : (
+                      catalogEntry.descriptions[0]?.description || ""
+                    ))}
                 </CardBody>
               </Card>
             )
         )
       )}
-      {catalogData?.length && (
+      {totalPages && (
         <Pagination
           total={totalPages}
           initialPage={page}

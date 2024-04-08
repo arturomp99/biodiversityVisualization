@@ -20,7 +20,7 @@ export const useFetch = <DataType extends object>(url: string) => {
       }
     };
     fetchData();
-  }, []);
+  }, [url]);
 
   return { dataRef, data, setData, loading };
 };
