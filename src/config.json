@@ -3,5 +3,7 @@
   "DATA_KEY": "/data",
   "GEOJSON_KEY": "/geojson",
   "FILTERS_KEY": "/filters",
-  "AUDIO_KEY": "/audio"
+  "AUDIO_KEY": "/audio",
+  "CATALOG_KEY": "/catalog/data",
+  "CATALOG_TOTAL_KEY": "/catalog/total"
 }
