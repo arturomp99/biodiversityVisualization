@@ -29,7 +29,7 @@ const TaxonomyInput: FC<FilterInputProps<FiltersDataType["taxonomic"]>> = ({
     <ControlledAutocomplete
       key={levelKey}
       label={`Filter by ${level}`}
-      loading={!!filtersData || false}
+      loading={!filtersData || false}
       onValueChanged={(value?: number) =>
         taxonomicLevelFilterHandler(level, value)
       }
