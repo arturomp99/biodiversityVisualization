@@ -1,46 +1,14 @@
 import { ExtendedFeatureCollection, group } from "d3";
-import { SoundHeaders } from "src/data/sampleData/sampleData.types";
-import {
-  CleanDataFileHeaders,
-  DataType,
-  PositionsFileHeaders,
-} from "src/data/data.types";
-import { useGetFiltersData } from "../useGetFiltersData/useGetFiltersData";
-import { useFetchJSON } from "./useFetchJson";
+import config from "src/config.json";
+import { DataType, PositionsFileHeaders } from "src/data/data.types";
 import { useFetchDSV } from "./useFetchDSV";
 import { useApplyFilters } from "../useApplyFilters/useApplyFilters";
-import {
-  LineChartDataType,
-  MapChartDataType,
-} from "src/components/graphs/graphsData.types";
-
-const useReadLineChartData = () => {
-  const { dataRef, data, loading, setData } = useFetchDSV<
-    LineChartDataType,
-    SoundHeaders
-  >(",", "/sampleData/bioacoustic.csv", (soundData) => {
-    return {
-      timeStamp: Number(soundData.timeStamp),
-      value: Number(soundData.soundMax),
-      group: soundData.sensorID,
-    };
-  });
-
-  useApplyFilters(dataRef.current, setData);
-
-  return { data, loading, readData: dataRef.current };
-};
-
-const useReadMapData = () => {
-  const { data, loading } = useFetchJSON<ExtendedFeatureCollection>(
-    "/geoJson/Singapore.geojson"
-  );
-
-  return { data, loading };
-};
+import { MapChartDataType } from "src/components/graphs/graphsData.types";
+import { useFetch } from "./useFetch";
+import { FiltersDataType } from "./types";
 
 const useReadGeoJsonData = (filePath: string) => {
-  const { data, loading } = useFetchJSON<ExtendedFeatureCollection>(filePath);
+  const { data, loading } = useFetch<ExtendedFeatureCollection[]>(filePath);
 
   return { data, loading };
 };
@@ -63,40 +31,10 @@ const useReadPositionsData = (fileName: string) => {
   return { data, loading };
 };
 
-const arrayProperties: Array<CleanDataFileHeaders> = [
-  "occurrenceID",
-  "basisOfRecord",
-  "eventDate",
-  "identifiedBy",
-  "AI Detection Method/Model",
-  "Confidence%",
-  "Verification Method",
-  "Verification Name",
-  "dateIdentified",
-  "individualCount",
-  "organismQuantity",
-  "organismQuantityType",
-  "decimalLatitude",
-  "decimalLongitude",
-  "geodeticDatum",
-  "coordinateUncertaintyInMeters",
-  "verbatimCoordinates",
-  "verbatimCoordinateSystem",
-  "occurrenceRemarks",
-  "references",
-];
-
 const useReadComplexData = () => {
-  const { dataRef, data, setData, loading } = useFetchDSV<
-    DataType,
-    CleanDataFileHeaders
-  >(",", "/sampleData/clean_IdentifiedSpeciesTime.csv", (dataEntry) => {
-    const cleanEntry: DataType = { ...dataEntry };
-    for (const property of arrayProperties) {
-      cleanEntry[property] = dataEntry[property].split(",") as string[];
-    }
-    return cleanEntry;
-  });
+  const { dataRef, data, setData, loading } = useFetch<DataType[]>(
+    config.BACKEND_URL + config.DATA_KEY
+  );
 
   useApplyFilters(dataRef.current, setData);
 
@@ -104,28 +42,29 @@ const useReadComplexData = () => {
 };
 
 export const useReadData = () => {
-  const lineChartData = useReadLineChartData();
-  const mapData = useReadMapData();
   const detectionsPositionsData = useReadPositionsData(
     "/sampleData/positions.csv"
   );
   const complexData = useReadComplexData();
-  const geoJsonData = {
-    dronePaths: [
-      useReadGeoJsonData("/geoJson/dronePath0.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath1.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath2.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath3.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath4.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath5.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath6.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath7.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath8.geojson"),
-      useReadGeoJsonData("/geoJson/dronePath9.geojson"),
-    ],
-  };
+  const geoJsonData = useReadGeoJsonData(
+    config.BACKEND_URL + config.GEOJSON_KEY
+  );
 
-  const filtersData = useGetFiltersData(complexData);
+  const { data: readFiltersData } = useFetch<FiltersDataType>(
+    config.BACKEND_URL + config.FILTERS_KEY
+  );
+  const filtersData = {
+    ...readFiltersData,
+    temporal:
+      !!readFiltersData?.temporal &&
+      !!readFiltersData?.temporal[0] &&
+      !!readFiltersData?.temporal[1]
+        ? [
+            new Date(readFiltersData?.temporal[0]),
+            new Date(readFiltersData?.temporal[1]),
+          ]
+        : readFiltersData?.temporal,
+  };
 
   const taxonomicClassification = !complexData.data
     ? undefined
@@ -141,8 +80,6 @@ export const useReadData = () => {
       );
 
   return {
-    lineChartData,
-    mapData,
     detectionsPositionsData,
     complexData,
     taxonomicClassification: {

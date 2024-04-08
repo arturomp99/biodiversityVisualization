@@ -22,14 +22,14 @@ export const SummaryInfo: FC<SummaryInfoProps> = ({
 
   const totalObservations = complexData.readData?.reduce<number>(
     (acc, curr) => {
-      acc += +(curr.observationsNum as string);
+      acc += curr.observationsNum;
       return acc;
     },
     0
   );
   const totalSpecies = complexData.readData?.length;
   const filteredObservations = complexData.data?.reduce<number>((acc, curr) => {
-    acc += +(curr.observationsNum as string);
+    acc += curr.observationsNum;
     return acc;
   }, 0);
   const filteredSpecies = complexData.data?.length;

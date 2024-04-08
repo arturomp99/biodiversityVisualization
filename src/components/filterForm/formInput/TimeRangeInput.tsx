@@ -2,10 +2,10 @@ import { Slider } from "@nextui-org/react";
 import React, { useCallback, FC, useState, useEffect } from "react";
 import { TemporalFilterType, TypeOfFilter } from "src/data/filters.types";
 import { FilterInputProps } from "./types";
-import { TimeFiltersDataType } from "src/components/shared/hooks/useGetFiltersData/asyncGetTimeFiltersData";
+import { FiltersDataType } from "src/components/shared/hooks/useReadData/types";
 
 const TimeRangeInput: FC<
-  FilterInputProps<TimeFiltersDataType, TemporalFilterType>
+  FilterInputProps<FiltersDataType["temporal"], TemporalFilterType>
 > = ({ filtersData, addFilter, selectedFilters }) => {
   const [value, setValue] = useState<[number, number] | undefined>();
 
@@ -26,8 +26,8 @@ const TimeRangeInput: FC<
   useEffect(() => {
     if (!selectedFilters || !selectedFilters[0]) {
       setValue(() => [
-        filtersData?.data[0]?.getTime() ?? 0,
-        filtersData?.data[1]?.getTime() ?? 0,
+        !!filtersData && filtersData[0] ? filtersData[0].getTime() : 0,
+        !!filtersData && filtersData[1] ? filtersData[1].getTime() : 0,
       ]);
       return;
     }
@@ -37,13 +37,13 @@ const TimeRangeInput: FC<
   return (
     <Slider
       label=" "
-      loading={filtersData?.loading || false}
+      loading={!filtersData || true}
       size="sm"
       color="success"
-      minValue={filtersData?.data[0]?.getTime()}
-      maxValue={filtersData?.data[1]?.getTime()}
+      minValue={!!filtersData && filtersData[0]?.getTime()}
+      maxValue={!!filtersData && filtersData[1]?.getTime()}
       value={value}
-      defaultValue={filtersData?.data}
+      defaultValue={filtersData}
       getValue={(time: string) => {
         const minDate = new Date(time[0]);
         const maxDate = new Date(time[1]);

@@ -1,9 +1,8 @@
-import * as d3 from "d3";
 import { ScaleSequential } from "d3";
-import { GeoJsonProperties } from "geojson";
 import L from "leaflet";
 import { mapChartParameters } from "src/data/constants";
 import { MapChartDataType } from "..";
+import { useDataContext } from "src/contexts/dataContext";
 
 const getMarkerHtmlStyles = (
   color: string,
@@ -21,23 +20,15 @@ const getMarkerHtmlStyles = (
   transform: rotate(45deg);
   border: 1px solid #FFFFFF`;
 
-export const getGeoJsonLayers = <
-  T extends {
-    data:
-      | d3.ExtendedFeatureCollection<
-          d3.ExtendedFeature<d3.GeoGeometryObjects | null, GeoJsonProperties>
-        >
-      | undefined;
-  }
->(
+export const getGeoJsonLayers = (
   map: L.Map,
-  data: T[],
+  data: NonNullable<ReturnType<typeof useDataContext>["geoJsonData"]["data"]>,
   colorScale: ScaleSequential<string, never>
 ) => {
   const geoJsonLayer = L.geoJSON().addTo(map);
 
   const dronePathLayers = data.map((dronePath, key) =>
-    L.geoJSON(dronePath.data, {
+    L.geoJSON(dronePath, {
       style: (feature) => {
         if (feature?.geometry.type !== "LineString") {
           return {};

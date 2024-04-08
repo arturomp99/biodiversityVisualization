@@ -1,30 +1,27 @@
 import React, { FC, useCallback } from "react";
 import { AutocompleteItem } from "@nextui-org/react";
 import { ControlledAutocomplete } from "../components/ControlledAutocomplete";
-import { TaxonomicLevelsType } from "src/data/data.types";
+import { TaxonomicLevelsType, taxonomicLevels } from "src/data/data.types";
 import { TypeOfFilter } from "src/data/filters.types";
-import {
-  TaxonomicFiltersDataType,
-  taxonomicLevels,
-} from "src/components/shared/hooks/useGetFiltersData/asyncGetTaxonomicFiltersData";
 import { FilterInputProps } from "./types";
+import { FiltersDataType } from "src/components/shared/hooks/useReadData/types";
 
-const TaxonomyInput: FC<FilterInputProps<TaxonomicFiltersDataType>> = ({
+const TaxonomyInput: FC<FilterInputProps<FiltersDataType["taxonomic"]>> = ({
   filtersData,
   addFilter,
 }) => {
   const taxonomicLevelFilterHandler = useCallback(
     (level: TaxonomicLevelsType, value?: number) => {
-      if (!addFilter || !filtersData?.data || !value) {
+      if (!addFilter || !filtersData || !value) {
         return;
       }
       addFilter({
         level,
-        value: filtersData.data[level][value],
+        value: filtersData[level][value],
         type: TypeOfFilter.Taxonomic,
       });
     },
-    [addFilter, filtersData?.data]
+    [addFilter, filtersData]
   );
 
   // Use disableSelectorIconRotation to avoid the small flickering bug
@@ -32,13 +29,13 @@ const TaxonomyInput: FC<FilterInputProps<TaxonomicFiltersDataType>> = ({
     <ControlledAutocomplete
       key={levelKey}
       label={`Filter by ${level}`}
-      loading={filtersData?.loading || false}
+      loading={!filtersData || false}
       onValueChanged={(value?: number) =>
         taxonomicLevelFilterHandler(level, value)
       }
     >
-      {filtersData?.data &&
-        filtersData.data[level].map((levelElement, elementKey) => (
+      {!!filtersData &&
+        filtersData[level].map((levelElement, elementKey) => (
           <AutocompleteItem key={elementKey}>{levelElement}</AutocompleteItem>
         ))}
     </ControlledAutocomplete>

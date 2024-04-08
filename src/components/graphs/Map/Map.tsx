@@ -28,16 +28,16 @@ export const Map: FC<GraphProps> = () => {
   const node = createRef<HTMLDivElement>();
 
   useEffect(() => {
-    if (!map) {
+    if (!map || !geoJsonData.data) {
       return;
     }
 
     mapLayers.current.geojson = getGeoJsonLayers(
       map,
-      geoJsonData.dronePaths,
+      geoJsonData.data,
       mapScalesRef.current.dronePathColorScale
     );
-  }, [map, geoJsonData.dronePaths]);
+  }, [map, geoJsonData.data]);
 
   useEffect(() => {
     if (!map) {
@@ -111,11 +111,9 @@ export const Map: FC<GraphProps> = () => {
   return (
     <>
       <StyledMapContainer ref={node} id={`${mapIdNames.container}`} />
-      {!!geoJsonData && mapScalesRef.current && (
+      {!!geoJsonData && geoJsonData.data && mapScalesRef.current && (
         <MapLegend
-          keys={[
-            ...geoJsonData.dronePaths.map((_, index) => `Drone path ${index}`),
-          ]}
+          keys={[...geoJsonData.data.map((_, index) => `Drone path ${index}`)]}
           onValueChange={onLegendChangeHandler}
           colorScale={mapScalesRef.current.dronePathColorScale}
           filterable
