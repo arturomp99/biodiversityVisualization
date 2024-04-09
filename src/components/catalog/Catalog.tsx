@@ -41,10 +41,13 @@ export const Catalog = () => {
                 </CardHeader>
                 <Divider />
                 <CardBody className="flex gap-3">
-                  {catalogEntry?.wikipediaImage && (
-                    <Image src={catalogEntry.wikipediaImage} />
+                  {catalogEntry?.wikipediaResult && (
+                    <Image
+                      src={catalogEntry.wikipediaResult.thumbnail.source}
+                    />
                   )}
-                  <p>{catalogEntry.usageKey}</p>
+                  <p>{catalogEntry.wikipediaResult?.description}</p>
+                  <a href={catalogEntry.wikipediaResult?.fullurl}>Wikipedia</a>
                   {catalogEntry.descriptions &&
                     (isStringHTML(
                       catalogEntry.descriptions[0]?.description || ""
