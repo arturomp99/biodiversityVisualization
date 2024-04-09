@@ -14,7 +14,7 @@ export type CatalogDataType = {
   usageKey?: string;
   vernacularName?: string;
   descriptions?: GBIFDescriptionType["results"];
-  wikipediaImage?: string;
+  wikipediaResult?: WikipediaResultType;
 };
 
 type GBIFDescriptionType = {
@@ -33,4 +33,12 @@ type GBIFDescriptionType = {
     description: string;
     source: string;
   }[];
+};
+
+type WikipediaResultType = {
+  pageId: number;
+  title: string;
+  thumbnail: { source: string };
+  description: string;
+  fullurl: string;
 };
