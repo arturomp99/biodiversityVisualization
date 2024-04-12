@@ -6,7 +6,8 @@ import { isTaxonomicDataType, isTemporalDataType } from "src/utils/bodyguards";
 
 export const useApplyFilters = <Data>(
   dataRef: Data[] | undefined,
-  setData: (value: SetStateAction<Data[] | undefined>) => void
+  setData: (value: SetStateAction<Data[] | undefined>) => void,
+  onFiltersApplied?: () => void
 ) => {
   const { filters } = useFiltersContext();
 
@@ -22,5 +23,6 @@ export const useApplyFilters = <Data>(
         return filterTemporalData(dataRef, filters) as Data[];
       }
     });
+    onFiltersApplied && onFiltersApplied();
   }, [filters, dataRef]);
 };
