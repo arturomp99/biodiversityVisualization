@@ -9,6 +9,7 @@ export const taxonomicLevels: TaxonomicLevelsType[] = [
 ];
 
 export type TaxonomicLevelsType =
+  | "Biodiversity"
   | "phylum"
   | "class"
   | "order"
