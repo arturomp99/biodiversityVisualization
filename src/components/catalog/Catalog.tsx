@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { FC, useCallback } from "react";
 import {
   Pagination,
   Card,
@@ -13,9 +13,13 @@ import { CatalogContainer } from "./CatalogContainer";
 import { useGetCatalogData } from "./hooks/useGetCatalogData";
 import { CatalogCardTitle, CatalogDescription } from "./styles";
 import { isStringHTML } from "src/utils/isStringHTML";
+import { FiltersType } from "src/data/filters.types";
 
-export const Catalog = () => {
-  const { loading, pageData, page, setPage, totalPages } = useGetCatalogData();
+export const Catalog: FC<{ catalogFilter?: FiltersType }> = ({
+  catalogFilter,
+}) => {
+  const { loading, pageData, page, setPage, totalPages } =
+    useGetCatalogData(catalogFilter);
 
   const onPaginationChange = useCallback(
     (pageNum: number) => {

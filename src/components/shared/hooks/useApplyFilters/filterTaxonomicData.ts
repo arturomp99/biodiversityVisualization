@@ -75,6 +75,7 @@ export const filterTaxonomicData = (
   data: DataType[],
   filters: FiltersType[]
 ) => {
+  console.log("arturo filters", filters);
   const taxonomicFilters = filters.filter(
     (filter) => filter.type === TypeOfFilter.Taxonomic
   ) as TaxonomicFilterType[];

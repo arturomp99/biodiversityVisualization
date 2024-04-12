@@ -11,6 +11,7 @@ import {
   ConfidenceFilterType,
   DropFilterType,
   FiltersType,
+  PositionFilterType,
   TaxonomicFilterType,
   TemporalFilterType,
   TypeOfFilter,
@@ -54,6 +55,12 @@ export const isConfidenceFilterType = (
   filter: FiltersType
 ): filter is ConfidenceFilterType => {
   return filter.type === TypeOfFilter.Confidence;
+};
+
+export const isPositionFilterType = (
+  filter: FiltersType
+): filter is PositionFilterType => {
+  return filter.type === TypeOfFilter.Position;
 };
 
 export const isDendrogramSettings = (

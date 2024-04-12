@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useObserveResize } from "src/components/shared/hooks/useObserveResize";
 import { useDataContext } from "src/contexts/dataContext";
 import { getLinechartData } from "./getLinechartData";
@@ -8,8 +8,11 @@ import { LineChart, LineChartDataType } from "src/components/graphs";
 import { lineChartParameters } from "src/data/constants";
 import { Catalog } from "src/components/catalog/Catalog";
 import { StyledDivider, StyledTitle } from "./styles";
+import { PositionFilterType } from "src/data/filters.types";
 
-export const MapDetails = () => {
+export const MapDetails: FC<{ catalogFilter?: PositionFilterType }> = ({
+  catalogFilter,
+}) => {
   const {
     complexData: { data, loading },
   } = useDataContext();
@@ -40,7 +43,7 @@ export const MapDetails = () => {
       </StyledDetailChart>
       <StyledDivider />
       <StyledTitle>Catalog of observations</StyledTitle>
-      <Catalog />
+      {catalogFilter && <Catalog catalogFilter={catalogFilter} />}
     </>
   );
 };

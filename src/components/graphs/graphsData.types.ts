@@ -10,6 +10,7 @@ export type MapChartDataType = {
   latitude: number;
   longitude: number;
   Id: string | string[];
+  scientificNames: string[];
   observationsNum: number;
 };
 

@@ -3,13 +3,16 @@ import { useFiltersContext } from "src/contexts/filtersContext";
 import { filterTaxonomicData } from "./filterTaxonomicData";
 import { filterTemporalData } from "./filterTemporalData";
 import { isTaxonomicDataType, isTemporalDataType } from "src/utils/bodyguards";
+import { FiltersType } from "src/data/filters.types";
 
 export const useApplyFilters = <Data>(
   dataRef: Data[] | undefined,
   setData: (value: SetStateAction<Data[] | undefined>) => void,
-  onFiltersApplied?: () => void
+  onFiltersApplied?: () => void,
+  additionalFilters?: FiltersType[]
 ) => {
-  const { filters } = useFiltersContext();
+  const { filters: contextFilters } = useFiltersContext();
+  const filters = [...contextFilters, ...(additionalFilters ?? [])];
 
   useEffect(() => {
     setData(() => {

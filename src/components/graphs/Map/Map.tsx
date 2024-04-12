@@ -17,7 +17,7 @@ import { getDetectionsLayer, getGeoJsonLayers } from "./getMapLayers";
 import { MapLegend } from "./interactivity/mapLegend/MapLegend";
 import { drawMapLayers } from "./drawMapLayers";
 
-export const Map: FC<GraphProps> = () => {
+export const Map: FC<GraphProps> = ({ showCatalogHandler }) => {
   const { geoJsonData, detectionsPositionsData } = useDataContext();
   const mapScalesRef = useRef(getMapScales());
   const mapLayers = useRef<{
@@ -27,6 +27,15 @@ export const Map: FC<GraphProps> = () => {
   const [map, setMap] = useState<L.Map | undefined>();
   const node = createRef<HTMLDivElement>();
 
+  const showCatalogCallback = useCallback(
+    (latitude: number, longitude: number) => {
+      if (!showCatalogHandler) {
+        return;
+      }
+      showCatalogHandler(latitude, longitude);
+    },
+    []
+  );
   useEffect(() => {
     if (!map || !geoJsonData.data) {
       return;
@@ -46,7 +55,8 @@ export const Map: FC<GraphProps> = () => {
 
     mapLayers.current.detections = getDetectionsLayer(
       map,
-      detectionsPositionsData.data
+      detectionsPositionsData.data,
+      showCatalogCallback
     );
   }, [map, detectionsPositionsData.data]);
 

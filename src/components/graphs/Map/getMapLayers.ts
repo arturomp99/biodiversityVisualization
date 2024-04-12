@@ -3,6 +3,7 @@ import L from "leaflet";
 import { mapChartParameters } from "src/data/constants";
 import { MapChartDataType } from "..";
 import { useDataContext } from "src/contexts/dataContext";
+import { getMarkerPopup } from "./interactivity/markerPopup/getMarkerPopup";
 
 const getMarkerHtmlStyles = (
   color: string,
@@ -80,14 +81,23 @@ export const getGeoJsonLayers = (
 
 export const getDetectionsLayer = (
   map: L.Map,
-  data: MapChartDataType[] | undefined
+  data: MapChartDataType[] | undefined,
+  markerPopupClickCallback?: (latitude: number, longitude: number) => void
 ) => {
   const detectionsLayer = L.layerGroup().addTo(map);
 
   const eachDetectionLayer = data?.map((detection) => {
     return L.marker([detection.latitude, detection.longitude], {
       icon: mapChartParameters.icons.detection,
-    }).bindPopup(`${detection.observationsNum} detections`);
+    }).bindPopup(
+      getMarkerPopup(
+        detection.observationsNum,
+        detection.scientificNames.length,
+        () =>
+          markerPopupClickCallback &&
+          markerPopupClickCallback(detection.latitude, detection.longitude)
+      )
+    );
   });
 
   eachDetectionLayer &&

@@ -71,7 +71,11 @@ export const DashboardGraph: FC<DashboardGraphProps> = ({
       />
     )) ||
     (graphName === DashboardGraphName.MAP && (
-      <Map isBasicInteractive dimensions={dimensions} />
+      <Map
+        isBasicInteractive
+        dimensions={dimensions}
+        showCatalogHandler={graphProps.showCatalogHandler}
+      />
     )) ||
     (graphName === DashboardGraphName.LINECHART && (
       <SoundChart
