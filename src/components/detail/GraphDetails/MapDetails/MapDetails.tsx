@@ -6,6 +6,8 @@ import { StyledDetailChart } from "../styles";
 import { renderGraph } from "src/components/graphs/shared/utils/renderGraph";
 import { LineChart, LineChartDataType } from "src/components/graphs";
 import { lineChartParameters } from "src/data/constants";
+import { Catalog } from "src/components/catalog/Catalog";
+import { StyledDivider, StyledTitle } from "./styles";
 
 export const MapDetails = () => {
   const {
@@ -17,23 +19,28 @@ export const MapDetails = () => {
   useEffect(() => setLinechartData(getLinechartData(data)), [data]);
 
   return (
-    <StyledDetailChart ref={resizeContainerRef}>
-      {!loading &&
-        !!linechartData &&
-        renderGraph(
-          <LineChart
-            isBasicInteractive
-            dimensions={dimensions ?? [0, 0]}
-            data={linechartData}
-            axisTitles={["", "observations"]}
-            axesParameters={{
-              ...lineChartParameters.axesParameters,
-              grid: false,
-            }}
-            shouldAddLegend
-          />,
-          dimensions
-        )}
-    </StyledDetailChart>
+    <>
+      <StyledDetailChart ref={resizeContainerRef}>
+        {!loading &&
+          !!linechartData &&
+          renderGraph(
+            <LineChart
+              isBasicInteractive
+              dimensions={dimensions ?? [0, 0]}
+              data={linechartData}
+              axisTitles={["", "observations"]}
+              axesParameters={{
+                ...lineChartParameters.axesParameters,
+                grid: false,
+              }}
+              shouldAddLegend
+            />,
+            dimensions
+          )}
+      </StyledDetailChart>
+      <StyledDivider />
+      <StyledTitle>Catalog of observations</StyledTitle>
+      <Catalog />
+    </>
   );
 };

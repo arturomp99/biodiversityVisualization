@@ -13,6 +13,7 @@ import {
 } from "src/components/graphs";
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
 import { useTaxonomicBreadcrumbNavigation } from "src/components/shared/hooks/useTaxonomicBreadcrumbNavigation";
+import { HeatTreeSection } from "./HeatTreeSection/HeatTreeSection";
 
 export const DendrogramDetails = () => {
   const {
@@ -70,33 +71,38 @@ export const DendrogramDetails = () => {
   };
 
   return (
-    <StyledDetailChart ref={resizeContainerRef}>
-      {!loading && !!barChartData && (
-        <>
-          <Breadcrumbs>
-            {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              breadcrumbItems.current.map((breadcrumbItem: any) => (
-                <BreadcrumbItem
-                  key={breadcrumbItem.data[0] || "Root"}
-                  onPress={() => breadcrumbPressHandler(breadcrumbItem)}
-                >
-                  {breadcrumbItem.data[0] || "Root"}
-                </BreadcrumbItem>
-              ))
-            }
-          </Breadcrumbs>
-          {renderGraph(
-            <StackedBarChart
-              dimensions={dimensions ?? [0, 0]}
-              isBasicInteractive
-              data={barChartData}
-              onBarClick={onBarClick}
-            />,
-            dimensions
-          )}
-        </>
-      )}
-    </StyledDetailChart>
+    <>
+      <StyledDetailChart ref={resizeContainerRef}>
+        {!loading && !!barChartData && (
+          <>
+            <Breadcrumbs>
+              {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                breadcrumbItems.current.map((breadcrumbItem: any) => (
+                  <BreadcrumbItem
+                    key={breadcrumbItem.data[0] || "Root"}
+                    onPress={() => breadcrumbPressHandler(breadcrumbItem)}
+                  >
+                    {breadcrumbItem.data[0] || "Root"}
+                  </BreadcrumbItem>
+                ))
+              }
+            </Breadcrumbs>
+            {renderGraph(
+              <StackedBarChart
+                dimensions={dimensions ?? [0, 0]}
+                isBasicInteractive
+                data={barChartData}
+                onBarClick={onBarClick}
+              />,
+              dimensions
+            )}
+          </>
+        )}
+      </StyledDetailChart>
+      <StyledDetailChart>
+        <HeatTreeSection />
+      </StyledDetailChart>
+    </>
   );
 };
