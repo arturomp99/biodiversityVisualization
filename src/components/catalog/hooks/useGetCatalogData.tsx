@@ -5,7 +5,7 @@ import { CatalogDataType, TotalCatalogInfoType } from "../types";
 import { catalogParameters } from "src/data/constants";
 import { useApplyFilters } from "src/components/shared/hooks/useApplyFilters/useApplyFilters";
 
-export const useGetCatalogData = () => {
+export const useGetCatalogData = (catalogScientificNames?: string[]) => {
   const [page, setPage] = useState(1);
   const [pageData, setPageData] = useState<CatalogDataType[]>();
   const {
@@ -23,9 +23,14 @@ export const useGetCatalogData = () => {
     loading: pageDataLoading,
   } = useFetch<CatalogDataType[]>(config.BACKEND_URL + config.CATALOG_KEY);
 
-  useApplyFilters<NonNullable<typeof data>[0]>(dataRef.current, setData, () => {
-    setPage(1);
-  });
+  useApplyFilters<NonNullable<typeof data>[0]>(
+    dataRef.current,
+    setData,
+    () => {
+      setPage(1);
+    },
+    catalogScientificNames
+  );
 
   useEffect(() => {
     setPageData(() =>

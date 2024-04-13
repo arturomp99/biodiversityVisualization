@@ -5,6 +5,7 @@ export enum TypeOfFilter {
   Temporal = "Temporal",
   Drop = "Drop",
   Confidence = "Confidence",
+  Position = "Position",
 }
 
 export type FiltersBaseType = {
@@ -29,8 +30,14 @@ export type ConfidenceFilterType = FiltersBaseType & {
   confidenceLevel: number;
 };
 
+export type PositionFilterType = FiltersBaseType & {
+  latitude: number;
+  longitude: number;
+};
+
 export type FiltersType =
   | TaxonomicFilterType
   | TemporalFilterType
   | DropFilterType
-  | ConfidenceFilterType;
+  | ConfidenceFilterType
+  | PositionFilterType;

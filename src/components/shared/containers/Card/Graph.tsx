@@ -13,6 +13,7 @@ import { renderGraph } from "src/components/graphs/shared/utils/renderGraph";
 import { Button } from "@nextui-org/react";
 import { ForwardIcon } from "src/icons/ForwardIcon";
 import { GraphInfo } from "src/components/dashboard/GraphInfo";
+import { useShowCatalogDetail } from "src/components/detail/GraphDetails/Interactivtity/useShowCatalogDetail";
 
 export const Graph = (props: {
   graphName: string;
@@ -20,8 +21,11 @@ export const Graph = (props: {
   to?: string;
   expanded?: boolean;
   info?: string;
+  showCatalogHandler?: ReturnType<
+    typeof useShowCatalogDetail
+  >["showCatalogHandler"];
 }) => {
-  const { graphName, to, expanded, title, info } = props;
+  const { graphName, to, expanded, title, info, showCatalogHandler } = props;
 
   const navigate = useNavigate();
   const { containerRef: resizeContainerRef, dimensions } = useObserveResize();
@@ -29,6 +33,7 @@ export const Graph = (props: {
   const graphProps = {
     dimensions: dimensions ?? [0, 0],
     isFullInteractive: expanded,
+    showCatalogHandler,
   };
 
   return (

@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { DataType } from "src/data/data.types";
 
 export type CatalogContainerProps = {
   children: ReactNode;
@@ -9,7 +10,7 @@ export type TotalCatalogInfoType = {
   totalPages?: number;
 };
 
-export type CatalogDataType = {
+export type CatalogDataType = DataType & {
   species?: string;
   usageKey?: string;
   vernacularName?: string;

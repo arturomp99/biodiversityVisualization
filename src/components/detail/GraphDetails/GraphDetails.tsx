@@ -1,8 +1,16 @@
 import React from "react";
 import { getGraphDetails } from "src/components/shared/getGraphDetails";
+import { DataType } from "src/data/data.types";
 
-export const GraphDetails = (props: { graphName: string }) => {
-  const { graphName } = props;
+export type GraphDetailsProps = {
+  catalogScientificNames?: DataType["scientificName"][];
+};
 
-  return <>{getGraphDetails(graphName)}</>;
+export const GraphDetails = (props: {
+  graphName: string;
+  detailProps: GraphDetailsProps;
+}) => {
+  const { graphName, detailProps } = props;
+
+  return <>{getGraphDetails(graphName, detailProps)}</>;
 };
