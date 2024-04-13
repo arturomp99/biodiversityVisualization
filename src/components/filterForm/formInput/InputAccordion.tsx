@@ -26,7 +26,7 @@ export const InputAccordion = () => {
   return (
     <Accordion
       selectionMode="multiple"
-      isCompact="true"
+      isCompact={true}
       itemClasses={{ content: "flex flex-col gap-1" }}
     >
       <AccordionItem aria-label="Taxonomy" title={"Taxonomy"}>

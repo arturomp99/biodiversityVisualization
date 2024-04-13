@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { FilterInputProps } from "./types";
 import { ConfidenceFilterType, TypeOfFilter } from "src/data/filters.types";
-import { Slider } from "@nextui-org/react";
+import { Slider, SliderValue } from "@nextui-org/react";
 
 const ConfidenceInput: FC<
   Omit<FilterInputProps<number, ConfidenceFilterType>, "filtersData">
@@ -39,7 +39,9 @@ const ConfidenceInput: FC<
       size="sm"
       value={value}
       defaultValue={0}
-      getValue={(percentage: number) => `${(percentage * 100) | 0}%`}
+      getValue={(percentage: SliderValue) =>
+        `${((percentage as number) * 100) | 0}%`
+      }
       marks={[
         {
           value: 0.25,
@@ -55,8 +57,10 @@ const ConfidenceInput: FC<
         },
       ]}
       className="max-w-md"
-      onChange={setValue}
-      onChangeEnd={(value: number) => confidenceFilterHandler(value)}
+      onChange={(value: SliderValue) => setValue(value as number)}
+      onChangeEnd={(value: SliderValue) =>
+        confidenceFilterHandler(value as number)
+      }
     />
   );
 };

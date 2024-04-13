@@ -10,7 +10,7 @@ export const Dashboard = () => {
       {graphsMetadata.data.map(
         (elementGraph: GraphMetadataType, index: number) => {
           return (
-            <StyledDashboardGraph graphId={elementGraph.id} key={index}>
+            <StyledDashboardGraph $graphId={elementGraph.id} key={index}>
               <Graph
                 graphName={elementGraph.id}
                 title={elementGraph.title}
