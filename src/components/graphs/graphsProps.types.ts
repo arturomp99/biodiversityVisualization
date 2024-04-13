@@ -23,6 +23,7 @@ export interface GraphProps {
 
 export type DendrogramProps = GraphProps & {
   settings: DendrogramSettingsType | undefined;
+  settingsActionCallback: (action: SettingActions) => void;
 };
 
 export type LineChartProps = GraphProps & {
