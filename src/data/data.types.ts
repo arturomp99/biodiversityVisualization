@@ -35,8 +35,7 @@ export type DataType = Record<TaxonomicLevelsType, string> & {
   individualCount: string[];
   organismQuantity: string[];
   organismQuantityType: string[];
-  decimalLatitude: string[];
-  decimalLongitude: string[];
+  position: { latitude: string; longitude: string }[];
   geodeticDatum: string[];
   coordinateUncertaintyInMeters: string[];
   verbatimCoordinates: string[];

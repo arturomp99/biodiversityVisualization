@@ -1,4 +1,4 @@
-import { Slider } from "@nextui-org/react";
+import { Slider, SliderValue } from "@nextui-org/react";
 import React, { useCallback, FC, useState, useEffect } from "react";
 import { TemporalFilterType, TypeOfFilter } from "src/data/filters.types";
 import { FilterInputProps } from "./types";
@@ -37,22 +37,27 @@ const TimeRangeInput: FC<
   return (
     <Slider
       label=" "
-      loading={!filtersData || true}
       size="sm"
       color="success"
-      minValue={!!filtersData && filtersData[0]?.getTime()}
-      maxValue={!!filtersData && filtersData[1]?.getTime()}
+      minValue={filtersData ? filtersData[0]?.getTime() : undefined}
+      maxValue={filtersData ? filtersData[1]?.getTime() : undefined}
       value={value}
-      defaultValue={filtersData}
-      getValue={(time: string) => {
-        const minDate = new Date(time[0]);
-        const maxDate = new Date(time[1]);
+      defaultValue={
+        filtersData
+          ? filtersData.map((dataEntry) => dataEntry?.getTime() ?? 0)
+          : undefined
+      }
+      getValue={(time: SliderValue) => {
+        const minDate = new Date((time as number[])[0]);
+        const maxDate = new Date((time as number[])[1]);
         return `${minDate.getDate()}/${minDate.getMonth()} ${minDate.getHours()}:${minDate.getMinutes()}:${minDate.getSeconds()} - 
         ${maxDate.getDate()}/${minDate.getMonth()} ${maxDate.getHours()}:${maxDate.getMinutes()}:${maxDate.getSeconds()}`;
       }}
       className="max-w-md"
-      onChange={setValue}
-      onChangeEnd={(value: [number, number]) => timeRangeFilterHandler(value)}
+      onChange={(value: SliderValue) => setValue(value as [number, number])}
+      onChangeEnd={(value: SliderValue) =>
+        timeRangeFilterHandler(value as [number, number])
+      }
     ></Slider>
   );
 };

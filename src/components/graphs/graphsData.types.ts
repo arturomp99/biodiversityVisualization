@@ -9,8 +9,7 @@ export interface LineChartDataType {
 export type MapChartDataType = {
   latitude: number;
   longitude: number;
-  Id: string | string[];
-  observationsNum: number;
+  observations: DataType[];
 };
 
 export type TimelineChartDataType = {

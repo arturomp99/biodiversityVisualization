@@ -19,7 +19,7 @@ import { drawMapLayers } from "./drawMapLayers";
 
 export const Map: FC<GraphProps> = () => {
   const { geoJsonData, detectionsPositionsData } = useDataContext();
-  const mapScalesRef = useRef(getMapScales());
+  const mapScalesRef = useRef<ReturnType<typeof getMapScales>>(getMapScales());
   const mapLayers = useRef<{
     geojson: ReturnType<typeof getGeoJsonLayers> | undefined;
     detections: ReturnType<typeof getDetectionsLayer> | undefined;
@@ -31,7 +31,9 @@ export const Map: FC<GraphProps> = () => {
     if (!map || !geoJsonData.data) {
       return;
     }
-
+    if (mapLayers.current.geojson?.geoJsonLayer) {
+      map.removeLayer(mapLayers.current.geojson.geoJsonLayer);
+    }
     mapLayers.current.geojson = getGeoJsonLayers(
       map,
       geoJsonData.data,
@@ -43,7 +45,9 @@ export const Map: FC<GraphProps> = () => {
     if (!map) {
       return;
     }
-
+    if (mapLayers.current.detections?.detectionsLayer) {
+      map.removeLayer(mapLayers.current.detections.detectionsLayer);
+    }
     mapLayers.current.detections = getDetectionsLayer(
       map,
       detectionsPositionsData.data

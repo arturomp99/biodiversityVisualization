@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { Key, useCallback, useEffect, useState } from "react";
 import config from "src/config.json";
 import {
   Autocomplete,
@@ -32,16 +32,13 @@ export const HeatTree = () => {
       });
   }, [taxonomic]);
 
-  const rankSelectHandler = useCallback(
-    (selectedValue: TaxonomicLevelsType) => {
-      setSelectedTaxon(undefined);
-      setSelectedTaxonRank(selectedValue);
-    },
-    []
-  );
+  const rankSelectHandler = useCallback((selectedValue: Key) => {
+    setSelectedTaxon(undefined);
+    setSelectedTaxonRank(selectedValue as TaxonomicLevelsType);
+  }, []);
 
-  const taxonSelectHandler = useCallback((taxon: string) => {
-    setSelectedTaxon(taxon);
+  const taxonSelectHandler = useCallback((taxon: Key) => {
+    setSelectedTaxon(taxon as string);
   }, []);
 
   const shouldShowImage =
@@ -79,7 +76,7 @@ export const HeatTree = () => {
       <CardFooter className="justify-center gap-1 before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
         <p>Heat tree of</p>
         <Autocomplete
-          loading={taxonLevels.length == 0}
+          isLoading={taxonLevels.length === 0}
           defaultSelectedKey="Biodiversity"
           variant="underlined"
           classNames={{
@@ -92,7 +89,7 @@ export const HeatTree = () => {
           ))}
         </Autocomplete>
         <Autocomplete
-          loading={taxonLevels.length == 0}
+          isLoading={taxonLevels.length == 0}
           isDisabled={
             !selectedTaxonRank || selectedTaxonRank === "Biodiversity"
           }
@@ -103,11 +100,14 @@ export const HeatTree = () => {
           onSelectionChange={taxonSelectHandler}
         >
           {taxonomic &&
-            selectedTaxonRank &&
-            selectedTaxonRank !== "Biodiversity" &&
+          selectedTaxonRank &&
+          selectedTaxonRank !== "Biodiversity" ? (
             taxonomic[selectedTaxonRank].map((taxonLevel) => (
               <AutocompleteItem key={taxonLevel}>{taxonLevel}</AutocompleteItem>
-            ))}
+            ))
+          ) : (
+            <></>
+          )}
         </Autocomplete>
       </CardFooter>
     </Card>
