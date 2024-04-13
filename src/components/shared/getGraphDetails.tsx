@@ -13,10 +13,7 @@ export const getGraphDetails = (
   graphName: string | undefined,
   detailProps: GraphDetailsProps
 ) => {
-  const catalogFilter =
-    detailProps.catalogFilter && isPositionFilterType(detailProps.catalogFilter)
-      ? detailProps.catalogFilter
-      : undefined;
+  console.log("arturo detailProps.catalogFilter", detailProps.catalogFilter);
   return (
     (graphName === DashboardGraphName.DENDROGRAM && <DendrogramDetails />) ||
     (graphName === DashboardGraphName.TIMELINE && (
@@ -24,7 +21,14 @@ export const getGraphDetails = (
     )) ||
     ((graphName === DashboardGraphName.MAP ||
       graphName === DashboardGraphName.ONGROUND) && (
-      <MapDetails catalogFilter={catalogFilter} />
+      <MapDetails
+        catalogFilter={
+          detailProps.catalogFilter &&
+          isPositionFilterType(detailProps.catalogFilter)
+            ? detailProps.catalogFilter
+            : undefined
+        }
+      />
     )) ||
     (graphName === DashboardGraphName.LINECHART && <LineChartDetails />) || (
       <div>GRAPH NOT FOUND</div>

@@ -15,6 +15,14 @@ export const Detail = (props: { graphName: string }) => {
   const { catalogFilter, showCatalogHandler } = useShowCatalogDetail(
     props.graphName
   );
+  console.log(
+    "arturo Detail catalogFilter",
+    catalogFilter,
+    "props.graphName",
+    props.graphName,
+    "showCatalogHandler",
+    showCatalogHandler
+  );
   return (
     <div>
       <DetailHeaderStyled>

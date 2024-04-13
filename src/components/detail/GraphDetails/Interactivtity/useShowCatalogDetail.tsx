@@ -10,7 +10,8 @@ export const useShowCatalogDetail = (graphName: string) => {
   const [catalogFilter, setCatalogFilter] = useState<FiltersType>();
   const showCatalogHandler = useCallback(
     (value1?: string | number, value2?: string | number) => {
-      if (graphName === DashboardGraphName.MAP) {
+      if (graphName === DashboardGraphName.ONGROUND) {
+        console.log("arturo SHOW CATALOG");
         setCatalogFilter(() => {
           const positionFilter = {
             type: TypeOfFilter.Position,

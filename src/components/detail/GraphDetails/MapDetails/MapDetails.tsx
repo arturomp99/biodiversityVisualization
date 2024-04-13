@@ -21,6 +21,7 @@ export const MapDetails: FC<{ catalogFilter?: PositionFilterType }> = ({
 
   useEffect(() => setLinechartData(getLinechartData(data)), [data]);
 
+  console.log("arturo catalogfilter", catalogFilter);
   return (
     <>
       <StyledDetailChart ref={resizeContainerRef}>
@@ -41,9 +42,13 @@ export const MapDetails: FC<{ catalogFilter?: PositionFilterType }> = ({
             dimensions
           )}
       </StyledDetailChart>
-      <StyledDivider />
-      <StyledTitle>Catalog of observations</StyledTitle>
-      {catalogFilter && <Catalog catalogFilter={catalogFilter} />}
+      {catalogFilter && (
+        <div>
+          <StyledDivider />
+          <StyledTitle>Catalog of observations</StyledTitle>
+          <Catalog catalogFilter={catalogFilter} />
+        </div>
+      )}
     </>
   );
 };
