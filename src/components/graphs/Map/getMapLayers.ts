@@ -3,7 +3,6 @@ import L from "leaflet";
 import { mapChartParameters } from "src/data/constants";
 import { MapChartDataType } from "..";
 import { useDataContext } from "src/contexts/dataContext";
-import { getMarkerPopup } from "./interactivity/markerPopup/getMarkerPopup";
 
 const getMarkerHtmlStyles = (
   color: string,
@@ -81,37 +80,14 @@ export const getGeoJsonLayers = (
 
 export const getDetectionsLayer = (
   map: L.Map,
-  data: MapChartDataType[] | undefined,
-  markerPopupClickCallback?: (catalogScientificNames: string[]) => void
+  data: MapChartDataType[] | undefined
 ) => {
   const detectionsLayer = L.layerGroup().addTo(map);
 
   const eachDetectionLayer = data?.map((detection) => {
-    const detectedSpecies = detection.observations.reduce<string[]>(
-      (accScientificNames: string[], currObservation) => {
-        if (
-          !accScientificNames.find(
-            (accScientificName) =>
-              accScientificName === currObservation.scientificName
-          )
-        ) {
-          accScientificNames.push(currObservation.scientificName);
-        }
-        return accScientificNames;
-      },
-      []
-    );
-
     return L.marker([detection.latitude, detection.longitude], {
       icon: mapChartParameters.icons.detection,
-    }).bindPopup(
-      getMarkerPopup(
-        detection.observationsNum,
-        detectedSpecies.length,
-        () =>
-          markerPopupClickCallback && markerPopupClickCallback(detectedSpecies)
-      )
-    );
+    }).bindPopup(`${detection.observations.length} detections`);
   });
 
   eachDetectionLayer &&

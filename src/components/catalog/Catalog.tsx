@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from "react";
+import React, { useCallback } from "react";
 import {
   Pagination,
   Card,
@@ -13,14 +13,9 @@ import { CatalogContainer } from "./CatalogContainer";
 import { useGetCatalogData } from "./hooks/useGetCatalogData";
 import { CatalogCardTitle, CatalogDescription } from "./styles";
 import { isStringHTML } from "src/utils/isStringHTML";
-import { DataType } from "src/data/data.types";
 
-export const Catalog: FC<{
-  catalogScientificNames?: DataType["scientificName"][];
-}> = ({ catalogScientificNames }) => {
-  const { loading, pageData, page, setPage, totalPages } = useGetCatalogData(
-    catalogScientificNames
-  );
+export const Catalog = () => {
+  const { loading, pageData, page, setPage, totalPages } = useGetCatalogData();
 
   const onPaginationChange = useCallback(
     (pageNum: number) => {
@@ -70,7 +65,7 @@ export const Catalog: FC<{
             )
         )
       )}
-      {totalPages && totalPages > 1 && (
+      {totalPages && (
         <Pagination
           total={totalPages}
           initialPage={page}
