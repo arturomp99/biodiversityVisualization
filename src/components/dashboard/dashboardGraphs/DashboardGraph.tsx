@@ -29,7 +29,7 @@ export const DashboardGraph: FC<DashboardGraphProps> = ({
   graphName,
   graphProps,
 }) => {
-  const { dimensions, isFullInteractive, showCatalogHandler } = graphProps;
+  const { dimensions, isFullInteractive } = graphProps;
   const [graphSettings, settingsDispatch] = useReducer(
     dashboardSettingsReducer,
     getInitialSettings(graphName)
@@ -68,7 +68,6 @@ export const DashboardGraph: FC<DashboardGraphProps> = ({
         isBasicInteractive
         dimensions={dimensions}
         isFullInteractive={isFullInteractive}
-        showCatalogHandler={showCatalogHandler}
       />
     )) ||
     (graphName === DashboardGraphName.MAP && (

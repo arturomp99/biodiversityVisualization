@@ -6,21 +6,15 @@ import {
   LineChartDetails,
 } from "src/components/detail/GraphDetails";
 import { DashboardGraphName } from "../dashboard/dashboardGraphs/DashboardGraph";
-import { GraphDetailsProps } from "../detail/GraphDetails/GraphDetails";
 
-export const getGraphDetails = (
-  graphName: string | undefined,
-  detailProps: GraphDetailsProps
-) => {
+export const getGraphDetails = (graphName: string | undefined) => {
   return (
     (graphName === DashboardGraphName.DENDROGRAM && <DendrogramDetails />) ||
     (graphName === DashboardGraphName.TIMELINE && (
       <TimeLineDetails isHistogram />
     )) ||
     ((graphName === DashboardGraphName.MAP ||
-      graphName === DashboardGraphName.ONGROUND) && (
-      <MapDetails catalogScientificNames={detailProps.catalogScientificNames} />
-    )) ||
+      graphName === DashboardGraphName.ONGROUND) && <MapDetails />) ||
     (graphName === DashboardGraphName.LINECHART && <LineChartDetails />) || (
       <div>GRAPH NOT FOUND</div>
     )

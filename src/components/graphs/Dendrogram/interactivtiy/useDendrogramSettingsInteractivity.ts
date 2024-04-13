@@ -11,15 +11,10 @@ import { addNodeInfoInteractivity } from "./nodeInfoInteractivity.ts/addNodeInfo
 export const useDendrogramSettingsInteractivity = (
   nodeElement: SVGSVGElement | null,
   settings: DendrogramSettingsType | undefined,
-  settingsActionCallback?: (action: SettingActions) => void
+  settingsActionCallback: (action: SettingActions) => void
 ) => {
   useEffect(() => {
-    if (
-      !settings ||
-      !settings.actionFlag ||
-      !nodeElement ||
-      !settingsActionCallback
-    ) {
+    if (!settings || !settings.actionFlag || !nodeElement) {
       return;
     }
     if (settings.actionFlag === DendrogramSettingActions.EXPAND) {

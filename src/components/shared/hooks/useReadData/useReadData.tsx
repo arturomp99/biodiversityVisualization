@@ -33,17 +33,13 @@ const useGetPositionsData = (
                 observation.latitude === +currentPosition.latitude &&
                 observation.longitude === +currentPosition.longitude
             );
-            if (existingPosition) {
-              existingPosition.observations.push(curr);
-              existingPosition.observationsNum += curr.observationsNum;
-            } else {
-              acc.push({
-                latitude: +duplicateCurr.position[0].latitude,
-                longitude: +duplicateCurr.position[0].longitude,
-                observations: [curr],
-                observationsNum: curr.observationsNum,
-              });
-            }
+            existingPosition
+              ? existingPosition.observations.push(curr)
+              : acc.push({
+                  latitude: +duplicateCurr.position[0].latitude,
+                  longitude: +duplicateCurr.position[0].longitude,
+                  observations: [curr],
+                });
           });
           return acc;
         },
