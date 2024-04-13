@@ -12,17 +12,8 @@ import { useShowCatalogDetail } from "./GraphDetails/Interactivtity/useShowCatal
 
 export const Detail = (props: { graphName: string }) => {
   const navigate = useNavigate();
-  const { catalogFilter, showCatalogHandler } = useShowCatalogDetail(
-    props.graphName
-  );
-  console.log(
-    "arturo Detail catalogFilter",
-    catalogFilter,
-    "props.graphName",
-    props.graphName,
-    "showCatalogHandler",
-    showCatalogHandler
-  );
+  const { catalogScientificNames, showCatalogHandler } = useShowCatalogDetail();
+
   return (
     <div>
       <DetailHeaderStyled>
@@ -52,7 +43,7 @@ export const Detail = (props: { graphName: string }) => {
           <GraphDetailsView graphName={props.graphName}>
             <GraphDetails
               graphName={props.graphName}
-              detailProps={{ catalogFilter: catalogFilter }}
+              detailProps={{ catalogScientificNames }}
             />
           </GraphDetailsView>
         </DetailInteractionContextProvider>

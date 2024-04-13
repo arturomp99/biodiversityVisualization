@@ -1,8 +1,8 @@
 import { Autocomplete } from "@nextui-org/react";
-import React, { FC, ReactNode, useEffect, useState } from "react";
+import React, { FC, Key, ReactElement, useEffect, useState } from "react";
 
 type ControlledAutocompleteProps = {
-  children: ReactNode;
+  children: ReactElement | ReactElement[];
   label: string;
   loading: boolean;
   onValueChanged: (value: number | undefined) => void;
@@ -14,10 +14,10 @@ export const ControlledAutocomplete: FC<ControlledAutocompleteProps> = ({
   loading,
   onValueChanged,
 }) => {
-  const [value, setValue] = useState();
+  const [value, setValue] = useState<Key>();
 
   useEffect(() => {
-    onValueChanged(value);
+    onValueChanged(value as number);
   }, [value]);
 
   return (
@@ -26,7 +26,7 @@ export const ControlledAutocomplete: FC<ControlledAutocompleteProps> = ({
       variant="faded"
       disableSelectorIconRotation
       isLoading={loading}
-      selectedKey={value}
+      selectedKey={value as number}
       onSelectionChange={setValue}
     >
       {children}

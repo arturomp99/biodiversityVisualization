@@ -1,11 +1,12 @@
-import { ExtendedFeatureCollection, group } from "d3";
+import { ExtendedFeatureCollection } from "d3-geo";
+import { group } from "d3-array";
 import config from "src/config.json";
-import { DataType, PositionsFileHeaders } from "src/data/data.types";
-import { useFetchDSV } from "./useFetchDSV";
+import { DataType } from "src/data/data.types";
 import { useApplyFilters } from "../useApplyFilters/useApplyFilters";
 import { MapChartDataType } from "src/components/graphs/graphsData.types";
 import { useFetch } from "./useFetch";
 import { FiltersDataType } from "./types";
+import { useEffect, useState } from "react";
 
 const useReadGeoJsonData = (filePath: string) => {
   const { data, loading } = useFetch<ExtendedFeatureCollection[]>(filePath);
@@ -13,22 +14,46 @@ const useReadGeoJsonData = (filePath: string) => {
   return { data, loading };
 };
 
-const useReadPositionsData = (fileName: string) => {
-  const { data, loading } = useFetchDSV<MapChartDataType, PositionsFileHeaders>(
-    ",",
-    fileName,
-    (positionData) => {
-      return {
-        Id: positionData.occurrenceID.split(","),
-        latitude: Number(positionData.decimalLatitude),
-        longitude: Number(positionData.decimalLongitude),
-        scientificNames: positionData.scientificName.split(","),
-        observationsNum: Number(positionData.observationsNum),
-      };
-    }
-  );
+const useGetPositionsData = (
+  data: DataType[] | undefined
+): { data: MapChartDataType[] | undefined; loading: boolean } => {
+  const [positionsData, setPositionsData] = useState<MapChartDataType[]>();
 
-  return { data, loading };
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    setPositionsData(() => {
+      const positionsData = data.reduce<MapChartDataType[]>(
+        (acc: MapChartDataType[], curr) => {
+          const duplicateCurr = { ...curr };
+          duplicateCurr.position.forEach((currentPosition) => {
+            const existingPosition = acc.find(
+              (observation) =>
+                observation.latitude === +currentPosition.latitude &&
+                observation.longitude === +currentPosition.longitude
+            );
+            if (existingPosition) {
+              existingPosition.observations.push(curr);
+              existingPosition.observationsNum += curr.observationsNum;
+            } else {
+              acc.push({
+                latitude: +duplicateCurr.position[0].latitude,
+                longitude: +duplicateCurr.position[0].longitude,
+                observations: [curr],
+                observationsNum: curr.observationsNum,
+              });
+            }
+          });
+          return acc;
+        },
+        []
+      );
+      return positionsData;
+    });
+  }, [data]);
+
+  return { data: positionsData, loading: !positionsData };
 };
 
 const useReadComplexData = () => {
@@ -42,10 +67,8 @@ const useReadComplexData = () => {
 };
 
 export const useReadData = () => {
-  const detectionsPositionsData = useReadPositionsData(
-    "/sampleData/positions.csv"
-  );
   const complexData = useReadComplexData();
+  const detectionsPositionsData = useGetPositionsData(complexData.data);
   const geoJsonData = useReadGeoJsonData(
     config.BACKEND_URL + config.GEOJSON_KEY
   );

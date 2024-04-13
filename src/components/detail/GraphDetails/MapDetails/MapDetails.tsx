@@ -8,11 +8,11 @@ import { LineChart, LineChartDataType } from "src/components/graphs";
 import { lineChartParameters } from "src/data/constants";
 import { Catalog } from "src/components/catalog/Catalog";
 import { StyledDivider, StyledTitle } from "./styles";
-import { PositionFilterType } from "src/data/filters.types";
+import { DataType } from "src/data/data.types";
 
-export const MapDetails: FC<{ catalogFilter?: PositionFilterType }> = ({
-  catalogFilter,
-}) => {
+export const MapDetails: FC<{
+  catalogScientificNames?: DataType["scientificName"][];
+}> = ({ catalogScientificNames }) => {
   const {
     complexData: { data, loading },
   } = useDataContext();
@@ -21,7 +21,6 @@ export const MapDetails: FC<{ catalogFilter?: PositionFilterType }> = ({
 
   useEffect(() => setLinechartData(getLinechartData(data)), [data]);
 
-  console.log("arturo catalogfilter", catalogFilter);
   return (
     <>
       <StyledDetailChart ref={resizeContainerRef}>
@@ -42,11 +41,11 @@ export const MapDetails: FC<{ catalogFilter?: PositionFilterType }> = ({
             dimensions
           )}
       </StyledDetailChart>
-      {catalogFilter && (
+      {catalogScientificNames && (
         <div>
           <StyledDivider />
           <StyledTitle>Catalog of observations</StyledTitle>
-          <Catalog catalogFilter={catalogFilter} />
+          <Catalog catalogScientificNames={catalogScientificNames} />
         </div>
       )}
     </>

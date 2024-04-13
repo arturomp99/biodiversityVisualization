@@ -1,32 +1,16 @@
-import { useCallback, useState } from "react";
-import { DashboardGraphName } from "src/components/dashboard/dashboardGraphs/DashboardGraph";
-import {
-  FiltersType,
-  PositionFilterType,
-  TypeOfFilter,
-} from "src/data/filters.types";
+import { useEffect, useState } from "react";
+import { useFiltersContext } from "src/contexts/filtersContext";
+import { DataType } from "src/data/data.types";
 
-export const useShowCatalogDetail = (graphName: string) => {
-  const [catalogFilter, setCatalogFilter] = useState<FiltersType>();
-  const showCatalogHandler = useCallback(
-    (value1?: string | number, value2?: string | number) => {
-      if (graphName === DashboardGraphName.ONGROUND) {
-        console.log("arturo SHOW CATALOG");
-        setCatalogFilter(() => {
-          const positionFilter = {
-            type: TypeOfFilter.Position,
-            latitude: value1,
-            longitude: value2,
-          } as PositionFilterType;
-          return positionFilter;
-        });
-      }
-    },
-    [graphName]
-  );
+export const useShowCatalogDetail = () => {
+  const [catalogScientificNames, setCatalogScientificNames] =
+    useState<DataType["scientificName"][]>();
+
+  const { filters } = useFiltersContext();
+  useEffect(() => setCatalogScientificNames(() => undefined), [filters]);
 
   return {
-    catalogFilter,
-    showCatalogHandler,
+    catalogScientificNames,
+    showCatalogHandler: setCatalogScientificNames,
   };
 };

@@ -1,9 +1,9 @@
 import React from "react";
 import { getGraphDetails } from "src/components/shared/getGraphDetails";
-import { FiltersType } from "src/data/filters.types";
+import { DataType } from "src/data/data.types";
 
 export type GraphDetailsProps = {
-  catalogFilter?: FiltersType;
+  catalogScientificNames?: DataType["scientificName"][];
 };
 
 export const GraphDetails = (props: {

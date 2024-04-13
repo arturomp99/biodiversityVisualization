@@ -13,13 +13,14 @@ import { CatalogContainer } from "./CatalogContainer";
 import { useGetCatalogData } from "./hooks/useGetCatalogData";
 import { CatalogCardTitle, CatalogDescription } from "./styles";
 import { isStringHTML } from "src/utils/isStringHTML";
-import { FiltersType } from "src/data/filters.types";
+import { DataType } from "src/data/data.types";
 
-export const Catalog: FC<{ catalogFilter?: FiltersType }> = ({
-  catalogFilter,
-}) => {
-  const { loading, pageData, page, setPage, totalPages } =
-    useGetCatalogData(catalogFilter);
+export const Catalog: FC<{
+  catalogScientificNames?: DataType["scientificName"][];
+}> = ({ catalogScientificNames }) => {
+  const { loading, pageData, page, setPage, totalPages } = useGetCatalogData(
+    catalogScientificNames
+  );
 
   const onPaginationChange = useCallback(
     (pageNum: number) => {

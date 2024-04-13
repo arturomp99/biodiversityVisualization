@@ -1,4 +1,4 @@
-import { ScaleSequential } from "d3";
+import { ScaleSequential } from "d3-scale";
 import L from "leaflet";
 import { mapChartParameters } from "src/data/constants";
 import { MapChartDataType } from "..";
@@ -82,20 +82,34 @@ export const getGeoJsonLayers = (
 export const getDetectionsLayer = (
   map: L.Map,
   data: MapChartDataType[] | undefined,
-  markerPopupClickCallback?: (latitude: number, longitude: number) => void
+  markerPopupClickCallback?: (catalogScientificNames: string[]) => void
 ) => {
   const detectionsLayer = L.layerGroup().addTo(map);
 
   const eachDetectionLayer = data?.map((detection) => {
+    const detectedSpecies = detection.observations.reduce<string[]>(
+      (accScientificNames: string[], currObservation) => {
+        if (
+          !accScientificNames.find(
+            (accScientificName) =>
+              accScientificName === currObservation.scientificName
+          )
+        ) {
+          accScientificNames.push(currObservation.scientificName);
+        }
+        return accScientificNames;
+      },
+      []
+    );
+
     return L.marker([detection.latitude, detection.longitude], {
       icon: mapChartParameters.icons.detection,
     }).bindPopup(
       getMarkerPopup(
         detection.observationsNum,
-        detection.scientificNames.length,
+        detectedSpecies.length,
         () =>
-          markerPopupClickCallback &&
-          markerPopupClickCallback(detection.latitude, detection.longitude)
+          markerPopupClickCallback && markerPopupClickCallback(detectedSpecies)
       )
     );
   });

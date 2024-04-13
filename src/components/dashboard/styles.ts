@@ -20,19 +20,19 @@ export const StyledDashboardLayout = styled.div`
   background-color: inherit;
 `;
 
-export const StyledDashboardGraph = styled.div<{ graphId: string }>`
-  ${({ graphId }) => {
-    if (graphId === DashboardGraphName.DENDROGRAM) {
+export const StyledDashboardGraph = styled.div<{ $graphId: string }>`
+  ${({ $graphId }) => {
+    if ($graphId === DashboardGraphName.DENDROGRAM) {
       return css`
         grid-area: ${dashboardAreas.dendrogram};
       `;
     }
-    if (graphId === DashboardGraphName.TIMELINE) {
+    if ($graphId === DashboardGraphName.TIMELINE) {
       return css`
         grid-area: ${dashboardAreas.timeline};
       `;
     }
-    if (graphId === DashboardGraphName.ONGROUND) {
+    if ($graphId === DashboardGraphName.ONGROUND) {
       return css`
         grid-area: ${dashboardAreas.onground};
       `;

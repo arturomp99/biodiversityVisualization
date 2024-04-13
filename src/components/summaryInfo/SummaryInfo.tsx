@@ -39,7 +39,7 @@ export const SummaryInfo: FC<SummaryInfoProps> = ({
         hideHeader
         isStriped
         aria-label="Summary of detections"
-        disabledKeys={!shouldAddFilteredInfo && ["3", "4"]}
+        disabledKeys={!shouldAddFilteredInfo ? ["3", "4"] : undefined}
       >
         <TableHeader>
           <TableColumn>Name</TableColumn>

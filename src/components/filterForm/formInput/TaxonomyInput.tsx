@@ -34,10 +34,13 @@ const TaxonomyInput: FC<FilterInputProps<FiltersDataType["taxonomic"]>> = ({
         taxonomicLevelFilterHandler(level, value)
       }
     >
-      {!!filtersData &&
+      {filtersData ? (
         filtersData[level].map((levelElement, elementKey) => (
           <AutocompleteItem key={elementKey}>{levelElement}</AutocompleteItem>
-        ))}
+        ))
+      ) : (
+        <></>
+      )}
     </ControlledAutocomplete>
   ));
 };
