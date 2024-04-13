@@ -70,7 +70,7 @@ export const Catalog: FC<{
             )
         )
       )}
-      {totalPages && (
+      {totalPages && totalPages > 1 && (
         <Pagination
           total={totalPages}
           initialPage={page}

@@ -13,25 +13,22 @@ export const useApplyFilters = <Data extends DataType>(
 
   useEffect(() => {
     setData(() => {
-      if (!filters || filters.length === 0 || !dataRef) {
-        return dataRef;
+      if (!dataRef) {
+        return;
       }
-      return filterTaxonomicData(dataRef, filters) as Data[];
+      const filteredTaxonomicData =
+        !filters || filters.length === 0
+          ? dataRef
+          : (filterTaxonomicData(dataRef, filters) as Data[]);
+      return catalogScientificNames
+        ? filteredTaxonomicData.filter((filteredDataObservation) =>
+            catalogScientificNames.find(
+              (catalogScientificName) =>
+                filteredDataObservation.scientificName === catalogScientificName
+            )
+          )
+        : filteredTaxonomicData;
     });
     onFiltersApplied && onFiltersApplied();
-  }, [filters, dataRef]);
-
-  useEffect(() => {
-    if (!catalogScientificNames) {
-      return;
-    }
-    setData((previousData) =>
-      previousData?.filter((previousDataObservation) =>
-        catalogScientificNames.find(
-          (catalogScientificName) =>
-            previousDataObservation.scientificName === catalogScientificName
-        )
-      )
-    );
-  }, [catalogScientificNames]);
+  }, [filters, dataRef, catalogScientificNames]);
 };

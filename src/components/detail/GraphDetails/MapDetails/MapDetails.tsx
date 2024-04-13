@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { useObserveResize } from "src/components/shared/hooks/useObserveResize";
 import { useDataContext } from "src/contexts/dataContext";
 import { getLinechartData } from "./getLinechartData";
@@ -17,10 +17,14 @@ export const MapDetails: FC<{
     complexData: { data, loading },
   } = useDataContext();
   const { containerRef: resizeContainerRef, dimensions } = useObserveResize();
+  const catalogRef = useRef<HTMLDivElement | null>(null);
   const [linechartData, setLinechartData] = useState<LineChartDataType[]>();
 
   useEffect(() => setLinechartData(getLinechartData(data)), [data]);
 
+  useEffect(() => {
+    catalogRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [catalogScientificNames]);
   return (
     <>
       <StyledDetailChart ref={resizeContainerRef}>
@@ -42,7 +46,7 @@ export const MapDetails: FC<{
           )}
       </StyledDetailChart>
       {catalogScientificNames && (
-        <div>
+        <div ref={catalogRef}>
           <StyledDivider />
           <StyledTitle>Catalog of observations</StyledTitle>
           <Catalog catalogScientificNames={catalogScientificNames} />
