@@ -12,9 +12,6 @@ export const getInitialSettings = (
   if (graphName === DashboardGraphName.DENDROGRAM) {
     return { type: DashboardGraphName.DENDROGRAM };
   }
-  if (graphName === DashboardGraphName.MAP) {
-    return { type: DashboardGraphName.MAP };
-  }
   return { type: undefined };
 };
 

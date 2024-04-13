@@ -1,34 +1,28 @@
 import { SetStateAction, useEffect } from "react";
 import { useFiltersContext } from "src/contexts/filtersContext";
 import { filterTaxonomicData } from "./filterTaxonomicData";
-import { DataType } from "src/data/data.types";
+import { filterTemporalData } from "./filterTemporalData";
+import { isTaxonomicDataType, isTemporalDataType } from "src/utils/bodyguards";
 
-export const useApplyFilters = <Data extends DataType>(
+export const useApplyFilters = <Data>(
   dataRef: Data[] | undefined,
   setData: (value: SetStateAction<Data[] | undefined>) => void,
-  onFiltersApplied?: () => void,
-  catalogScientificNames?: string[]
+  onFiltersApplied?: () => void
 ) => {
   const { filters } = useFiltersContext();
 
   useEffect(() => {
     setData(() => {
-      if (!dataRef) {
-        return;
+      if (!filters || filters.length === 0 || !dataRef) {
+        return dataRef;
       }
-      const filteredTaxonomicData =
-        !filters || filters.length === 0
-          ? dataRef
-          : (filterTaxonomicData(dataRef, filters) as Data[]);
-      return catalogScientificNames
-        ? filteredTaxonomicData.filter((filteredDataObservation) =>
-            catalogScientificNames.find(
-              (catalogScientificName) =>
-                filteredDataObservation.scientificName === catalogScientificName
-            )
-          )
-        : filteredTaxonomicData;
+      if (isTaxonomicDataType(dataRef)) {
+        return filterTaxonomicData(dataRef, filters) as Data[];
+      }
+      if (isTemporalDataType(dataRef)) {
+        return filterTemporalData(dataRef, filters) as Data[];
+      }
     });
     onFiltersApplied && onFiltersApplied();
-  }, [filters, dataRef, catalogScientificNames]);
+  }, [filters, dataRef]);
 };
