@@ -1,24 +1,26 @@
 import React from "react";
 import {
-  StyledLogo,
-  StyledNavBarContainer,
-  StyledNavBarLink,
-  StyledNavigationList,
-  StyledNavigationListItem,
-} from "./styles";
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+} from "@nextui-org/react";
+import { StyledLogo, StyledNavBarLink } from "./styles";
 
 export const NavBar = () => {
   return (
-    <StyledNavBarContainer>
-      <StyledLogo to="/">TFM</StyledLogo>
-      <StyledNavigationList>
-        <StyledNavigationListItem>
+    <Navbar shouldHideOnScroll>
+      <NavbarBrand>
+        <StyledLogo to="/">TFM</StyledLogo>
+      </NavbarBrand>
+      <NavbarContent>
+        <NavbarItem>
           <StyledNavBarLink to="/data/Dashboard">Dashboard</StyledNavBarLink>
-        </StyledNavigationListItem>
-        <StyledNavigationListItem>
+        </NavbarItem>
+        <NavbarItem>
           <StyledNavBarLink to="/data/Catalog">Catalog</StyledNavBarLink>
-        </StyledNavigationListItem>
-      </StyledNavigationList>
-    </StyledNavBarContainer>
+        </NavbarItem>
+      </NavbarContent>
+    </Navbar>
   );
 };
