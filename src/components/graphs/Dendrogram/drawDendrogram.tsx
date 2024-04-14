@@ -106,7 +106,9 @@ export const drawDendrogram = (
         : dendrogramParameters.nodeParameters.radiusCollapsed
     )
     .attr("fill", dendrogramParameters.nodeParameters.color)
-    .style("cursor", "pointer");
+    .style("cursor", (dataPoint) =>
+      dataPoint.children ? "default" : "pointer"
+    );
 
   const dendrogramMarkersUpdate = dendrogramMarkers.attr(
     "transform",

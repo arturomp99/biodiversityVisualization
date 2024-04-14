@@ -6,5 +6,6 @@
   "FILTERS_KEY": "/filters",
   "AUDIO_KEY": "/audio",
   "CATALOG_KEY": "/catalog/data",
-  "CATALOG_TOTAL_KEY": "/catalog/total"
+  "CATALOG_TOTAL_KEY": "/catalog/total",
+  "CATALOG_SPECIES_KEY": "/catalog/species/"
 }

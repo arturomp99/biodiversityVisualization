@@ -55,11 +55,8 @@ export type TreeDataType = InternMap<
           string | string[],
           InternMap<
             string | string[],
-            InternMap<
-              string | string[],
-              DataType[]
-              // TODO: THIS IS HARDCODED
-            >
+            DataType[]
+            // TODO: THIS IS HARDCODED
           >
         >
       >

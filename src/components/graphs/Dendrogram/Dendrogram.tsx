@@ -11,6 +11,7 @@ import { makeNodesCollapsible } from "./interactivtiy/nodesInteractivity";
 import { dendrogramHandleZoomEnd } from "./interactivtiy/zoomInteractivity";
 import { useDendrogramSettingsInteractivity } from "./interactivtiy/useDendrogramSettingsInteractivity";
 import { addNodeInfoInteractivity } from "./interactivtiy/nodeInfoInteractivity.ts/addNodeInfoInteractivity";
+import { addLeavesTooltip } from "./interactivtiy/leavesTooltip";
 
 export const Dendrogram: FC<DendrogramProps> = ({
   isBasicInteractive,
@@ -40,6 +41,7 @@ export const Dendrogram: FC<DendrogramProps> = ({
     if (isBasicInteractive) {
       makeNodesCollapsible(zoomContainer.current);
       addNodeInfoInteractivity(zoomContainer.current);
+      addLeavesTooltip(zoomContainer.current);
     }
   }, [data]);
 
