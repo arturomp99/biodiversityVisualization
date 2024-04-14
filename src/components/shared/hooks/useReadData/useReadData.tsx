@@ -98,8 +98,7 @@ export const useReadData = () => {
         (specimen) => specimen.order,
         (specimen) => specimen.family,
         (specimen) => specimen.genus,
-        (specimen) => specimen.species,
-        (specimen) => specimen.scientificName
+        (specimen) => specimen.species
       );
 
   return {

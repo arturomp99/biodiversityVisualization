@@ -78,7 +78,7 @@ export const showNodeInfoInteractivity = (
 };
 
 const removeLabel = (element: HTMLElement | null): void => {
-  d3.select(element).select(`.${dendrogramClassNames.markerLabel}`).remove();
+  d3.select(element).selectAll(`.${dendrogramClassNames.markerLabel}`).remove();
 };
 
 const recursivelyRemoveLabel = (
