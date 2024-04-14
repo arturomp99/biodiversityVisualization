@@ -9,11 +9,16 @@ import {
   LineChartDataType,
   StackedBarChartDataType,
 } from "./graphsData.types";
+import { useShowCatalogDetail } from "../detail/GraphDetails/Interactivtity/useShowCatalogDetail";
 
 export interface GraphProps {
   dimensions: [number, number];
   isBasicInteractive?: boolean;
   isFullInteractive?: boolean;
+  settingsActionCallback?: (action: SettingActions) => void;
+  showCatalogHandler?: ReturnType<
+    typeof useShowCatalogDetail
+  >["showCatalogHandler"];
 }
 
 export type DendrogramProps = GraphProps & {

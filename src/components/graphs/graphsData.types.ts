@@ -10,6 +10,7 @@ export type MapChartDataType = {
   latitude: number;
   longitude: number;
   observations: DataType[];
+  observationsNum: number;
 };
 
 export type TimelineChartDataType = {
