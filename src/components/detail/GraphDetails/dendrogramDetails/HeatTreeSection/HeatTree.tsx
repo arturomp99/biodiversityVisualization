@@ -106,7 +106,7 @@ export const HeatTree = () => {
               <AutocompleteItem key={taxonLevel}>{taxonLevel}</AutocompleteItem>
             ))
           ) : (
-            <></>
+            <AutocompleteItem key="0"></AutocompleteItem>
           )}
         </Autocomplete>
       </CardFooter>
