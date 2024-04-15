@@ -5,20 +5,18 @@ import { getTimeLineScales } from "./getTimeLineScales";
 import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { resizeTimeout, timeLineParameters } from "src/data/constants";
 import { drawMarkers } from "./drawMarkers";
-import { useDataContext } from "src/contexts/dataContext";
 import { GraphProps } from "../graphsProps.types";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
 import { StyledContainer } from "../LineChart/styles";
 import { Legend } from "../shared/Legend/Legend";
 import { useTimelineDetailInteraction } from "./interactivity/useTimelineDetailInteraction";
+import { useGetTimelineData } from "./useGetTimelineData";
 
 export const TimeLine: FC<GraphProps & { shouldAddLegend?: boolean }> = ({
   dimensions,
   shouldAddLegend,
 }) => {
-  const {
-    complexData: { data, loading },
-  } = useDataContext();
+  const { data, loading } = useGetTimelineData();
   const node = createRef<SVGSVGElement>();
   const scaling = useRef(getTimeLineScales(data));
 

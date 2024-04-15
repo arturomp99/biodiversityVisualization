@@ -13,24 +13,14 @@ export type MapChartDataType = {
   observationsNum: number;
 };
 
-export type TimelineChartDataType = {
-  species: string | string[];
-  class: string | string[];
+export type TimelineChartDataType = Omit<DataType, "eventDate"> & {
+  species: string;
+  class: string;
   // species?: string;
   // start_time: string;
   // finish_time: string;
-  eventDate: string | string[];
-} & Pick<
-  DataType,
-  | "phylum"
-  | "order"
-  | "family"
-  | "genus"
-  | "species"
-  | "scientificName"
-  | "eventDate"
-  | "observationsNum"
->;
+  eventDate: string;
+};
 
 export type BarChartDataType = {
   id: string;

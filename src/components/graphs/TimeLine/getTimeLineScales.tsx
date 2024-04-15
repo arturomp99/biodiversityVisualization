@@ -38,44 +38,36 @@ const getDataScaling = (scales: TimeLineScalesType) => {
   return <T extends TimelineChartDataType>(data: T[]) => {
     const [xScale, yScale] = scales;
 
-    const scaledData = data.flatMap((dataPoint): TimelineChartPointType[] => {
-      const dataPointDates = dataPoint.eventDate;
-
-      const scaledDataPointObservations = dataPointDates.map(
-        (dataPointEventDateString) => {
-          const dataPointEventDate = new Date(dataPointEventDateString);
-          const scaledX = xScale(dataPointEventDate);
-          const scaledY = yScale(dataPoint.species as string);
-          const width =
-            xScale(
-              new Date(dataPointEventDate).setSeconds(
-                dataPointEventDate.getSeconds() + 30
-              )
-            ) - xScale(new Date(dataPointEventDate));
-          const getHeight = (height: number) => height / yScale.domain().length;
-          return {
-            key: dataPoint.species as string,
-            scaledX,
-            scaledY: scaledY || 0,
-            width,
-            getHeight,
-            group: dataPoint.class as string,
-            tooltipContent: {
-              phylum: dataPoint.phylum as string,
-              class: dataPoint.class as string,
-              order: dataPoint.order as string,
-              family: dataPoint.family as string,
-              genus: dataPoint.genus as string,
-              species: dataPoint.species as string,
-              scientificName: dataPoint.species as string,
-              timeDetected: dataPointEventDate.toString(),
-              numDetections: dataPoint.observationsNum.toString(),
-            },
-          };
-        }
-      );
-
-      return scaledDataPointObservations;
+    const scaledData = data.map((dataPoint): TimelineChartPointType => {
+      const dataPointEventDate = new Date(dataPoint.eventDate);
+      const scaledX = xScale(dataPointEventDate);
+      const scaledY = yScale(dataPoint.species as string);
+      const width =
+        xScale(
+          new Date(dataPointEventDate).setSeconds(
+            dataPointEventDate.getSeconds() + 30
+          )
+        ) - xScale(new Date(dataPointEventDate));
+      const getHeight = (height: number) => height / yScale.domain().length;
+      return {
+        key: dataPoint.species as string,
+        scaledX,
+        scaledY: scaledY || 0,
+        width,
+        getHeight,
+        group: dataPoint.class as string,
+        tooltipContent: {
+          phylum: dataPoint.phylum as string,
+          class: dataPoint.class as string,
+          order: dataPoint.order as string,
+          family: dataPoint.family as string,
+          genus: dataPoint.genus as string,
+          species: dataPoint.species as string,
+          scientificName: dataPoint.species as string,
+          timeDetected: dataPointEventDate.toString(),
+          numDetections: dataPoint.observationsNum.toString(),
+        },
+      };
     });
     return scaledData;
   };
