@@ -29,8 +29,8 @@ export const scaleData = (data: TreeDataType, dimensions: [number, number]) => {
     .nodeSize([12, 12])
     .size([dendrogramWidth, dendrogramHeight])(root) as TreeNode<TreeDataType>;
 
-  // Expand  1st level
-  treeStructure.expanded = true;
+  // Initial Expanded
+  treeStructure.descendants().forEach((child) => (child.expanded = true));
 
   setInitialState(treeStructure); // TODO: Memoize => Expensive operation
   return treeStructure;
