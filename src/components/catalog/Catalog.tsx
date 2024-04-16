@@ -67,6 +67,16 @@ export const Catalog: FC<{
                       {catalogEntry.scientificName}
                     </CardHeader>
                     <CardBody>
+                      {catalogEntry.xenoCantoResult ? (
+                        <div className="w-3/4 mx-auto h-56">
+                          <iframe
+                            className="w-full h-full"
+                            src={`https://xeno-canto.org/${catalogEntry.xenoCantoResult.id}/embed`}
+                          ></iframe>
+                        </div>
+                      ) : (
+                        <p className="mb-3">No sound available</p>
+                      )}
                       <Accordion selectionMode="multiple" variant="splitted">
                         <AccordionItem
                           key="1"
