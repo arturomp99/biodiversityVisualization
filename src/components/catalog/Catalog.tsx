@@ -43,7 +43,7 @@ export const Catalog: FC<{
                   <Card
                     isFooterBlurred
                     radius="lg"
-                    className="w-1/2 max-w-96 borer-none  relative"
+                    className="w-1/2 max-w-96 borer-none relative self-center h-fit"
                   >
                     {catalogEntry?.wikipediaResult && (
                       <Image
@@ -73,7 +73,36 @@ export const Catalog: FC<{
                           aria-label={`${catalogEntry.scientificName} taxonomy`}
                           title="Taxonomy"
                         >
-                          Taxonomy
+                          {catalogEntry.phylum && (
+                            <p>
+                              <strong>Phylum</strong>: {catalogEntry.phylum}
+                            </p>
+                          )}
+                          {catalogEntry.class && (
+                            <p className="pl-4">
+                              <strong>Class</strong>: {catalogEntry.class}
+                            </p>
+                          )}
+                          {catalogEntry.order && (
+                            <p className="pl-8">
+                              <strong>Order</strong>: {catalogEntry.order}
+                            </p>
+                          )}
+                          {catalogEntry.family && (
+                            <p className="pl-12">
+                              <strong>Family</strong>: {catalogEntry.family}
+                            </p>
+                          )}
+                          {catalogEntry.genus && (
+                            <p className="pl-16">
+                              <strong>Genus</strong>: {catalogEntry.genus}
+                            </p>
+                          )}
+                          {catalogEntry.species && (
+                            <p className="pl-20">
+                              <strong>Species</strong>: {catalogEntry.species}
+                            </p>
+                          )}
                         </AccordionItem>
                         {catalogEntry.wikipediaResult?.description ||
                         (catalogEntry.descriptions &&
