@@ -10,12 +10,29 @@ export type TotalCatalogInfoType = {
   totalPages?: number;
 };
 
+type XenoCantoRecordingType = {
+  id: string;
+  get: string;
+  sp: string;
+  group: string;
+  en: string;
+  rec: string;
+  cnt: string;
+  loc: string;
+  type: string;
+  sex: string;
+  stage: string;
+  file: string;
+  date: string;
+};
+
 export type CatalogDataType = DataType & {
   species?: string;
   usageKey?: string;
   vernacularName?: string;
   descriptions?: GBIFDescriptionType["results"];
   wikipediaResult?: WikipediaResultType;
+  xenoCantoResult: XenoCantoRecordingType;
 };
 
 type GBIFDescriptionType = {
