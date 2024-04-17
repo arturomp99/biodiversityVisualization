@@ -38,17 +38,20 @@ export const Catalog: FC<{
         pageData.map(
           (catalogEntry, index) =>
             catalogEntry && (
-              <Card key={index}>
+              <Card key={index} className="rounded-none">
                 <CardBody className="flex flex-row gap-3 items-stretch">
                   <Card
                     isFooterBlurred
                     radius="lg"
-                    className="w-1/2 max-w-96 borer-none relative self-center h-fit"
+                    className="w-1/2 max-w-96 borer-none relative self-center h-fit rounded-none"
                   >
                     {catalogEntry?.wikipediaResult && (
                       <Image
                         alt={`image of a ${catalogEntry.scientificName}`}
-                        className="object-cover  aspect-square"
+                        classNames={{
+                          wrapper: "object-cover rounded-none",
+                          img: "rounded-none",
+                        }}
                         src={catalogEntry.wikipediaResult.thumbnail.source}
                       />
                     )}

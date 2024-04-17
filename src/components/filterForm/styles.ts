@@ -8,4 +8,7 @@ export const StyledFilterFormLayout = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${themeSizes.elementsMargins.md};
+  border: 1px solid #bebebe;
+  border-top: none;
+  background-color: white;
 `;

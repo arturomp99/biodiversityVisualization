@@ -18,6 +18,7 @@ export const StyledDashboardLayout = styled.div`
     "${dashboardAreas.onground}   ${dashboardAreas.onground}";
   grid-auto-flow: column;
   background-color: inherit;
+  gap: 3rem;
 `;
 
 export const StyledDashboardGraph = styled.div<{ $graphId: string }>`

@@ -9,6 +9,7 @@ export const themeColors = {
     background: "#F8F9FA",
     border: "#bebebe",
     font: "black",
+    softShadow: "light-gray",
     shadow: "black",
     footer: {
       background: "#fff",

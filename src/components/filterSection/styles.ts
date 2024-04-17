@@ -5,12 +5,12 @@ export const StyledFilterSectionLayout = styled.div`
   background-color: inherit;
   color: white;
   padding: ${themeSizes.elementsMargins.lg} ${themeSizes.appPaddings.xs};
-  padding-bottom: 0;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: ${themeSizes.elementsMargins.md};
-  min-height: 52px;
+  min-height: 94px;
   width: 100%;
+  border-bottom: 1px solid #bebebe;
 `;
