@@ -43,7 +43,11 @@ export const FilterSection = () => {
   return (
     <StyledFilterSectionLayout>
       {filters.map((filter, index) => (
-        <Chip key={index} onClose={() => onFilterClosed(filter)}>
+        <Chip
+          key={index}
+          onClose={() => onFilterClosed(filter)}
+          className="bg-green-800 text-white"
+        >
           {getFilterString(filter)}
         </Chip>
       ))}

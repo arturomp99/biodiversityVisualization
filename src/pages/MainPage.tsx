@@ -18,9 +18,23 @@ const StyledTitle = styled.p`
   font-weight: bold;
 `;
 
+const WelcomeImage = styled.div`
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-image: url("/assets/homepage_background.jpg");
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -1;
+`;
+
 export const MainPage = () => {
   return (
     <div className="absolute top-0 left-0 w-full">
+      <WelcomeImage />
       <Welcome />
       <StyledSection color={"#1a4731"}>
         <StyledTitle>MAIN PAGE</StyledTitle>

@@ -10,7 +10,7 @@ export const StyledGraphCard = styled.div<{
   padding-bottom: ${themeSizes.graphCardPaddings.vert};
   padding-left: ${themeSizes.graphCardPaddings.hor};
   padding-right: ${themeSizes.graphCardPaddings.hor};
-  background-color: inherit;
+  background-color: ${({ $noBorder }) => ($noBorder ? "inherit" : "white")};
   color: ${themeColors.card.font};
   display: grid;
   grid-template-columns: 1fr;
@@ -23,12 +23,13 @@ export const StyledGraphCard = styled.div<{
           grid-template-rows: 1fr;
         `}
   grid-gap: calc(5px + 0.5rem);
-  transition: box-shadow 0.3s ease-in-out;
 
   ${({ $noBorder }) =>
     !$noBorder &&
     css`
       border: ${themeSizes.border.thin} solid ${themeColors.card.border};
+      box-shadow: 0px 0px 15px lightgray;
+      transition: box-shadow 0.3s ease-in-out;
       &:hover,
       &:focus {
         box-shadow: 5px 5px 15px ${themeColors.card.shadow};

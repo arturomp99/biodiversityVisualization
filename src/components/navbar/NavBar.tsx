@@ -9,7 +9,10 @@ import { StyledLogo, StyledNavBarLink } from "./styles";
 
 export const NavBar = () => {
   return (
-    <Navbar shouldHideOnScroll>
+    <Navbar
+      shouldHideOnScroll
+      className="fixed backdrop-blur-sm data-[menu-open=true]:backdrop-blur-sm"
+    >
       <NavbarBrand>
         <StyledLogo to="/">TFM</StyledLogo>
       </NavbarBrand>

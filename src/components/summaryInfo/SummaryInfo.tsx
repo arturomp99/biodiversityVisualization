@@ -37,9 +37,11 @@ export const SummaryInfo: FC<SummaryInfoProps> = ({
     <StyledSummaryInfo>
       <Table
         hideHeader
-        isStriped
         aria-label="Summary of detections"
         disabledKeys={!shouldAddFilteredInfo ? ["3", "4"] : undefined}
+        classNames={{
+          wrapper: "rounded-none bg-green-800 text-white",
+        }}
       >
         <TableHeader>
           <TableColumn>Name</TableColumn>
@@ -50,9 +52,13 @@ export const SummaryInfo: FC<SummaryInfoProps> = ({
             <TableCell>Total observations</TableCell>
             <TableCell>{totalObservations ?? <Spinner />}</TableCell>
           </TableRow>
-          <TableRow key="2">
-            <TableCell>Total species</TableCell>
-            <TableCell>{totalSpecies ?? <Spinner />}</TableCell>
+          <TableRow key="2" className="bg-green-900">
+            <TableCell className="first:before:rounded-l-lg last:before:rounded-r-lg">
+              Total species
+            </TableCell>
+            <TableCell className="first:before:rounded-l-lg last:before:rounded-r-lg">
+              {totalSpecies ?? <Spinner />}
+            </TableCell>
           </TableRow>
           <TableRow key="3">
             <TableCell>Filtered observations</TableCell>
@@ -62,7 +68,7 @@ export const SummaryInfo: FC<SummaryInfoProps> = ({
                 : "-"}
             </TableCell>
           </TableRow>
-          <TableRow key="4">
+          <TableRow key="4" className="bg-green-900">
             <TableCell>Filtered species</TableCell>
             <TableCell>
               {shouldAddFilteredInfo ? filteredSpecies ?? <Spinner /> : "-"}

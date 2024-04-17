@@ -8,7 +8,7 @@ export const RootPage = () => {
       <nav>
         <NavBar />
       </nav>
-      <main className="light">
+      <main className="light mt-16">
         <Outlet />
       </main>
     </>

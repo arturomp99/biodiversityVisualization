@@ -9,10 +9,6 @@ const StyledContainer = styled.div`
   flex-direction: row;
   padding-left: 12rem;
   align-items: center;
-  background-image: url("https://media.cntraveler.com/photos/5f887b967aefd0f473d5bebb/master/pass/OCBC%20Skyway%20&%20Supertrees%20-%20Credit%20Gardens%20by%20the%20Bay.jpg");
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
 `;
 
 const StyledTitle1 = styled.p<{ marginLeft?: string }>`
