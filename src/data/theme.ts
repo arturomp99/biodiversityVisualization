@@ -2,7 +2,7 @@ export const themeColors = {
   background: {
     color1: "#f2fae6",
     color2: "#faf5f2",
-    color3: "#2d544a",
+    color3: "#1d3b26",
     color4: "#e5f3d6",
   },
   card: {
@@ -51,7 +51,7 @@ export const themeSizes = {
 export const themeFont = {
   family: "Open Sans, tahoma, sans-serif",
   h1: {
-    size: "44px",
+    size: "64px",
     weight: "800",
   },
   h2: {

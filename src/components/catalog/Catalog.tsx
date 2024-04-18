@@ -43,21 +43,22 @@ export const Catalog: FC<{
                   <Card
                     isFooterBlurred
                     radius="lg"
-                    className="w-1/2 max-w-96 borer-none relative self-center h-fit rounded-none"
+                    className="w-full max-w-96 borer-none relative self-center h-fit rounded-none"
+                    style={{ minWidth: "min(50%, 24rem)" }}
                   >
-                    {catalogEntry?.wikipediaResult && (
+                    {catalogEntry?.molInfo && (
                       <Image
                         alt={`image of a ${catalogEntry.scientificName}`}
+                        removeWrapper
                         classNames={{
-                          wrapper: "object-cover rounded-none",
-                          img: "rounded-none",
+                          img: "rounded-none w-full",
                         }}
-                        src={catalogEntry.wikipediaResult.thumbnail.source}
+                        src={catalogEntry.molInfo.image.url}
                       />
                     )}
                     <CardFooter className="before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10 flex items-center justify-center">
                       <CatalogCardTitle>
-                        {catalogEntry.vernacularName}
+                        {catalogEntry.molInfo?.commonname}
                       </CatalogCardTitle>
                     </CardFooter>
                   </Card>
@@ -117,27 +118,19 @@ export const Catalog: FC<{
                             </p>
                           )}
                         </AccordionItem>
-                        {catalogEntry.wikipediaResult?.description ||
-                        (catalogEntry.descriptions &&
-                          catalogEntry.descriptions.length) ? (
-                          <AccordionItem
-                            key="2"
-                            aria-label={`${catalogEntry.scientificName} description`}
-                            title="Description"
-                          >
-                            {catalogEntry.wikipediaResult?.description && (
-                              <p>{catalogEntry.wikipediaResult?.description}</p>
-                            )}
-                            {catalogEntry.descriptions &&
-                              catalogEntry.descriptions.length && (
-                                <p>
-                                  {catalogEntry.descriptions[0].description}
-                                </p>
-                              )}
-                          </AccordionItem>
-                        ) : (
-                          <></>
-                        )}
+
+                        <AccordionItem
+                          key="2"
+                          aria-label={`${catalogEntry.scientificName} description`}
+                          title="Description"
+                        >
+                          {catalogEntry.molInfo?.info &&
+                          catalogEntry.molInfo.info.length ? (
+                            <p>{catalogEntry.molInfo.info[0].content}</p>
+                          ) : (
+                            <p>No information found</p>
+                          )}
+                        </AccordionItem>
                       </Accordion>
                     </CardBody>
                   </Card>

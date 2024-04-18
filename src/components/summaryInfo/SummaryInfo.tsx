@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { useDataContext } from "src/contexts/dataContext";
+import { useGetSummayInfo } from "./useGetSummaryInfo";
 
 type SummaryInfoProps = {
   shouldAddFilteredInfo: boolean;
@@ -18,21 +18,12 @@ type SummaryInfoProps = {
 export const SummaryInfo: FC<SummaryInfoProps> = ({
   shouldAddFilteredInfo,
 }) => {
-  const { complexData } = useDataContext();
-
-  const totalObservations = complexData.readData?.reduce<number>(
-    (acc, curr) => {
-      acc += curr.observationsNum;
-      return acc;
-    },
-    0
-  );
-  const totalSpecies = complexData.readData?.length;
-  const filteredObservations = complexData.data?.reduce<number>((acc, curr) => {
-    acc += curr.observationsNum;
-    return acc;
-  }, 0);
-  const filteredSpecies = complexData.data?.length;
+  const {
+    totalObservations,
+    totalSpecies,
+    filteredObservations,
+    filteredSpecies,
+  } = useGetSummayInfo();
   return (
     <StyledSummaryInfo>
       <Table
