@@ -14,6 +14,8 @@ export type CatalogDataType = DataType & {
   species?: string;
   molInfo?: MOLResult;
   xenoCantoResult?: XenoCantoRecordingType;
+  wikipediaResult?: WikipediaResultType;
+  gbifVernacularName?: GBIFVernacularNamesType["results"][0];
 };
 
 type XenoCantoRecordingType = {
@@ -47,4 +49,16 @@ type MOLResult = {
   redlist_link: string;
   scientificname: string;
   image: { url: string };
+};
+
+type WikipediaResultType = {
+  pageId: number;
+  title: string;
+  thumbnail: { source: string };
+  description: string;
+  fullurl: string;
+};
+
+type GBIFVernacularNamesType = {
+  results: { vernacularName: string; language: string }[];
 };

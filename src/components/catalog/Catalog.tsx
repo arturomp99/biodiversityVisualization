@@ -46,19 +46,24 @@ export const Catalog: FC<{
                     className="w-full max-w-96 borer-none relative self-center h-fit rounded-none"
                     style={{ minWidth: "min(50%, 24rem)" }}
                   >
-                    {catalogEntry?.molInfo && (
+                    {(catalogEntry?.molInfo ||
+                      catalogEntry.wikipediaResult?.thumbnail) && (
                       <Image
                         alt={`image of a ${catalogEntry.scientificName}`}
                         removeWrapper
                         classNames={{
                           img: "rounded-none w-full",
                         }}
-                        src={catalogEntry.molInfo.image.url}
+                        src={
+                          catalogEntry.molInfo?.image.url ??
+                          catalogEntry.wikipediaResult?.thumbnail.source
+                        }
                       />
                     )}
                     <CardFooter className="before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10 flex items-center justify-center">
                       <CatalogCardTitle>
-                        {catalogEntry.molInfo?.commonname}
+                        {catalogEntry.molInfo?.commonname ??
+                          catalogEntry.gbifVernacularName?.vernacularName}
                       </CatalogCardTitle>
                     </CardFooter>
                   </Card>

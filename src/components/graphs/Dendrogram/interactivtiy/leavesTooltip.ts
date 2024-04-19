@@ -23,9 +23,13 @@ const setTooltip = async (nodeData: DataType, instance: Instance<Props>) => {
             }</strong><hr style="width: 100%"/>
             <p>${catalogContent.scientificName}</p><br/>
             ${
-              catalogContent.molInfo?.image.url &&
+              (catalogContent.molInfo?.image.url ||
+                catalogContent.wikipediaResult?.thumbnail.source) &&
               `<img 
-                    src="${catalogContent.molInfo.image.url}" style="max-height: 15rem"
+                    src="${
+                      catalogContent.molInfo?.image.url ??
+                      catalogContent.wikipediaResult?.thumbnail.source
+                    }" style="max-height: 15rem"
                 />`
             }
         </div>
