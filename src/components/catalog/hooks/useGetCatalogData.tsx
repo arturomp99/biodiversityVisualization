@@ -4,9 +4,11 @@ import { useFetch } from "src/components/shared/hooks/useReadData/useFetch";
 import { CatalogDataType, TotalCatalogInfoType } from "../types";
 import { catalogParameters } from "src/data/constants";
 import { useApplyFilters } from "src/components/shared/hooks/useApplyFilters/useApplyFilters";
+import { useSearchParams } from "react-router-dom";
 
 export const useGetCatalogData = (catalogScientificNames?: string[]) => {
-  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [page, setPage] = useState(+(searchParams.get("page") ?? 1));
   const [pageData, setPageData] = useState<CatalogDataType[]>();
   const {
     data: totalData,
@@ -33,6 +35,7 @@ export const useGetCatalogData = (catalogScientificNames?: string[]) => {
   );
 
   useEffect(() => {
+    setSearchParams(() => ({ page: page.toString() }));
     setPageData(() =>
       data?.slice(
         (page - 1) * catalogParameters.animalsPerPage,
