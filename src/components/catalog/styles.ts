@@ -4,10 +4,9 @@ import styled from "styled-components";
 export const CatalogContainerStyled = styled.div`
   background-color: inherit;
   color: black;
-  padding-left: ${themeSizes.appPaddings.md};
-  padding-right: ${themeSizes.appPaddings.lg};
-  padding-top: ${themeSizes.elementsMargins.lg};
-  padding-bottom: ${themeSizes.elementsMargins.lg};
+  padding: ${themeSizes.elementsMargins.lg} 0;
+  width: 80%;
+  margin: auto;
   display: flex;
   flex-direction: column;
   gap: ${themeSizes.elementsMargins.md};

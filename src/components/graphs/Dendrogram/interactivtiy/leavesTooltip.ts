@@ -18,13 +18,18 @@ const setTooltip = async (nodeData: DataType, instance: Instance<Props>) => {
   instance.setContent(`
         <div class="tippy-content" style="display: flex; flex-direction: column ;gap: 0.2rem; align-items: center">
             <strong style="margin: auto">${
-              catalogContent.vernacularName ?? catalogContent.scientificName
+              catalogContent.molInfo?.commonname ??
+              catalogContent.scientificName
             }</strong><hr style="width: 100%"/>
             <p>${catalogContent.scientificName}</p><br/>
             ${
-              catalogContent.wikipediaResult?.thumbnail.source &&
+              (catalogContent.molInfo?.image.url ||
+                catalogContent.wikipediaResult?.thumbnail.source) &&
               `<img 
-                    src="${catalogContent.wikipediaResult?.thumbnail.source}" style="max-height: 15rem"
+                    src="${
+                      catalogContent.molInfo?.image.url ??
+                      catalogContent.wikipediaResult?.thumbnail.source
+                    }" style="max-height: 15rem"
                 />`
             }
         </div>

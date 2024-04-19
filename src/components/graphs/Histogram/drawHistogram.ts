@@ -21,18 +21,22 @@ export const drawHistogram = (
     .attr("y", (dataPoint) => dataPoint.scaledY1)
     .attr(
       "width",
-      (dataPoint) => (dataPoint.scaledX1 ?? 0) - (dataPoint.scaledX0 ?? 0)
+      (dataPoint) => (dataPoint.scaledX1 ?? 0) - (dataPoint.scaledX0 ?? 0) || 10
     )
     .attr("height", (dataPoint) => dataPoint.scaledY0 - dataPoint.scaledY1)
     .attr("transform", `translate(${margins.left},${margins.top})`)
     .attr("stroke", "white");
 
   const barsUpdate = bars
-    .attr("x", (dataPoint) => dataPoint.scaledX0)
+    .attr("x", (dataPoint) =>
+      (dataPoint.scaledX1 ?? 0) - (dataPoint.scaledX0 ?? 0) > 0
+        ? dataPoint.scaledX0
+        : (dataPoint.scaledX0 ?? 0) - 5
+    )
     .attr("y", (dataPoint) => dataPoint.scaledY1)
     .attr(
       "width",
-      (dataPoint) => (dataPoint.scaledX1 ?? 0) - (dataPoint.scaledX0 ?? 0)
+      (dataPoint) => (dataPoint.scaledX1 ?? 0) - (dataPoint.scaledX0 ?? 0) || 10
     )
     .attr("height", (dataPoint) => dataPoint.scaledY0 - dataPoint.scaledY1);
 

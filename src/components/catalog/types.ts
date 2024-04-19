@@ -10,6 +10,14 @@ export type TotalCatalogInfoType = {
   totalPages?: number;
 };
 
+export type CatalogDataType = DataType & {
+  species?: string;
+  molInfo?: MOLResult;
+  xenoCantoResult?: XenoCantoRecordingType;
+  wikipediaResult?: WikipediaResultType;
+  gbifVernacularName?: GBIFVernacularNamesType["results"][0];
+};
+
 type XenoCantoRecordingType = {
   id: string;
   get: string;
@@ -26,31 +34,21 @@ type XenoCantoRecordingType = {
   date: string;
 };
 
-export type CatalogDataType = DataType & {
-  species?: string;
-  usageKey?: string;
-  vernacularName?: string;
-  descriptions?: GBIFDescriptionType["results"];
-  wikipediaResult?: WikipediaResultType;
-  xenoCantoResult: XenoCantoRecordingType;
-};
-
-type GBIFDescriptionType = {
-  results: {
-    type:
-      | "conservation"
-      | "discussion"
-      | "distribution"
-      | "materials_examined"
-      | "activity"
-      | "biology_ecology"
-      | "breeding"
-      | "description"
-      | "food_feeding"
-      | "vernacular_names";
-    description: string;
-    source: string;
-  }[];
+type MOLResult = {
+  info: [
+    {
+      content: string;
+      source: string;
+      lang: string;
+    }
+  ];
+  rangemap: string;
+  family: [{ lang: string; name: string }];
+  taxa: string;
+  commonname: string;
+  redlist_link: string;
+  scientificname: string;
+  image: { url: string };
 };
 
 type WikipediaResultType = {
@@ -59,4 +57,8 @@ type WikipediaResultType = {
   thumbnail: { source: string };
   description: string;
   fullurl: string;
+};
+
+type GBIFVernacularNamesType = {
+  results: { vernacularName: string; language: string }[];
 };

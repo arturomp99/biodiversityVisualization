@@ -1,22 +1,9 @@
 import React from "react";
-import { paragraphMargin } from "src/data/constants";
 import styled from "styled-components";
-import { themeSizes } from "src/data/theme";
 import { Welcome } from "src/components/homePage/Welcome";
-
-const StyledSection = styled.section<{ color: string }>`
-  min-height: 100vh;
-  background-color: ${({ color }) => color};
-  padding: 0 ${themeSizes.appPaddings.xl};
-  overflow: hidden;
-`;
-
-const StyledTitle = styled.p`
-  margin: ${paragraphMargin} 0;
-  font-size: 50px;
-  color: white;
-  font-weight: bold;
-`;
+import { Totals } from "src/components/homePage/Totals";
+import { Spacer } from "@nextui-org/react";
+import { About } from "src/components/homePage/About";
 
 const WelcomeImage = styled.div`
   width: 100%;
@@ -36,9 +23,9 @@ export const MainPage = () => {
     <div className="absolute top-0 left-0 w-full">
       <WelcomeImage />
       <Welcome />
-      <StyledSection color={"#1a4731"}>
-        <StyledTitle>MAIN PAGE</StyledTitle>
-      </StyledSection>
+      <Totals />
+      <Spacer y={64} />
+      <About />
       {/*<StyledSection color={themeColors.background.color2}>
         <p>
           Composed of an integrated system of autonomous sensors (sound and
