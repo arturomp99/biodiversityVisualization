@@ -16,8 +16,11 @@ import { getMapScales } from "./getMapScales";
 import { getDetectionsLayer, getGeoJsonLayers } from "./getMapLayers";
 import { MapLegend } from "./interactivity/mapLegend/MapLegend";
 import { drawMapLayers } from "./drawMapLayers";
+import { MapChartDataType } from "../graphsData.types";
 
-export const Map: FC<GraphProps> = ({ showCatalogHandler }) => {
+export const Map: FC<
+  GraphProps & { markers?: MapChartDataType[]; noDrones?: boolean }
+> = ({ showCatalogHandler, markers, noDrones }) => {
   const { geoJsonData, detectionsPositionsData } = useDataContext();
   const mapScalesRef = useRef<ReturnType<typeof getMapScales>>(getMapScales());
   const mapLayers = useRef<{
@@ -28,7 +31,7 @@ export const Map: FC<GraphProps> = ({ showCatalogHandler }) => {
   const node = createRef<HTMLDivElement>();
 
   useEffect(() => {
-    if (!map || !geoJsonData.data) {
+    if (!map || !geoJsonData.data || noDrones) {
       return;
     }
     if (mapLayers.current.geojson?.geoJsonLayer) {
@@ -50,10 +53,10 @@ export const Map: FC<GraphProps> = ({ showCatalogHandler }) => {
     }
     mapLayers.current.detections = getDetectionsLayer(
       map,
-      detectionsPositionsData.data,
+      markers ? markers : detectionsPositionsData.data,
       showCatalogHandler
     );
-  }, [map, detectionsPositionsData.data]);
+  }, [map, detectionsPositionsData.data, markers]);
 
   useEffect(() => {
     if (!map) {
@@ -116,14 +119,19 @@ export const Map: FC<GraphProps> = ({ showCatalogHandler }) => {
   return (
     <>
       <StyledMapContainer ref={node} id={`${mapIdNames.container}`} />
-      {!!geoJsonData && geoJsonData.data && mapScalesRef.current && (
-        <MapLegend
-          keys={[...geoJsonData.data.map((_, index) => `Drone path ${index}`)]}
-          onValueChange={onLegendChangeHandler}
-          colorScale={mapScalesRef.current.dronePathColorScale}
-          filterable
-        />
-      )}
+      {!!geoJsonData &&
+        geoJsonData.data &&
+        mapScalesRef.current &&
+        !noDrones && (
+          <MapLegend
+            keys={[
+              ...geoJsonData.data.map((_, index) => `Drone path ${index}`),
+            ]}
+            onValueChange={onLegendChangeHandler}
+            colorScale={mapScalesRef.current.dronePathColorScale}
+            filterable
+          />
+        )}
     </>
   );
 };

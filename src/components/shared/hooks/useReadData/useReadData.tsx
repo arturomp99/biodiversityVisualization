@@ -34,7 +34,7 @@ const useGetPositionsData = (
                 observation.longitude === +currentPosition.longitude
             );
             if (existingPosition) {
-              existingPosition.observations.push(curr);
+              existingPosition.observations?.push(curr);
               existingPosition.observationsNum += curr.observationsNum;
             } else {
               acc.push({

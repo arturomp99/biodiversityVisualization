@@ -87,7 +87,7 @@ export const getDetectionsLayer = (
   const detectionsLayer = L.layerGroup().addTo(map);
 
   const eachDetectionLayer = data?.map((detection) => {
-    const detectedSpecies = detection.observations.reduce<string[]>(
+    const detectedSpecies = detection.observations?.reduce<string[]>(
       (accScientificNames: string[], currObservation) => {
         if (
           !accScientificNames.find(
@@ -107,9 +107,11 @@ export const getDetectionsLayer = (
     }).bindPopup(
       getMarkerPopup(
         detection.observationsNum,
-        detectedSpecies.length,
+        detectedSpecies?.length,
         () =>
-          markerPopupClickCallback && markerPopupClickCallback(detectedSpecies)
+          markerPopupClickCallback &&
+          detectedSpecies &&
+          markerPopupClickCallback(detectedSpecies)
       )
     );
   });

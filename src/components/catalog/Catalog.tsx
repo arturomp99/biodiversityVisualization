@@ -15,6 +15,7 @@ import { CatalogContainer } from "./CatalogContainer";
 import { useGetCatalogData } from "./hooks/useGetCatalogData";
 import { CatalogCardTitle } from "./styles";
 import { DataType } from "src/data/data.types";
+import { CatlogEntryObservations } from "./CatalogEntryObservations/CatalogEntryObservations";
 
 export const Catalog: FC<{
   catalogScientificNames?: DataType["scientificName"][];
@@ -136,23 +137,16 @@ export const Catalog: FC<{
                             <p>No information found</p>
                           )}
                         </AccordionItem>
+                        <AccordionItem
+                          key="3"
+                          aria-label={`${catalogEntry.scientificName} observations`}
+                          title="Observations"
+                        >
+                          <CatlogEntryObservations data={catalogEntry} />
+                        </AccordionItem>
                       </Accordion>
                     </CardBody>
                   </Card>
-                  {/* <p>{catalogEntry.wikipediaResult?.description}</p>
-                  <a href={catalogEntry.wikipediaResult?.fullurl}>Wikipedia</a>
-                  {catalogEntry.descriptions &&
-                    (isStringHTML(
-                      catalogEntry.descriptions[0]?.description || ""
-                    ) ? (
-                      <CatalogDescription
-                        dangerouslySetInnerHTML={{
-                          __html: catalogEntry.descriptions[0]?.description,
-                        }}
-                      ></CatalogDescription>
-                    ) : (
-                      catalogEntry.descriptions[0]?.description || ""
-                    ))} */}
                 </CardBody>
               </Card>
             )

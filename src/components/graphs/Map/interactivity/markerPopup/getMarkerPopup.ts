@@ -1,13 +1,13 @@
 export const getMarkerPopup = (
   observationsNum: number,
-  detectedSpeciesNum: number,
+  detectedSpeciesNum?: number,
   ctaClickCallback?: () => void
 ) => {
   const container = document.createElement("div");
   container.classList.add(...["flex-col", "gap-1", "items-center"]);
 
   const label = document.createElement("p");
-  label.textContent = `${observationsNum} detections`;
+  label.textContent = `${observationsNum ?? "-"} detections`;
 
   const sublabel = document.createElement("p");
   sublabel.textContent = `${detectedSpeciesNum} identified species`;
@@ -22,8 +22,8 @@ export const getMarkerPopup = (
   button.classList.add(...classString.split(/\s+/));
 
   container.appendChild(label);
-  container.appendChild(sublabel);
-  ctaClickCallback && container.appendChild(button);
+  detectedSpeciesNum && container.appendChild(sublabel);
+  ctaClickCallback && detectedSpeciesNum && container.appendChild(button);
 
   return container;
 };
