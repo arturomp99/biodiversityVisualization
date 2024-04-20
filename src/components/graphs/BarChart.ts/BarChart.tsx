@@ -6,12 +6,19 @@ import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { barChartParameters, resizeTimeout } from "src/data/constants";
 import { StyledBarChartContainer } from "../StackedBarChart/styles";
 import { drawBars } from "./drawBars";
+import { addTooltip } from "./interactivity/addTooltip";
 
-export const BarChart: FC<BarChartProps> = ({ dimensions, data }) => {
+export const BarChart: FC<BarChartProps> = ({
+  dimensions,
+  data,
+  isXLabelDiagonal,
+  customMargin,
+  isFullInteractive,
+}) => {
   const node = createRef<SVGSVGElement>();
   const scalingRef = useRef(getBarChartScales(data));
 
-  const realDimensions = getDimensionsWithoutMargin(dimensions);
+  const realDimensions = getDimensionsWithoutMargin(dimensions, customMargin);
 
   useEffect(() => {
     if (!data || !node.current) {
@@ -29,9 +36,15 @@ export const BarChart: FC<BarChartProps> = ({ dimensions, data }) => {
       node.current,
       [scalingRef.current.scales.xScale, scalingRef.current.scales.yScale],
       realDimensions,
-      barChartParameters.axesParameters
+      barChartParameters.axesParameters,
+      undefined,
+      customMargin,
+      isXLabelDiagonal
     );
-    drawBars(node.current, scaledData);
+    drawBars(node.current, scaledData, customMargin);
+    if (isFullInteractive) {
+      addTooltip(node.current);
+    }
   }, [data]);
 
   useEffect(() => {
@@ -49,14 +62,15 @@ export const BarChart: FC<BarChartProps> = ({ dimensions, data }) => {
         realDimensions,
         {
           ...barChartParameters.axesParameters,
-        }
+        },
+        customMargin
       );
 
       const scaledData = scalingRef.current.scaleData(data);
       if (!scaledData) {
         return;
       }
-      drawBars(node.current, scaledData);
+      drawBars(node.current, scaledData, customMargin);
     }, resizeTimeout);
 
     return () => {

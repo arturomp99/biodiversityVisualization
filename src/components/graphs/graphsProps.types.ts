@@ -1,4 +1,4 @@
-import { lineChartParameters } from "src/data/constants";
+import { graphMargin, lineChartParameters } from "src/data/constants";
 import {
   DendrogramSettingsType,
   SettingActions,
@@ -19,6 +19,7 @@ export interface GraphProps {
   showCatalogHandler?: ReturnType<
     typeof useShowCatalogDetail
   >["showCatalogHandler"];
+  customMargin?: Partial<typeof graphMargin>;
 }
 
 export type DendrogramProps = GraphProps & {
@@ -37,6 +38,7 @@ export type LineChartProps = GraphProps & {
 
 export type BarChartProps = GraphProps & {
   data: BarChartDataType[];
+  isXLabelDiagonal?: boolean;
 };
 
 export type StackedBarChartProps = GraphProps & {

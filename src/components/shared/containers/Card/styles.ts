@@ -3,6 +3,7 @@ import { themeColors, themeFont, themeSizes } from "src/data/theme";
 
 export const StyledGraphCard = styled.div<{
   $noBorder?: boolean;
+  $noHover?: boolean;
   $hasTitle?: boolean;
 }>`
   height: 100%;
@@ -24,17 +25,20 @@ export const StyledGraphCard = styled.div<{
         `}
   grid-gap: calc(5px + 0.5rem);
 
-  ${({ $noBorder }) =>
+  ${({ $noBorder, $noHover }) =>
     !$noBorder &&
     css`
       border: ${themeSizes.border.thin} solid ${themeColors.card.border};
       box-shadow: 0px 0px 15px lightgray;
-      transition: box-shadow 0.3s ease-in-out;
-      &:hover,
-      &:focus {
-        box-shadow: 5px 5px 15px ${themeColors.card.shadow};
-        z-index: 10;
-      }
+      ${!$noHover &&
+      css`
+        transition: box-shadow 0.3s ease-in-out;
+        &:hover,
+        &:focus {
+          box-shadow: 5px 5px 15px ${themeColors.card.shadow};
+          z-index: 10;
+        }
+      `}
     `};
 `;
 

@@ -39,6 +39,7 @@ const getDataScaling = (
         scaledHeight: yScale(0) - yScale(dataObservation.count),
         scaledWidth:
           xScale.range()[1] / (data.length * barChartParameters.barsGapFactor),
+        tooltipContent: { numDetections: dataObservation.count },
       };
     });
     return scaledData;

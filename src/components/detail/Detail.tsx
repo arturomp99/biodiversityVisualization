@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { DetailHeaderStyled, ExpandedView, GraphDetailsView } from "./styles";
+import { DetailHeaderStyled, ExpandedView } from "./styles";
 import { DetailLayout } from "./styles";
 import { Graph } from "../shared/containers/Card";
 import { GraphDetails } from "./GraphDetails";
@@ -40,12 +40,10 @@ export const Detail = (props: { graphName: string }) => {
               showCatalogHandler={showCatalogHandler}
             />
           </ExpandedView>
-          <GraphDetailsView graphName={props.graphName}>
-            <GraphDetails
-              graphName={props.graphName}
-              detailProps={{ catalogScientificNames }}
-            />
-          </GraphDetailsView>
+          <GraphDetails
+            graphName={props.graphName}
+            detailProps={{ catalogScientificNames }}
+          />
         </DetailInteractionContextProvider>
       </DetailLayout>
     </div>

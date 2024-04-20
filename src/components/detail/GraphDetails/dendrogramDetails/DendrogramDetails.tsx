@@ -74,10 +74,10 @@ export const DendrogramDetails = () => {
   return (
     <>
       <SpeciesRichness />
-      <StyledDetailChart>
+      <StyledDetailChart $marginTop="3rem">
         <HeatTreeSection />
       </StyledDetailChart>
-      <StyledDetailChart ref={resizeContainerRef}>
+      <StyledDetailChart ref={resizeContainerRef} $marginTop="3rem">
         {!loading && !!barChartData && (
           <>
             <Breadcrumbs>
