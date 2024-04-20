@@ -39,7 +39,6 @@ export const CatlogEntryObservations = ({
     useObserveResize();
   const timeExtent = useDataContext().filtersData.temporal;
 
-  console.log("arturo mapDimensions", mapDimensions);
   return (
     <StyledLayout>
       <HistogramContainer ref={histogramContainerRef}>

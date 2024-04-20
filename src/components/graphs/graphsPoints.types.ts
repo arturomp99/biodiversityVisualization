@@ -31,6 +31,8 @@ export type BarChartPointType = {
   id?: string;
   scaledX?: number;
   scaledY?: number;
+  scaledHeight?: number;
+  scaledWidth?: number;
 };
 
 export type StackedBarChartPointType = BarChartPointType & {

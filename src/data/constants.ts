@@ -138,6 +138,7 @@ export const catalogParameters = {
 export const barChartParameters = {
   barWidth: 36,
   barsGap: 12,
+  barsGapFactor: 1.4,
   axesParameters: {
     ticks: {
       x: 4,

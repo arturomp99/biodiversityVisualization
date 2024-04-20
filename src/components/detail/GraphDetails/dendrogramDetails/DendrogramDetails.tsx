@@ -14,6 +14,7 @@ import {
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
 import { useTaxonomicBreadcrumbNavigation } from "src/components/shared/hooks/useTaxonomicBreadcrumbNavigation";
 import { HeatTreeSection } from "./HeatTreeSection/HeatTreeSection";
+import { SpeciesRichness } from "./SpeciesRichness/SpeciesRichness";
 
 export const DendrogramDetails = () => {
   const {
@@ -72,6 +73,10 @@ export const DendrogramDetails = () => {
 
   return (
     <>
+      <SpeciesRichness />
+      <StyledDetailChart>
+        <HeatTreeSection />
+      </StyledDetailChart>
       <StyledDetailChart ref={resizeContainerRef}>
         {!loading && !!barChartData && (
           <>
@@ -99,9 +104,6 @@ export const DendrogramDetails = () => {
             )}
           </>
         )}
-      </StyledDetailChart>
-      <StyledDetailChart>
-        <HeatTreeSection />
       </StyledDetailChart>
     </>
   );
