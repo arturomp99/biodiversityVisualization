@@ -37,11 +37,6 @@ const getDataScaling = (
   ) => {
     const { xScale, yScale, yScaleLog } = scales;
     const scaledData = data.map((dataObservation) => {
-      console.log(
-        "arturo yScaleLog(dataObservation.count)",
-        dataObservation.count,
-        yScaleLog(dataObservation.count)
-      );
       return {
         key: dataObservation.id,
         id: dataObservation.id,

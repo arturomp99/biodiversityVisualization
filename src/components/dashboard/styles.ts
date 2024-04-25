@@ -1,12 +1,9 @@
 import styled, { css } from "styled-components";
-import { navBar } from "src/data/constants";
 import { themeSizes } from "src/data/theme";
 import { dashboardAreas } from "src/data/layoutsConstants";
 import { DashboardGraphName } from "./dashboardGraphs/DashboardGraph";
 
 export const StyledDashboardLayout = styled.div`
-  height: 100vh;
-  /* height: calc(100vh - ${navBar.height}); */
   padding-top: ${themeSizes.elementsMargins.lg};
   padding-bottom: ${themeSizes.elementsMargins.lg};
   padding-left: ${themeSizes.appPaddings.xs};
@@ -22,6 +19,7 @@ export const StyledDashboardLayout = styled.div`
 `;
 
 export const StyledDashboardGraph = styled.div<{ $graphId: string }>`
+  height: 50vh;
   ${({ $graphId }) => {
     if ($graphId === DashboardGraphName.DENDROGRAM) {
       return css`

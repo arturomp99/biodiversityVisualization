@@ -1,5 +1,4 @@
 import React, { createRef, useEffect, FC, useRef } from "react";
-import { uniq } from "lodash";
 import { StyledTimeLineContainer } from "./styles";
 import { getTimeLineScales } from "./getTimeLineScales";
 import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
@@ -7,28 +6,33 @@ import { resizeTimeout, timeLineParameters } from "src/data/constants";
 import { drawMarkers } from "./drawMarkers";
 import { GraphProps } from "../graphsProps.types";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
-import { StyledContainer } from "../LineChart/styles";
-import { Legend } from "../shared/Legend/Legend";
 import { useTimelineDetailInteraction } from "./interactivity/useTimelineDetailInteraction";
 import { useGetTimelineData } from "./useGetTimelineData";
+import { useGetTimelineColorScale } from "./useGetTimelineColorScale";
+import { LegendFilterType } from "./TimeLineGraph";
 
-export const TimeLine: FC<GraphProps & { shouldAddLegend?: boolean }> = ({
-  dimensions,
-  shouldAddLegend,
-}) => {
-  const { data, loading } = useGetTimelineData();
+export const TimeLine: FC<
+  GraphProps & {
+    data: ReturnType<typeof useGetTimelineData>["data"];
+    colorScale: ReturnType<typeof useGetTimelineColorScale>["colorScale"];
+    groupKey?: LegendFilterType;
+    legendHover?: string[];
+  }
+> = ({ dimensions, data, colorScale, groupKey, legendHover }) => {
   const node = createRef<SVGSVGElement>();
-  const scaling = useRef(getTimeLineScales(data));
+  const scaling = useRef(getTimeLineScales(data, undefined, groupKey));
 
-  const realDimensions = getDimensionsWithoutMargin(dimensions);
+  const realDimensions = getDimensionsWithoutMargin(dimensions, {
+    bottom: 48,
+  });
 
-  useTimelineDetailInteraction(node);
+  useTimelineDetailInteraction(node, legendHover);
 
   useEffect(() => {
     if (!data || !node.current) {
       return;
     }
-    scaling.current = getTimeLineScales(data, realDimensions);
+    scaling.current = getTimeLineScales(data, realDimensions, groupKey);
     if (!scaling.current?.xScale || !scaling.current.yScale) return;
     const scaledData = scaling.current.scaleData(data);
     if (!scaledData) {
@@ -42,18 +46,26 @@ export const TimeLine: FC<GraphProps & { shouldAddLegend?: boolean }> = ({
       timeLineParameters.axesParameters,
       ["Time", ""]
     );
-    drawMarkers(
-      node.current,
-      scaledData,
-      graphHeight,
-      scaling.current.colorScale
-    );
+    drawMarkers(node.current, scaledData, graphHeight, colorScale);
   }, [data]);
+
+  useEffect(() => {
+    if (!data || !node.current) {
+      return;
+    }
+    scaling.current = getTimeLineScales(data, realDimensions, groupKey);
+    if (!scaling.current?.xScale || !scaling.current.yScale) return;
+    const scaledData = scaling.current.scaleData(data);
+    if (!scaledData) {
+      return;
+    }
+    const [, graphHeight] = realDimensions;
+    drawMarkers(node.current, scaledData, graphHeight, colorScale);
+  }, [groupKey]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (
-        loading ||
         !data ||
         !node.current ||
         !scaling.current?.xScale ||
@@ -73,28 +85,13 @@ export const TimeLine: FC<GraphProps & { shouldAddLegend?: boolean }> = ({
         return;
       }
       const [, graphHeight] = realDimensions;
-      drawMarkers(
-        node.current,
-        scaledData,
-        graphHeight,
-        scaling.current.colorScale
-      );
+      drawMarkers(node.current, scaledData, graphHeight, colorScale);
     }, resizeTimeout);
 
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [realDimensions]);
+  }, [realDimensions, colorScale]);
 
-  return (
-    <StyledContainer>
-      <StyledTimeLineContainer ref={node} id="lineChart" />
-      {shouldAddLegend && !!data && scaling.current && (
-        <Legend
-          keys={uniq(data.map((dataPoint) => dataPoint.class as string))}
-          colorScale={scaling.current.colorScale}
-        />
-      )}
-    </StyledContainer>
-  );
+  return <StyledTimeLineContainer ref={node} id="lineChart" />;
 };

@@ -22,5 +22,9 @@ export const Legend: FC<LegendProps> = (props) => {
     }
   }, []);
 
-  return <StyledLegendContainer id="legendContainer" ref={legendRef} />;
+  return (
+    <div className="relative">
+      <StyledLegendContainer id="legendContainer" ref={legendRef} />
+    </div>
+  );
 };
