@@ -1,8 +1,7 @@
 import * as d3 from "d3";
-import { uniq } from "lodash";
 import { TimelineChartDataType } from "../graphsData.types";
 import { TimelineChartPointType } from "../graphsPoints.types";
-import { timeLineParameters } from "src/data/constants";
+import { LegendFilterType } from "./TimeLineGraph";
 
 type TimeLineScalesType = [
   d3.ScaleTime<number, number, never>,
@@ -34,7 +33,10 @@ const getScales = <T extends TimelineChartDataType[]>(
   return [xScale, yScale];
 };
 
-const getDataScaling = (scales: TimeLineScalesType) => {
+const getDataScaling = (
+  scales: TimeLineScalesType,
+  groupKey?: LegendFilterType
+) => {
   return <T extends TimelineChartDataType>(data: T[]) => {
     const [xScale, yScale] = scales;
 
@@ -55,7 +57,7 @@ const getDataScaling = (scales: TimeLineScalesType) => {
         scaledY: scaledY || 0,
         width,
         getHeight,
-        group: dataPoint.class as string,
+        group: dataPoint[groupKey ?? "class"] as string,
         tooltipContent: {
           phylum: dataPoint.phylum as string,
           class: dataPoint.class as string,
@@ -75,7 +77,8 @@ const getDataScaling = (scales: TimeLineScalesType) => {
 
 export const getTimeLineScales = <T extends TimelineChartDataType[]>(
   data: T | undefined,
-  dimensions?: [number, number]
+  dimensions?: [number, number],
+  groupKey?: LegendFilterType
 ) => {
   if (!data) {
     return;
@@ -88,7 +91,7 @@ export const getTimeLineScales = <T extends TimelineChartDataType[]>(
   const scaleData =
     !xScale.domain().length || !yScale.domain().length
       ? () => undefined
-      : getDataScaling(scales);
+      : getDataScaling(scales, groupKey);
 
   if (dimensions) {
     const [width, height] = dimensions;
@@ -96,10 +99,5 @@ export const getTimeLineScales = <T extends TimelineChartDataType[]>(
     yScale.range([0, height]);
   }
 
-  const colorScale = d3
-    .scaleOrdinal<string>()
-    .domain(uniq(data.map((dataRow) => dataRow.class as string)))
-    .range(timeLineParameters.colorScheme);
-
-  return { xScale, yScale, colorScale, scaleData };
+  return { xScale, yScale, scaleData };
 };

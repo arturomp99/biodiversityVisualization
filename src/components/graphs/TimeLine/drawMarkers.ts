@@ -49,12 +49,12 @@ export const drawMarkers = (
   const timelineMarkersUpdate = timelineMarkers
     .attr("x", (dataPoint) => dataPoint.scaledX)
     .attr("y", (dataPoint) => dataPoint.scaledY)
-    .attr("width", timeLineParameters.markers.width)
-    .attr("rx", timeLineParameters.markers.borderRadius)
-    .attr("ry", timeLineParameters.markers.borderRadius)
     // .attr("width", (dataPoint) => dataPoint.width) // TODO: Find out best way
     .attr("height", (dataPoint) => dataPoint.getHeight(totalHeight))
-    .attr("transform", `translate(${margins.left},${margins.top})`);
+    .attr("transform", `translate(${margins.left},${margins.top})`)
+    .attr("fill", (dataPoint) =>
+      colorScale ? colorScale(dataPoint.group) : "black"
+    );
 
   timelineMarkersEnter.merge(timelineMarkersUpdate);
 

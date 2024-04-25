@@ -6,9 +6,13 @@ import { timelineClassNames } from "src/data/idClassNames";
 import { timeLineParameters } from "src/data/constants";
 
 export const useTimelineDetailInteraction = (
-  parentRef: React.RefObject<SVGSVGElement>
+  parentRef: React.RefObject<SVGSVGElement>,
+  legendHover?: string[]
 ) => {
-  const { timelineHover } = useDetailInteractionContext();
+  const timelineHover =
+    useDetailInteractionContext().timelineHover.length !== 0
+      ? useDetailInteractionContext().timelineHover
+      : legendHover ?? [];
 
   useEffect(() => {
     if (!parentRef) {

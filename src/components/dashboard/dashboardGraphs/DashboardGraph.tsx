@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useReducer } from "react";
-import { Dendrogram, TimeLine, Map } from "../../graphs";
+import { Dendrogram, Map } from "../../graphs";
 import { GraphProps } from "src/components/graphs/graphsProps.types";
 import { SoundChart } from "./SoundChart";
 import { StyledGraphSettings } from "../dashboardGraphSettings/styles";
@@ -59,9 +59,6 @@ export const DashboardGraph: FC<DashboardGraphProps> = ({
           <DendrorgamSettings setSettings={settingsDispatch} />
         </StyledGraphSettings>
       </>
-    )) ||
-    (graphName === DashboardGraphName.TIMELINE && (
-      <TimeLine dimensions={dimensions} shouldAddLegend={isFullInteractive} />
     )) ||
     (graphName === DashboardGraphName.ONGROUND && (
       <OnGroundChart

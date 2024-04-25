@@ -9,6 +9,7 @@ import { BackIcon } from "src/icons";
 import { DetailInteractionContextProvider } from "src/contexts/detailInteractionContext";
 import { DashboardGraphName } from "../dashboard/dashboardGraphs/DashboardGraph";
 import { useShowCatalogDetail } from "./GraphDetails/Interactivtity/useShowCatalogDetail";
+import { TimeLineGraph } from "../graphs/TimeLine/TimeLineGraph";
 
 export const Detail = (props: { graphName: string }) => {
   const navigate = useNavigate();
@@ -34,11 +35,15 @@ export const Detail = (props: { graphName: string }) => {
           <ExpandedView
             isOnGroundChart={props.graphName === DashboardGraphName.ONGROUND}
           >
-            <Graph
-              graphName={props.graphName}
-              expanded
-              showCatalogHandler={showCatalogHandler}
-            />
+            {props.graphName === DashboardGraphName.TIMELINE ? (
+              <TimeLineGraph title={props.graphName} expanded />
+            ) : (
+              <Graph
+                graphName={props.graphName}
+                expanded
+                showCatalogHandler={showCatalogHandler}
+              />
+            )}
           </ExpandedView>
           <GraphDetails
             graphName={props.graphName}
