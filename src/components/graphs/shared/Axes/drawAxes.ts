@@ -23,7 +23,8 @@ export function createAxes(
   dimensions: [number, number],
   axesParameters: AxesParametersTypes,
   axesTitles?: [string, string],
-  customMargin?: Parameters<typeof getGraphMargins>[0]
+  customMargin?: Parameters<typeof getGraphMargins>[0],
+  isXLabelDiagonal?: boolean
 ) {
   const margins = getGraphMargins(customMargin);
   const [xScale, yScale] = scales;
@@ -88,6 +89,14 @@ export function createAxes(
       .attr("fill", axesParameters.title.fontColor)
       .attr("font-size", axesParameters.title.fontSize)
       .text(yAxisTitle);
+  }
+  if (isXLabelDiagonal) {
+    parent
+      .select("#hAxis")
+      .selectAll(".tick")
+      .select("text")
+      .attr("text-anchor", "end")
+      .attr("transform", "rotate(-45)");
   }
 }
 
