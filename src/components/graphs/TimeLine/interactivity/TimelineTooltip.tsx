@@ -1,20 +1,19 @@
-import { capitalize } from "lodash";
 import { TimelineChartPointType } from "../..";
 
 type TimelineTooltipProps = TimelineChartPointType["tooltipContent"];
 
 export const getTimelineTooltip = (props: TimelineTooltipProps) => {
+  const date = new Date(props?.timeDetected ?? 0);
   return `
-    <div ref={ref} id="tooltipTemplate" class="tippy-content" style={{ display: "flex" }}>
-      <strong style="margin: auto">${capitalize(
-        props?.scientificName
-      )}</strong><hr/>
-      <p>${`${props?.phylum} > ${props?.class} > ${props?.order} > 
-      ${props?.family} > ${props?.genus} > ${props?.species} > ${props?.scientificName}`}</p>
-      <br/>
-      <p>Detected at: ${props?.timeDetected}</p>
-      <br/>
-      <p>${props?.numDetections} detections</p>
+    <div ref={ref} id="tooltipTemplate" class="tippy-content" style="display: flex; flex-direction: column">
+      <strong style="margin: auto">${date.getDay()}/${date.getMonth()}/${date.getFullYear()} - ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</strong><hr/>
+      <p>${props?.numDetections} observations</p>
+        <p>${props?.phylum}</p> 
+        <p style="margin-left: 1rem">${props?.class}</p>
+        <p style="margin-left: 2rem">${props?.order}</p>
+        <p style="margin-left: 3rem">${props?.family}</p>
+        <p style="margin-left: 4rem">${props?.genus}</p>
+        <p style="margin-left: 5rem">${props?.species}</p>
     </div>
   `;
 };
