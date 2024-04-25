@@ -14,6 +14,7 @@ export const BarChart: FC<BarChartProps> = ({
   isXLabelDiagonal,
   customMargin,
   isFullInteractive,
+  isLog,
 }) => {
   const node = createRef<SVGSVGElement>();
   const scalingRef = useRef(getBarChartScales(data));
@@ -28,13 +29,18 @@ export const BarChart: FC<BarChartProps> = ({
     if (!scalingRef.current?.scales) {
       return;
     }
-    const scaledData = scalingRef.current.scaleData(data);
+    const scaledData = scalingRef.current.scaleData(data, isLog);
     if (!scaledData) {
       return;
     }
     createAxes(
       node.current,
-      [scalingRef.current.scales.xScale, scalingRef.current.scales.yScale],
+      [
+        scalingRef.current.scales.xScale,
+        isLog
+          ? scalingRef.current.scales.yScaleLog
+          : scalingRef.current.scales.yScale,
+      ],
       realDimensions,
       barChartParameters.axesParameters,
       undefined,
@@ -58,7 +64,12 @@ export const BarChart: FC<BarChartProps> = ({
 
       giveSizeToAxes(
         node.current,
-        [scalingRef.current.scales.xScale, scalingRef.current.scales.yScale],
+        [
+          scalingRef.current.scales.xScale,
+          isLog
+            ? scalingRef.current.scales.yScaleLog
+            : scalingRef.current.scales.yScale,
+        ],
         realDimensions,
         {
           ...barChartParameters.axesParameters,
@@ -66,7 +77,7 @@ export const BarChart: FC<BarChartProps> = ({
         customMargin
       );
 
-      const scaledData = scalingRef.current.scaleData(data);
+      const scaledData = scalingRef.current.scaleData(data, isLog);
       if (!scaledData) {
         return;
       }

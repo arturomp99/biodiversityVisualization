@@ -5,6 +5,7 @@ export const StyledDetailChart = styled.div<{
   $height?: string;
   $marginTop?: string;
 }>`
+  position: relative;
   min-height: fit-content;
   height: ${({ $height }) => $height ?? "fit-content"};
   padding-top: ${themeSizes.graphCardPaddings.vert};

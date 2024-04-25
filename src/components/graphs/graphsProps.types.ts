@@ -39,6 +39,7 @@ export type LineChartProps = GraphProps & {
 export type BarChartProps = GraphProps & {
   data: BarChartDataType[];
   isXLabelDiagonal?: boolean;
+  isLog?: boolean;
 };
 
 export type StackedBarChartProps = GraphProps & {
