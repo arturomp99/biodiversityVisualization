@@ -2,10 +2,13 @@ import * as d3 from "d3";
 import { HistogramPointType } from "..";
 import { histogramClassNames } from "src/data/idClassNames";
 import { getGraphMargins } from "src/utils/getGraphMargins";
+import { ScaleOrdinal } from "d3";
+import { histogramParameters } from "src/data/constants";
 
 export const drawHistogram = (
   parentRef: SVGSVGElement | null,
-  data: HistogramPointType[]
+  data: HistogramPointType[],
+  colorScale?: ScaleOrdinal<string, string, never>
 ) => {
   const margins = getGraphMargins();
   const bars = d3
@@ -25,7 +28,12 @@ export const drawHistogram = (
     )
     .attr("height", (dataPoint) => dataPoint.scaledY0 - dataPoint.scaledY1)
     .attr("transform", `translate(${margins.left},${margins.top})`)
-    .attr("stroke", "white");
+    .attr("stroke", "white")
+    .attr("fill", (dataPoint) =>
+      dataPoint.group && colorScale
+        ? colorScale(dataPoint.group)
+        : histogramParameters.stacked.colorScheme[0]
+    );
 
   const barsUpdate = bars
     .attr("x", (dataPoint) =>
@@ -38,7 +46,13 @@ export const drawHistogram = (
       "width",
       (dataPoint) => (dataPoint.scaledX1 ?? 0) - (dataPoint.scaledX0 ?? 0) || 10
     )
-    .attr("height", (dataPoint) => dataPoint.scaledY0 - dataPoint.scaledY1);
+    .attr("height", (dataPoint) => dataPoint.scaledY0 - dataPoint.scaledY1)
+    .attr("fill", (dataPoint) =>
+      dataPoint.group && colorScale
+        ? colorScale(dataPoint.group)
+        : histogramParameters.stacked.colorScheme[0]
+    );
 
   barsEnter.merge(barsUpdate);
+  bars.exit().remove();
 };

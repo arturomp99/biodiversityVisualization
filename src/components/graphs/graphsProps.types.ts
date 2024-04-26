@@ -10,6 +10,7 @@ import {
   StackedBarChartDataType,
 } from "./graphsData.types";
 import { useShowCatalogDetail } from "../detail/GraphDetails/Interactivtity/useShowCatalogDetail";
+import { ScaleOrdinal } from "d3";
 
 export interface GraphProps {
   dimensions: [number, number];
@@ -51,4 +52,7 @@ export type HistogramProps<T> = GraphProps & {
   data: HistogramDataType<T>[];
   xExtent?: [Date, Date];
   onHover?: (hovered: string[]) => void;
+  reducerFunction?: (dataPoint: HistogramDataType<T>[]) => number;
+  stackFunction?: (dataPoint: HistogramDataType<T>) => string;
+  colorScale?: ScaleOrdinal<string, string, never> | undefined;
 };

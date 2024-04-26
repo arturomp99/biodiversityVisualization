@@ -1,6 +1,15 @@
-import { extent, max, scaleTime, scaleLinear, bin } from "d3";
-import type { ScaleTime, ScaleLinear, Bin } from "d3";
-import { HistogramDataType } from "..";
+import {
+  extent,
+  max,
+  scaleTime,
+  scaleLinear,
+  bin,
+  stack,
+  union,
+  stackOrderAscending,
+} from "d3";
+import type { ScaleTime, ScaleLinear, Bin, Series } from "d3";
+import { HistogramDataType, HistogramProps } from "..";
 import { DataType } from "src/data/data.types";
 import { histogramParameters } from "src/data/constants";
 import { getHistogramThresholdsArray } from "src/utils/getHistogramThresholdsArray";
@@ -9,15 +18,17 @@ export const getHistogramScales = (
   data: HistogramDataType<DataType>[],
   horizontalExtent?: [Date, Date],
   dimensions?: [number, number],
-  thresholds?: number
+  thresholds?: number,
+  reducerFunction?: HistogramProps<DataType>["reducerFunction"],
+  stackFunction?: HistogramProps<DataType>["stackFunction"]
 ):
   | {
       xScale: ScaleTime<number, number, never>;
       yScale: ScaleLinear<number, number, never>;
-      binnedData: Bin<
-        Pick<DataType, "occurrenceID" | "eventDate" | "species">,
-        Date
-      >[];
+      binnedData: Bin<(typeof data)[0], Date>[];
+      stackedData:
+        | Series<Bin<HistogramDataType<DataType>, Date>, string>[]
+        | undefined;
     }
   | undefined => {
   if (!data) {
@@ -43,15 +54,14 @@ export const getHistogramScales = (
     xExtent,
     thresholds ?? (histogramParameters.thresholds || 1)
   );
-  const binGenerator = bin<
-    Pick<DataType, "eventDate" | "occurrenceID" | "species">,
-    Date
-  >()
+  const binGenerator = bin<(typeof data)[0], Date>()
     .value((dataPoint) => new Date(dataPoint.eventDate[0]))
     .thresholds(thresholdsArray ?? [new Date(0)]);
   const binnedData = binGenerator(data);
 
-  const yMax = max(binnedData, (dataPoint) => dataPoint.length);
+  const yMax = max(binnedData, (dataPoint) =>
+    reducerFunction ? reducerFunction(dataPoint) : dataPoint.length
+  );
 
   if (!yMax) {
     return;
@@ -67,5 +77,26 @@ export const getHistogramScales = (
     yScale.range([0, height]);
   }
 
-  return { xScale, yScale, binnedData };
+  const stackedData = stackFunction
+    ? stack<(typeof binnedData)[0]>()
+        .keys(
+          union(
+            binnedData.flatMap((dataBin) =>
+              dataBin.map((dataPoint) => stackFunction(dataPoint))
+            )
+          )
+        )
+        .value((group, key) => {
+          const children = group.filter(
+            (groupElement) => stackFunction(groupElement) === key
+          );
+          const childrenValue = reducerFunction
+            ? reducerFunction(children)
+            : children.length;
+          return childrenValue;
+        })
+        .order(stackOrderAscending)(binnedData)
+    : undefined;
+
+  return { xScale, yScale, binnedData, stackedData };
 };
