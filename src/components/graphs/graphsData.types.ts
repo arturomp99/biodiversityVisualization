@@ -32,3 +32,10 @@ export type StackedBarChartDataType = BarChartDataType & {
 };
 
 export type HistogramDataType<T> = Pick<DataType, "eventDate"> & T;
+
+export type NumericHistogramDataType<T> = Omit<
+  HistogramDataType<T>,
+  "Confidence%"
+> & {
+  "Confidence%": number;
+};
