@@ -34,6 +34,7 @@ export const DendrogramDetails = () => {
     if (!data) {
       return;
     }
+    console.log("arturo dendrogramdetails render", data);
     setNode(() => {
       const root = d3.hierarchy<TreeDataType>(data);
       root.count();
@@ -99,6 +100,7 @@ export const DendrogramDetails = () => {
                 isBasicInteractive
                 data={barChartData}
                 onBarClick={onBarClick}
+                isFullInteractive
               />,
               dimensions
             )}

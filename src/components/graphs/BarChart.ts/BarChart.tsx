@@ -6,7 +6,8 @@ import { createAxes, giveSizeToAxes } from "../shared/Axes/drawAxes";
 import { barChartParameters, resizeTimeout } from "src/data/constants";
 import { StyledBarChartContainer } from "../StackedBarChart/styles";
 import { drawBars } from "./drawBars";
-import { addTooltip } from "./interactivity/addTooltip";
+import { addTooltip } from "../shared/addTooltip";
+import { BarChartPointType } from "../graphsPoints.types";
 
 export const BarChart: FC<BarChartProps> = ({
   dimensions,
@@ -49,7 +50,10 @@ export const BarChart: FC<BarChartProps> = ({
     );
     drawBars(node.current, scaledData, customMargin);
     if (isFullInteractive) {
-      addTooltip(node.current);
+      addTooltip<BarChartPointType>(
+        node.current,
+        (dataPoint) => `${dataPoint.tooltipContent?.numDetections} detections`
+      );
     }
   }, [data]);
 

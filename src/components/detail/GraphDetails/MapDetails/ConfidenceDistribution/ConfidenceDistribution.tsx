@@ -45,6 +45,7 @@ export const ConfidenceDistribution = () => {
               dimensions={dimensions ?? [0, 0]}
               data={histogramData}
               binFunction={(dataPoint) => +(dataPoint["Confidence%"] || 0)}
+              isFullInteractive
             />,
             dimensions
           )}

@@ -24,11 +24,13 @@ export const TimeLineDetails = ({ isHistogram }: { isHistogram: boolean }) => {
       <Distribution
         isHistogram={isHistogram}
         onHover={onTimelineDetailsInteraction}
+        isFullInteractive
       />
       <Distribution
         isHistogram={isHistogram}
         onHover={onTimelineDetailsInteraction}
         isObservations
+        isFullInteractive
       />
     </DistributionsContainer>
   );

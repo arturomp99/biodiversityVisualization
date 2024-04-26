@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useMemo } from "react";
-import { HistogramProps } from "..";
+import { HistogramPointType, HistogramProps } from "..";
 import { StyledHistogramContainer } from "./styles";
 import { getHistogramScales } from "./getHistogramScales";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
@@ -8,6 +8,8 @@ import { histogramParameters, resizeTimeout } from "src/data/constants";
 import { drawHistogram } from "./drawHistogram";
 import { DataType } from "src/data/data.types";
 import { histogramHoverInteraction } from "./Interaction/histogramHoverInteraction";
+import { addTooltip } from "../shared/addTooltip";
+import { histogramClassNames } from "src/data/idClassNames";
 
 export const Histogram: FC<HistogramProps<DataType>> = ({
   data,
@@ -17,6 +19,7 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
   reducerFunction,
   stackFunction,
   colorScale,
+  isFullInteractive,
 }) => {
   const node = useRef<SVGSVGElement>(null);
   const scales = useRef(
@@ -73,6 +76,9 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
                   .flatMap(
                     (dataPointObservation) => dataPointObservation.species ?? ""
                   ),
+                value: reducerFunction
+                  ? stackedRectPerBar[1] - stackedRectPerBar[0]
+                  : undefined,
               };
             });
             return scaledStackedRect;
@@ -88,6 +94,7 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
               ids: dataPoint.flatMap(
                 (dataPointObservation) => dataPointObservation.species ?? ""
               ),
+              value: reducerFunction ? reducerFunction(dataPoint) : undefined,
             };
           });
     createAxes(
@@ -99,6 +106,19 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
     drawHistogram(node.current, scaledData, colorScale);
     if (onHover) {
       histogramHoverInteraction(node.current, onHover);
+    }
+    if (isFullInteractive) {
+      addTooltip<HistogramPointType>(
+        node.current,
+        (dataPoint) => {
+          return (
+            dataPoint.value?.toString() ??
+            dataPoint?.ids?.length.toString() ??
+            "0"
+          );
+        },
+        `.${histogramClassNames.bar}`
+      );
     }
   }, [data, colorScale]);
 
