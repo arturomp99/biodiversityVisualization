@@ -34,7 +34,6 @@ export const DendrogramDetails = () => {
     if (!data) {
       return;
     }
-    console.log("arturo dendrogramdetails render", data);
     setNode(() => {
       const root = d3.hierarchy<TreeDataType>(data);
       root.count();
