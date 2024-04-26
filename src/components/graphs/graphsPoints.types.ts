@@ -52,3 +52,10 @@ export type HistogramPointType = {
   ids?: string[];
   group?: string;
 };
+
+export type GaugePointType = {
+  height: number;
+  scaledX0: number;
+  scaledX1: number;
+  scaledX100: number;
+};

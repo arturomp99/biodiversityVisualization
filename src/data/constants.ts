@@ -211,3 +211,7 @@ export const histogramParameters = {
     ],
   },
 };
+
+export const gaugeChartParameters = {
+  barWidth: 16,
+};

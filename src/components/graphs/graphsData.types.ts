@@ -39,3 +39,8 @@ export type NumericHistogramDataType<T> = Omit<
 > & {
   "Confidence%": number;
 };
+
+export type GaugeChartDataType = {
+  count: number;
+  totalCount: number;
+};

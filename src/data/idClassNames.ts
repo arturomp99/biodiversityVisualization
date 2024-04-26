@@ -45,6 +45,12 @@ export const histogramClassNames = {
 
 export const timelineClassNames = { marker: "dataMarker" };
 
+export const gaugeClassNames = {
+  marker: "gauge-marker",
+  markerBackground: "gauge-marker-background",
+  markerIndicator: "gauge-marker-indicator",
+};
+
 export const axes = {
   class: "axis",
   id: {

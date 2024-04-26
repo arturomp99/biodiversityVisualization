@@ -5,6 +5,7 @@ import {
 } from "../dashboard/dashboardGraphSettings/types";
 import {
   BarChartDataType,
+  GaugeChartDataType,
   HistogramDataType,
   LineChartDataType,
   NumericHistogramDataType,
@@ -66,4 +67,8 @@ export type NumericHistogramProps<T> = GraphProps & {
   reducerFunction?: (dataPoint: NumericHistogramDataType<T>[]) => number;
   stackFunction?: (dataPoint: NumericHistogramDataType<T>) => string;
   colorScale?: ScaleOrdinal<string, string, never> | undefined;
+};
+
+export type GaugeChartProps = GraphProps & {
+  data: GaugeChartDataType;
 };

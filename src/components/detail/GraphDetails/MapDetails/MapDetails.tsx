@@ -4,7 +4,7 @@ import { Catalog } from "src/components/catalog/Catalog";
 import { StyledDivider, StyledTitle } from "./styles";
 import { DataType } from "src/data/data.types";
 import { ConfidenceDistribution } from "./ConfidenceDistribution/ConfidenceDistribution";
-import { MethodsChart } from "./MethodsChart/MethodsChart";
+import { MethodsTable } from "./MethodsChart/MethodsTable";
 
 const DetailBarChartsContainer = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ export const MapDetails: FC<{
     <>
       <DetailBarChartsContainer>
         <ConfidenceDistribution />
-        <MethodsChart />
+        <MethodsTable />
       </DetailBarChartsContainer>
       {catalogScientificNames && (
         <div ref={catalogRef}>
