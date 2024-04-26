@@ -37,7 +37,7 @@ export const ConfidenceDistribution = () => {
   return (
     <StyledGraphCard $noHover>
       <StyledGraphTitle>Confidence of detections</StyledGraphTitle>
-      <StyledDetailChart ref={resizeContainerRef}>
+      <StyledDetailChart ref={resizeContainerRef} $height="40vh">
         {!loading &&
           !!histogramData &&
           renderGraph(
