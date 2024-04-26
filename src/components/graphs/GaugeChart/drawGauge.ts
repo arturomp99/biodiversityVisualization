@@ -29,7 +29,7 @@ export const drawGauge = (
     .attr("x", (dataPoint) => dataPoint.scaledX0)
     .attr("width", (dataPoint) => dataPoint.scaledX100 - dataPoint.scaledX0)
     .attr("fill", "black")
-    .attr("opacity", 0.4);
+    .attr("opacity", 0.2);
 
   gaugeMarkersEnter
     .append("rect")

@@ -6,7 +6,7 @@ import { useApplyFilters } from "../useApplyFilters/useApplyFilters";
 import { MapChartDataType } from "src/components/graphs/graphsData.types";
 import { useFetch } from "./useFetch";
 import { FiltersDataType } from "./types";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const useReadGeoJsonData = (filePath: string) => {
   const { data, loading } = useFetch<ExtendedFeatureCollection[]>(filePath);
@@ -89,17 +89,21 @@ export const useReadData = () => {
         : readFiltersData?.temporal,
   };
 
-  const taxonomicClassification = !complexData.data
-    ? undefined
-    : group(
-        complexData.data,
-        (specimen) => specimen.phylum,
-        (specimen) => specimen.class,
-        (specimen) => specimen.order,
-        (specimen) => specimen.family,
-        (specimen) => specimen.genus,
-        (specimen) => specimen.species
-      );
+  const taxonomicClassification = useMemo(
+    () =>
+      !complexData.data
+        ? undefined
+        : group(
+            complexData.data,
+            (specimen) => specimen.phylum,
+            (specimen) => specimen.class,
+            (specimen) => specimen.order,
+            (specimen) => specimen.family,
+            (specimen) => specimen.genus,
+            (specimen) => specimen.species
+          ),
+    [complexData.data]
+  );
 
   return {
     detectionsPositionsData,

@@ -70,6 +70,7 @@ const getDataScaling = (
           scaledY: yScale(stackedRectPerBar.data.id),
           scaledLength: xScale(barLength),
           color: colorScale(stackedRect.key),
+          species: barLength,
         };
       });
       return scaledStackedRect;

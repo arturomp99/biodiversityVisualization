@@ -11,11 +11,14 @@ import {
 } from "src/data/constants";
 import { drawBars } from "./drawBars";
 import { StackedBarChartProps } from "../graphsProps.types";
+import { addTooltip } from "../shared/addTooltip";
+import { stackedBarChartClassNames } from "src/data/idClassNames";
 
 export const StackedBarChart: FC<StackedBarChartProps> = ({
   dimensions: [width], // We calculate height from the amount of rows
   data,
   onBarClick,
+  isFullInteractive,
 }) => {
   const node = createRef<SVGSVGElement>();
   const scalingRef = useRef(getStackedBarChartScales(data));
@@ -46,6 +49,21 @@ export const StackedBarChart: FC<StackedBarChartProps> = ({
       customMargin
     );
     drawBars(node.current, scaledData, onBarClick, customMargin);
+    if (isFullInteractive) {
+      addTooltip<[unknown, typeof scaledData]>(
+        node.current,
+        (dataPoint) => {
+          const speciesNum = dataPoint[1].reduce<number>(
+            (acc: number, curr) => (acc += curr.species ?? 0),
+            0
+          );
+
+          return `${speciesNum} species`;
+        },
+        `.${stackedBarChartClassNames.bar}`
+      );
+    }
+    console.log("arturo RENDER", data);
   }, [data]);
 
   useEffect(() => {

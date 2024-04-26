@@ -30,10 +30,12 @@ export const Distribution = ({
   isHistogram,
   onHover,
   isObservations,
+  isFullInteractive,
 }: {
   isHistogram: boolean;
   onHover: (hoveredSpecies: string[]) => void;
   isObservations?: boolean;
+  isFullInteractive?: boolean;
 }) => {
   const { containerRef: resizeContainerRef, dimensions } = useObserveResize();
   const type = isObservations ? "observations" : "species";
@@ -127,6 +129,7 @@ export const Distribution = ({
                 }
                 stackFunction={stackFunction}
                 colorScale={colorScale}
+                isFullInteractive={isFullInteractive}
               />,
               dimensions
             )

@@ -42,6 +42,7 @@ export type StackedBarChartPointType = BarChartPointType & {
   parentBarId?: string;
   scaledLength: number;
   color: string;
+  species?: number;
 };
 
 export type HistogramPointType = {
@@ -51,6 +52,7 @@ export type HistogramPointType = {
   scaledY1: number;
   ids?: string[];
   group?: string;
+  value?: number;
 };
 
 export type GaugePointType = {
