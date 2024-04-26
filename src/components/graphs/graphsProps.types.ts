@@ -7,6 +7,7 @@ import {
   BarChartDataType,
   HistogramDataType,
   LineChartDataType,
+  NumericHistogramDataType,
   StackedBarChartDataType,
 } from "./graphsData.types";
 import { useShowCatalogDetail } from "../detail/GraphDetails/Interactivtity/useShowCatalogDetail";
@@ -54,5 +55,15 @@ export type HistogramProps<T> = GraphProps & {
   onHover?: (hovered: string[]) => void;
   reducerFunction?: (dataPoint: HistogramDataType<T>[]) => number;
   stackFunction?: (dataPoint: HistogramDataType<T>) => string;
+  colorScale?: ScaleOrdinal<string, string, never> | undefined;
+};
+
+export type NumericHistogramProps<T> = GraphProps & {
+  data: NumericHistogramDataType<T>[];
+  xExtent?: [number, number];
+  onHover?: (hovered: string[]) => void;
+  binFunction: (dataPoint: NumericHistogramDataType<T>) => number;
+  reducerFunction?: (dataPoint: NumericHistogramDataType<T>[]) => number;
+  stackFunction?: (dataPoint: NumericHistogramDataType<T>) => string;
   colorScale?: ScaleOrdinal<string, string, never> | undefined;
 };

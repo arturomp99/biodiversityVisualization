@@ -142,10 +142,10 @@ export const giveSizeToAxes = (
     .selectAll(`#${axes.id.hAxis}`)
     .selectChild(`.${axes.title.class}`)
     .attr("x", width - margins.right)
-    .attr("y", margins.bottom / 2);
+    .attr("y", (2 * margins.bottom) / 3);
   parent
     .selectAll(`#${axes.id.vAxis}`)
     .selectChild(`.${axes.title.class}`)
     .attr("x", -height / 2)
-    .attr("y", -margins.left / 2);
+    .attr("y", (-2 * margins.left) / 3);
 };

@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { useDetailInteractionContext } from "src/contexts/detailInteractionContext";
-import { Distribution } from "./Distribution/Distribution";
 import styled from "styled-components";
+import { Distribution } from "./Distribution/Distribution";
 
 const DistributionsContainer = styled.div`
   display: grid;
