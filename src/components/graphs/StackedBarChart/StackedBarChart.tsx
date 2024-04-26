@@ -63,7 +63,6 @@ export const StackedBarChart: FC<StackedBarChartProps> = ({
         `.${stackedBarChartClassNames.bar}`
       );
     }
-    console.log("arturo RENDER", data);
   }, [data]);
 
   useEffect(() => {
