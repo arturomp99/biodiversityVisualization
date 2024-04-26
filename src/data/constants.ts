@@ -199,4 +199,15 @@ export const histogramParameters = {
     },
   },
   thresholds: 15,
+  stacked: {
+    colorScheme: [
+      "rgb(222,138,44)",
+      "rgb(121,157,16)",
+      "rgb(147,128,115)",
+      "rgb(57,146,131)",
+      "rgb(19,68,36)",
+      "rgb(55,181,31)",
+      "rgb(96,46,1)",
+    ],
+  },
 };

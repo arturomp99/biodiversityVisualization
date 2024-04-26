@@ -2,17 +2,24 @@ import { LineChartDataType } from "src/components/graphs";
 import { DataType } from "src/data/data.types";
 
 export const getLinechartData = (
-  data: DataType[] | undefined
+  data: DataType[] | undefined,
+  isObservations?: boolean
 ): LineChartDataType[] | undefined => {
   if (!data) {
     return;
   }
   const timeData: LineChartDataType[] = data.flatMap((dataRow) => {
-    return dataRow.eventDate.map((date) => ({
-      timeStamp: new Date(date).getTime(),
-      value: 1,
-      group: "",
-    }));
+    return isObservations
+      ? {
+          timeStamp: new Date(dataRow.eventDate[0]).getTime(),
+          value: dataRow.observationsNum,
+          group: "",
+        }
+      : dataRow.eventDate.map((date) => ({
+          timeStamp: new Date(date).getTime(),
+          value: 1,
+          group: "",
+        }));
   });
 
   const reducedData = timeData

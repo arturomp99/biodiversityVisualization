@@ -50,4 +50,5 @@ export type HistogramPointType = {
   scaledY0: number;
   scaledY1: number;
   ids?: string[];
+  group?: string;
 };

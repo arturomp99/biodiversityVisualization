@@ -23,7 +23,7 @@ export const StyledGraphCard = styled.div<{
       : css`
           grid-template-rows: 1fr;
         `}
-  grid-gap: calc(5px + 0.5rem);
+  grid-gap: 1rem;
 
   ${({ $noBorder, $noHover }) =>
     !$noBorder &&
