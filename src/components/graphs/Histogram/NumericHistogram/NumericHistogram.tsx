@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useRef, useMemo } from "react";
+import { uniq } from "lodash";
 import { NumericHistogramProps } from "../../graphsProps.types";
 import { DataType } from "src/data/data.types";
 import { getNumericHistogramScales } from "./getNumericHistogramScales";
@@ -10,6 +11,7 @@ import { histogramHoverInteraction } from "../Interaction/histogramHoverInteract
 import { StyledHistogramContainer } from "../styles";
 import { addTooltip } from "../../shared/addTooltip";
 import { histogramClassNames } from "src/data/idClassNames";
+import { histogramClickInteraction } from "../Interaction/histogramClickInteraction";
 
 export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
   data,
@@ -22,6 +24,7 @@ export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
   binFunction,
   customMargin,
   isFullInteractive,
+  onBarClick,
 }) => {
   const node = useRef<SVGSVGElement>(null);
   const scales = useRef(
@@ -64,8 +67,10 @@ export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
         scaledY1: yScale(
           reducerFunction ? reducerFunction(dataPoint) : dataPoint.length
         ),
-        ids: dataPoint.flatMap(
-          (dataPointObservation) => dataPointObservation.species ?? ""
+        scientificNames: uniq(
+          dataPoint.flatMap(
+            (dataPointObservation) => dataPointObservation.scientificName ?? ""
+          )
         ),
         value: reducerFunction ? reducerFunction(dataPoint) : dataPoint.length,
       };
@@ -81,6 +86,9 @@ export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
     drawHistogram(node.current, scaledData, colorScale);
     if (onHover) {
       histogramHoverInteraction(node.current, onHover);
+    }
+    if (onBarClick) {
+      histogramClickInteraction(node.current, onBarClick);
     }
     if (isFullInteractive) {
       addTooltip<(typeof scaledData)[0]>(
@@ -121,8 +129,11 @@ export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
           scaledY1: yScale(
             reducerFunction ? reducerFunction(dataPoint) : dataPoint.length
           ),
-          ids: dataPoint.flatMap(
-            (dataPointObservation) => dataPointObservation.species ?? ""
+          scientificNames: uniq(
+            dataPoint.flatMap(
+              (dataPointObservation) =>
+                dataPointObservation.scientificName ?? ""
+            )
           ),
         };
       });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import {
   Table,
   TableBody,
@@ -13,8 +13,13 @@ import { StyledDetailChart } from "../../styles";
 import { MethodsChartSettings } from "./MethodsChartSettings";
 import { useGetMethodsData } from "./useGetMethodsData";
 import { MethodsIndicator } from "./MethodsIndicator";
+import { useShowCatalogDetail } from "../../Interactivtity/useShowCatalogDetail";
 
-export const MethodsTable = () => {
+export const MethodsTable: FC<{
+  showCatalogHandler?: ReturnType<
+    typeof useShowCatalogDetail
+  >["showCatalogHandler"];
+}> = ({ showCatalogHandler }) => {
   const [isObservations, setIsObservations] = useState<boolean>();
 
   const { methodsData: data, totalCount } = useGetMethodsData(isObservations);
@@ -43,10 +48,16 @@ export const MethodsTable = () => {
                   {isObservations ? (
                     <TableCell>{dataRow.observations}</TableCell>
                   ) : (
-                    <TableCell>
+                    <TableCell
+                      className="cursor-pointer"
+                      onClick={() =>
+                        showCatalogHandler &&
+                        showCatalogHandler(dataRow.scientificName)
+                      }
+                    >
                       {isObservations
                         ? dataRow.observations
-                        : dataRow.species.length}
+                        : dataRow.scientificName.length}
                     </TableCell>
                   )}
                   <TableCell>
@@ -55,7 +66,7 @@ export const MethodsTable = () => {
                         count={
                           isObservations
                             ? dataRow.observations
-                            : dataRow.species.length
+                            : dataRow.scientificName.length
                         }
                         total={totalCount ?? 0}
                       />

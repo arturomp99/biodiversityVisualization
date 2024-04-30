@@ -3,8 +3,8 @@ import { themeFont, themeSizes } from "src/data/theme";
 import styled from "styled-components";
 
 export const StyledTitle = styled.p`
-  font-weight: ${themeFont.h1.weight};
-  font-size: ${themeFont.h1.size};
+  font-weight: ${themeFont.p.weight};
+  font-size: ${themeFont.h3.size};
 `;
 
 export const StyledDivider = styled(Divider)`

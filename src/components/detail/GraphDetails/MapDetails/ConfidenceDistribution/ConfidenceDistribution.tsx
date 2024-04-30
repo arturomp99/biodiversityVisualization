@@ -9,7 +9,11 @@ import { NumericHistogramProps } from "src/components/graphs";
 import { DataType } from "src/data/data.types";
 import { NumericHistogram } from "src/components/graphs/Histogram/NumericHistogram/NumericHistogram";
 
-export const ConfidenceDistribution = () => {
+export const ConfidenceDistribution = ({
+  onBarClick,
+}: {
+  onBarClick?: (names: string[]) => void;
+}) => {
   const { containerRef: resizeContainerRef, dimensions } = useObserveResize();
   const [histogramData, setHistogramData] =
     useState<NumericHistogramProps<DataType>["data"]>();
@@ -46,6 +50,7 @@ export const ConfidenceDistribution = () => {
               data={histogramData}
               binFunction={(dataPoint) => +(dataPoint["Confidence%"] || 0)}
               isFullInteractive
+              onBarClick={onBarClick}
             />,
             dimensions
           )}

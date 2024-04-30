@@ -35,6 +35,7 @@ export type BarChartPointType = {
   scaledWidth?: number;
   tooltipContent?: {
     numDetections: number;
+    scientificNames?: string[];
   };
 };
 
@@ -51,6 +52,7 @@ export type HistogramPointType = {
   scaledY0: number;
   scaledY1: number;
   ids?: string[];
+  scientificNames?: string[];
   group?: string;
   value?: number;
 };

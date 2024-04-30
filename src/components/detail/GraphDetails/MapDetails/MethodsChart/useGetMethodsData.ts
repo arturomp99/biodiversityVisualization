@@ -3,7 +3,7 @@ import { useDataContext } from "src/contexts/dataContext";
 
 export type MethodsDataType = {
   method: string;
-  species: string[];
+  scientificName: string[];
   observations: number;
 };
 
@@ -22,7 +22,7 @@ export const useGetMethodsData = (isObservations?: boolean) => {
       const flattenedData = complexData.data.flatMap((dataPoint) =>
         dataPoint.identifiedBy.map((dataPointIdentification) => ({
           method: dataPointIdentification,
-          species: dataPoint.species,
+          scientificName: dataPoint.scientificName,
           observations: dataPoint.observationsNum,
         }))
       );
@@ -33,15 +33,16 @@ export const useGetMethodsData = (isObservations?: boolean) => {
           );
           if (foundIndex > -1) {
             if (
-              !acc[foundIndex].species.find(
-                (foundIndexSpecies) => foundIndexSpecies === curr.species
+              !acc[foundIndex].scientificName.find(
+                (foundIndexScientificName) =>
+                  foundIndexScientificName === curr.scientificName
               )
             ) {
-              acc[foundIndex].species.push(curr.species);
+              acc[foundIndex].scientificName.push(curr.scientificName);
             }
             acc[foundIndex].observations += curr.observations;
           } else {
-            acc.push({ ...curr, species: [curr.species] });
+            acc.push({ ...curr, scientificName: [curr.scientificName] });
           }
           return acc;
         },
@@ -54,7 +55,7 @@ export const useGetMethodsData = (isObservations?: boolean) => {
   const totalCount = useMemo(
     () =>
       methodsData?.reduce<number>((acc: number, curr) => {
-        acc += isObservations ? curr.observations : curr.species.length;
+        acc += isObservations ? curr.observations : curr.scientificName.length;
         return acc;
       }, 0),
     [methodsData, isObservations]

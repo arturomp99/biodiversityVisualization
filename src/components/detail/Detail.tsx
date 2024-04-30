@@ -47,7 +47,7 @@ export const Detail = (props: { graphName: string }) => {
           </ExpandedView>
           <GraphDetails
             graphName={props.graphName}
-            detailProps={{ catalogScientificNames }}
+            detailProps={{ catalogScientificNames, showCatalogHandler }}
           />
         </DetailInteractionContextProvider>
       </DetailLayout>

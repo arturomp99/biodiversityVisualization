@@ -12,7 +12,7 @@ import { StyledGraphSettings } from "src/components/dashboard/dashboardGraphSett
 import { SpeciesRichnessSettings } from "./SpeciesRichnessSettings";
 
 const StyledTitle = styled.p`
-  font-size: ${themeFont.h3.size};
+  font-size: ${themeFont.h4.size};
   font-weight: ${themeFont.h3.weight};
 `;
 
