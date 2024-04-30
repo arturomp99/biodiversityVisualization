@@ -57,6 +57,7 @@ export type HistogramProps<T> = GraphProps & {
   reducerFunction?: (dataPoint: HistogramDataType<T>[]) => number;
   stackFunction?: (dataPoint: HistogramDataType<T>) => string;
   colorScale?: ScaleOrdinal<string, string, never> | undefined;
+  onBarClick?: (nasmes: string[]) => void;
 };
 
 export type NumericHistogramProps<T> = GraphProps & {
@@ -67,6 +68,7 @@ export type NumericHistogramProps<T> = GraphProps & {
   reducerFunction?: (dataPoint: NumericHistogramDataType<T>[]) => number;
   stackFunction?: (dataPoint: NumericHistogramDataType<T>) => string;
   colorScale?: ScaleOrdinal<string, string, never> | undefined;
+  onBarClick?: (nasmes: string[]) => void;
 };
 
 export type GaugeChartProps = GraphProps & {

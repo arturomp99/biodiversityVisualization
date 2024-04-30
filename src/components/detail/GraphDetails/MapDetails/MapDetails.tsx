@@ -5,6 +5,7 @@ import { StyledDivider, StyledTitle } from "./styles";
 import { DataType } from "src/data/data.types";
 import { ConfidenceDistribution } from "./ConfidenceDistribution/ConfidenceDistribution";
 import { MethodsTable } from "./MethodsChart/MethodsTable";
+import { GraphDetailsProps } from "../GraphDetails";
 
 const DetailBarChartsContainer = styled.div`
   display: flex;
@@ -15,7 +16,8 @@ const DetailBarChartsContainer = styled.div`
 
 export const MapDetails: FC<{
   catalogScientificNames?: DataType["scientificName"][];
-}> = ({ catalogScientificNames }) => {
+  showCatalogHandler?: GraphDetailsProps["showCatalogHandler"];
+}> = ({ catalogScientificNames, showCatalogHandler }) => {
   const catalogRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -24,8 +26,8 @@ export const MapDetails: FC<{
   return (
     <>
       <DetailBarChartsContainer>
-        <ConfidenceDistribution />
-        <MethodsTable />
+        <ConfidenceDistribution onBarClick={showCatalogHandler} />
+        <MethodsTable showCatalogHandler={showCatalogHandler} />
       </DetailBarChartsContainer>
       {catalogScientificNames && (
         <div ref={catalogRef}>

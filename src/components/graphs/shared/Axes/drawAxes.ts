@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import {
   barChartParameters,
+  dendrogramParameters,
   lineChartParameters,
   timeLineParameters,
 } from "../../../../data/constants";
@@ -130,7 +131,11 @@ export const giveSizeToAxes = (
 
   const parent = d3.select(parentRef);
   parent.select<SVGSVGElement>("#hAxis").call(xAxis);
-  parent.select<SVGSVGElement>("#vAxis").call(yAxis);
+  parent
+    .select<SVGSVGElement>("#vAxis")
+    .transition()
+    .duration(dendrogramParameters.transitions.collapseDuration)
+    .call(yAxis);
 
   parent
     .selectAll("#hAxis")

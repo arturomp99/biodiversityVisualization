@@ -15,11 +15,18 @@ export const getGraphDetails = (
   return (
     (graphName === DashboardGraphName.DENDROGRAM && <DendrogramDetails />) ||
     (graphName === DashboardGraphName.TIMELINE && (
-      <TimeLineDetails isHistogram />
+      <TimeLineDetails
+        isHistogram
+        showCatalogHandler={detailProps.showCatalogHandler}
+        catalogScientificNames={detailProps.catalogScientificNames}
+      />
     )) ||
     ((graphName === DashboardGraphName.MAP ||
       graphName === DashboardGraphName.ONGROUND) && (
-      <MapDetails catalogScientificNames={detailProps.catalogScientificNames} />
+      <MapDetails
+        catalogScientificNames={detailProps.catalogScientificNames}
+        showCatalogHandler={detailProps.showCatalogHandler}
+      />
     )) ||
     (graphName === DashboardGraphName.LINECHART && <LineChartDetails />) || (
       <div>GRAPH NOT FOUND</div>

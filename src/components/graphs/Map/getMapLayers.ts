@@ -108,10 +108,9 @@ export const getDetectionsLayer = (
       getMarkerPopup(
         detection.observationsNum,
         detectedSpecies?.length,
-        () =>
-          markerPopupClickCallback &&
-          detectedSpecies &&
-          markerPopupClickCallback(detectedSpecies)
+        markerPopupClickCallback && detectedSpecies
+          ? () => markerPopupClickCallback(detectedSpecies)
+          : undefined
       )
     );
   });

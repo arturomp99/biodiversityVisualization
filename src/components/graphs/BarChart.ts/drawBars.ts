@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import { getGraphMargins } from "src/utils/getGraphMargins";
 import { BarChartPointType } from "..";
 import { barChartClassNames } from "src/data/idClassNames";
-import { barChartParameters } from "src/data/constants";
+import { barChartParameters, dendrogramParameters } from "src/data/constants";
 
 export const drawBars = (
   parentRef: SVGSVGElement | null,
@@ -40,10 +40,12 @@ export const drawBars = (
         ((barChartParameters.barsGapFactor - 1) / 2) *
           (dataPoint.scaledWidth ?? 0)
     )
-    .attr("y", (dataPoint) => dataPoint.scaledY ?? 0)
-    .attr("height", (dataPoint) => dataPoint.scaledHeight ?? 0)
     .attr("width", (dataPoint) => dataPoint.scaledWidth ?? 0)
-    .attr("transform", `translate(${margins.left},${margins.top})`);
+    .attr("transform", `translate(${margins.left},${margins.top})`)
+    .transition()
+    .duration(dendrogramParameters.transitions.collapseDuration)
+    .attr("y", (dataPoint) => dataPoint.scaledY ?? 0)
+    .attr("height", (dataPoint) => dataPoint.scaledHeight ?? 0);
 
   barsEnter.merge(barsUpdate);
 

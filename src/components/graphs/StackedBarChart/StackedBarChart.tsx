@@ -52,6 +52,8 @@ export const StackedBarChart: FC<StackedBarChartProps> = ({
     if (isFullInteractive) {
       addTooltip<[unknown, typeof scaledData]>(
         node.current,
+        // (dataPoint) =>
+        // getStackedBarChartTooltip(dataPoint, () => console.log("ARTUROOO")),
         (dataPoint) => {
           const speciesNum = dataPoint[1].reduce<number>(
             (acc: number, curr) => (acc += curr.species ?? 0),
@@ -61,6 +63,7 @@ export const StackedBarChart: FC<StackedBarChartProps> = ({
           return `${speciesNum} species`;
         },
         `.${stackedBarChartClassNames.bar}`
+        // true
       );
     }
   }, [data]);

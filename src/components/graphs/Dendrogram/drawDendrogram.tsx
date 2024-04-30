@@ -1,8 +1,13 @@
 import * as d3 from "d3";
 import { TreeDataType, TreeNode } from "./dendrogram.types";
-import { dendrogramParameters, graphMargin } from "src/data/constants";
+import {
+  dendrogramParameters,
+  fontSize,
+  graphMargin,
+} from "src/data/constants";
 import { dendrogramClassNames } from "src/data/idClassNames";
 import { verticalDiagonalLine } from "src/utils/lineEquations";
+import { DataType } from "src/data/data.types";
 
 const setInitialState = (
   root: TreeNode<TreeDataType>,
@@ -108,7 +113,27 @@ export const drawDendrogram = (
     .attr("fill", dendrogramParameters.nodeParameters.color)
     .style("cursor", (dataPoint) =>
       dataPoint.children ? "default" : "pointer"
-    );
+    )
+    .each(function (dataPoint) {
+      dataPoint.expanded &&
+        (!dataPoint.children ||
+          dataPoint.children.every((child) => !child.expanded)) &&
+        d3
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .select<any, TreeNode<TreeDataType>>(this.parentElement)
+          .selectAll("text")
+          .data((data) => [data])
+          .enter()
+          .append("text")
+          .text((dataPoint: unknown) => {
+            return (dataPoint as TreeNode<DataType>).data.scientificName;
+          })
+          .attr("class", dendrogramClassNames.markerLabel)
+          .attr("fill", dendrogramParameters.labels.fontColor)
+          .attr("font-size", "16px")
+          .attr("text-anchor", "end")
+          .attr("transform", `translate(0,${1.5 * fontSize}) rotate(-33)`);
+    });
 
   const dendrogramMarkersUpdate = dendrogramMarkers.attr(
     "transform",

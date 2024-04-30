@@ -8,6 +8,7 @@ import { histogramParameters, resizeTimeout } from "src/data/constants";
 import { drawHistogram } from "./drawHistogram";
 import { DataType } from "src/data/data.types";
 import { histogramHoverInteraction } from "./Interaction/histogramHoverInteraction";
+import { histogramClickInteraction } from "./Interaction/histogramClickInteraction";
 
 export const Histogram: FC<HistogramProps<DataType>> = ({
   data,
@@ -17,6 +18,7 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
   reducerFunction,
   stackFunction,
   colorScale,
+  onBarClick,
 }) => {
   const node = useRef<SVGSVGElement>(null);
   const scales = useRef(
@@ -73,6 +75,15 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
                   .flatMap(
                     (dataPointObservation) => dataPointObservation.species ?? ""
                   ),
+                scientificNames: stackedRectPerBar.data
+                  .filter(
+                    (dataPointObservation) =>
+                      stackFunction(dataPointObservation) === stackedRect.key
+                  )
+                  .flatMap(
+                    (dataPointObservation) =>
+                      dataPointObservation.scientificName ?? ""
+                  ),
                 value: reducerFunction
                   ? stackedRectPerBar[1] - stackedRectPerBar[0]
                   : undefined,
@@ -91,6 +102,10 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
               ids: dataPoint.flatMap(
                 (dataPointObservation) => dataPointObservation.species ?? ""
               ),
+              scientificNames: dataPoint.flatMap(
+                (dataPointObservation) =>
+                  dataPointObservation.scientificName ?? ""
+              ),
               value: reducerFunction ? reducerFunction(dataPoint) : undefined,
             };
           });
@@ -107,6 +122,9 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
     });
     if (onHover) {
       histogramHoverInteraction(node.current, onHover);
+    }
+    if (onBarClick) {
+      histogramClickInteraction(node.current, onBarClick);
     }
   }, [data, colorScale]);
 
@@ -154,6 +172,15 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
                       (dataPointObservation) =>
                         dataPointObservation.species ?? ""
                     ),
+                  scientificNames: stackedRectPerBar.data
+                    .filter(
+                      (dataPointObservation) =>
+                        stackFunction(dataPointObservation) === stackedRect.key
+                    )
+                    .flatMap(
+                      (dataPointObservation) =>
+                        dataPointObservation.scientificName ?? ""
+                    ),
                 };
               });
               return scaledStackedRect;
@@ -170,6 +197,10 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
                 ),
                 ids: dataPoint.flatMap(
                   (dataPointObservation) => dataPointObservation.species ?? ""
+                ),
+                scientificNames: dataPoint.flatMap(
+                  (dataPointObservation) =>
+                    dataPointObservation.scientificName ?? ""
                 ),
               };
             });
