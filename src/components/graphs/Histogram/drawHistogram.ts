@@ -4,11 +4,13 @@ import { histogramClassNames } from "src/data/idClassNames";
 import { getGraphMargins } from "src/utils/getGraphMargins";
 import { ScaleOrdinal } from "d3";
 import { histogramParameters } from "src/data/constants";
+import { addTooltiptToSelection } from "../shared/addTooltip";
 
 export const drawHistogram = (
   parentRef: SVGSVGElement | null,
   data: HistogramPointType[],
-  colorScale?: ScaleOrdinal<string, string, never>
+  colorScale?: ScaleOrdinal<string, string, never>,
+  tooltipContentGenerator?: (dataPoint: HistogramPointType) => string
 ) => {
   const margins = getGraphMargins();
   const bars = d3
@@ -34,6 +36,15 @@ export const drawHistogram = (
         ? colorScale(dataPoint.group)
         : histogramParameters.stacked.colorScheme[0]
     );
+
+  addTooltiptToSelection<SVGRectElement, (typeof data)[0]>(
+    barsEnter,
+    tooltipContentGenerator
+      ? tooltipContentGenerator
+      : (dataPoint) => {
+          return `${dataPoint.value} observations`;
+        }
+  );
 
   const barsUpdate = bars
     .attr("x", (dataPoint) =>
