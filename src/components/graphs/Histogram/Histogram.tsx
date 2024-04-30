@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useMemo } from "react";
-import { HistogramPointType, HistogramProps } from "..";
+import { HistogramProps } from "..";
 import { StyledHistogramContainer } from "./styles";
 import { getHistogramScales } from "./getHistogramScales";
 import { getDimensionsWithoutMargin } from "src/utils/getDimensionsWithoutMargin";
@@ -8,8 +8,6 @@ import { histogramParameters, resizeTimeout } from "src/data/constants";
 import { drawHistogram } from "./drawHistogram";
 import { DataType } from "src/data/data.types";
 import { histogramHoverInteraction } from "./Interaction/histogramHoverInteraction";
-import { addTooltip } from "../shared/addTooltip";
-import { histogramClassNames } from "src/data/idClassNames";
 
 export const Histogram: FC<HistogramProps<DataType>> = ({
   data,
@@ -19,7 +17,6 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
   reducerFunction,
   stackFunction,
   colorScale,
-  isFullInteractive,
 }) => {
   const node = useRef<SVGSVGElement>(null);
   const scales = useRef(
@@ -103,22 +100,13 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
       realDimensions,
       histogramParameters.axesParameters
     );
-    drawHistogram(node.current, scaledData, colorScale);
+    drawHistogram(node.current, scaledData, colorScale, (dataPoint) => {
+      return (
+        dataPoint.value?.toString() ?? dataPoint?.ids?.length.toString() ?? "0"
+      );
+    });
     if (onHover) {
       histogramHoverInteraction(node.current, onHover);
-    }
-    if (isFullInteractive) {
-      addTooltip<HistogramPointType>(
-        node.current,
-        (dataPoint) => {
-          return (
-            dataPoint.value?.toString() ??
-            dataPoint?.ids?.length.toString() ??
-            "0"
-          );
-        },
-        `.${histogramClassNames.bar}`
-      );
     }
   }, [data, colorScale]);
 

@@ -8,8 +8,6 @@ import { histogramParameters, resizeTimeout } from "src/data/constants";
 import { drawHistogram } from "../drawHistogram";
 import { histogramHoverInteraction } from "../Interaction/histogramHoverInteraction";
 import { StyledHistogramContainer } from "../styles";
-import { addTooltip } from "../../shared/addTooltip";
-import { histogramClassNames } from "src/data/idClassNames";
 
 export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
   data,
@@ -21,7 +19,6 @@ export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
   colorScale,
   binFunction,
   customMargin,
-  isFullInteractive,
 }) => {
   const node = useRef<SVGSVGElement>(null);
   const scales = useRef(
@@ -81,15 +78,6 @@ export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
     drawHistogram(node.current, scaledData, colorScale);
     if (onHover) {
       histogramHoverInteraction(node.current, onHover);
-    }
-    if (isFullInteractive) {
-      addTooltip<(typeof scaledData)[0]>(
-        node.current,
-        (dataPoint) => {
-          return `${dataPoint.value} observations`;
-        },
-        `.${histogramClassNames.bar}`
-      );
     }
   }, [data, colorScale]);
 

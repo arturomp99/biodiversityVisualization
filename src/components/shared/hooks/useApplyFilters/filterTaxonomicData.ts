@@ -60,14 +60,31 @@ const applyConfidenceFilter = (
   if (!filters.length) {
     return data;
   }
-  const filteredData = data.filter((dataEntry) =>
-    filters.some((filter) => {
-      const confidences = dataEntry["Confidence%"] as string[];
-      return confidences.some(
-        (confidence) => filter.confidenceLevel <= +confidence
-      );
-    })
-  );
+
+  const filteredData = data.reduce<DataType[]>((acc: DataType[], curr) => {
+    const higherConfidences = curr["Confidence%"].filter((confidence) =>
+      filters.every((filter) => +confidence > filter.confidenceLevel)
+    );
+    if (higherConfidences.length > 0) {
+      acc.push({
+        ...curr,
+        "Confidence%": higherConfidences,
+        observationsNum: higherConfidences.length,
+      });
+    }
+    return acc;
+  }, []);
+  // .filter((dataEntry) =>
+  //   filters.some((filter) => {
+  //     const confidences = dataEntry["Confidence%"];
+  //     const higherConfidences = confidences.filter(
+  //       (confidence) => +confidence >= filter.confidenceLevel
+  //     );
+  //     dataEntry["observationsNum"] = higherConfidences.length;
+  //     dataEntry["Confidence%"] = higherConfidences;
+  //     return dataEntry["observationsNum"] > 0;
+  //   })
+  // );
   return filteredData;
 };
 
