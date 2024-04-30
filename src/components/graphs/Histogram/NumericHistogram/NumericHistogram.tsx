@@ -9,8 +9,6 @@ import { histogramParameters, resizeTimeout } from "src/data/constants";
 import { drawHistogram } from "../drawHistogram";
 import { histogramHoverInteraction } from "../Interaction/histogramHoverInteraction";
 import { StyledHistogramContainer } from "../styles";
-import { addTooltip } from "../../shared/addTooltip";
-import { histogramClassNames } from "src/data/idClassNames";
 import { histogramClickInteraction } from "../Interaction/histogramClickInteraction";
 
 export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
@@ -23,7 +21,6 @@ export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
   colorScale,
   binFunction,
   customMargin,
-  isFullInteractive,
   onBarClick,
 }) => {
   const node = useRef<SVGSVGElement>(null);
@@ -89,15 +86,6 @@ export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
     }
     if (onBarClick) {
       histogramClickInteraction(node.current, onBarClick);
-    }
-    if (isFullInteractive) {
-      addTooltip<(typeof scaledData)[0]>(
-        node.current,
-        (dataPoint) => {
-          return `${dataPoint.value} observations`;
-        },
-        `.${histogramClassNames.bar}`
-      );
     }
   }, [data, colorScale]);
 

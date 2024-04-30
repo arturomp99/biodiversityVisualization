@@ -31,11 +31,13 @@ export const Distribution = ({
   onHover,
   isObservations,
   isFullInteractive,
+  onBarClick,
 }: {
   isHistogram: boolean;
   onHover: (hoveredSpecies: string[]) => void;
   isObservations?: boolean;
   isFullInteractive?: boolean;
+  onBarClick?: (names: string[]) => void;
 }) => {
   const { containerRef: resizeContainerRef, dimensions } = useObserveResize();
   const type = isObservations ? "observations" : "species";
@@ -130,6 +132,7 @@ export const Distribution = ({
                 stackFunction={stackFunction}
                 colorScale={colorScale}
                 isFullInteractive={isFullInteractive}
+                onBarClick={onBarClick}
               />,
               dimensions
             )

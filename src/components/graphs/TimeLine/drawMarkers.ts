@@ -37,9 +37,11 @@ export const drawMarkers = (
     )
     .attr("transform", `translate(${margins.left},${margins.top})`)
     .attr("cursor", "pointer")
-    .each(function (dataPoint) {
+    .attr("data-tippy-content", (dataPoint) =>
+      getTimelineTooltip(dataPoint.tooltipContent)
+    )
+    .each(function () {
       tippy(this, {
-        content: getTimelineTooltip(dataPoint.tooltipContent),
         allowHTML: true,
         theme: "light",
         trigger: "click",
@@ -47,6 +49,7 @@ export const drawMarkers = (
     });
 
   const timelineMarkersUpdate = timelineMarkers
+    .attr("data-tippy-content", "HOLA")
     .transition()
     .duration(dendrogramParameters.transitions.collapseDuration)
     .attr("x", (dataPoint) => dataPoint.scaledX)
