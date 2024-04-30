@@ -44,7 +44,6 @@ export const drawMarkers = (
       tippy(this, {
         allowHTML: true,
         theme: "light",
-        trigger: "click",
       });
     });
 
