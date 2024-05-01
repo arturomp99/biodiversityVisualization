@@ -23,7 +23,7 @@ export const SpeciesRichness = () => {
 
   return (
     <StyledGraphCard $noHover className="mt-12">
-      <StyledTitle>Species richness</StyledTitle>
+      <StyledTitle>Species evenness</StyledTitle>
       <StyledDetailChart ref={resizeContainerRef} $height="40vh">
         <>
           {data &&
