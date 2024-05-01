@@ -45,7 +45,7 @@ export const ConfidenceDistribution = ({
   return (
     <StyledGraphCard $noHover>
       <div className="flex space-x-3 flex-wrap items-center justify-between pr-12">
-        <StyledGraphTitle>Detections methods</StyledGraphTitle>
+        <StyledGraphTitle>Confidence distribution</StyledGraphTitle>
         <ConfidenceDistributionSettings
           onStepChange={setStep}
           maxValue={xExtent ? xExtent[1] - xExtent[0] : undefined}

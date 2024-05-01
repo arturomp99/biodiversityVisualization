@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { CatalogDataType } from "../types";
 import { renderGraph } from "src/components/graphs/shared/utils/renderGraph";
 import { Histogram } from "src/components/graphs/Histogram/Histogram";
-import { Map } from "src/components/graphs";
+import { HistogramDataType, Map } from "src/components/graphs";
 import { useObserveResize } from "src/components/shared/hooks/useObserveResize";
 import { DataType } from "src/data/data.types";
 import { useDataContext } from "src/contexts/dataContext";
@@ -50,6 +50,12 @@ export const CatlogEntryObservations = ({
               timeExtent && timeExtent[0] && timeExtent[1]
                 ? (timeExtent as [Date, Date])
                 : undefined
+            }
+            reducerFunction={(dataPoint: HistogramDataType<DataType>[]) =>
+              dataPoint.reduce<number>((acc: number, curr) => {
+                acc += curr.observationsNum;
+                return acc;
+              }, 0)
             }
           />,
           histogramDimensions
