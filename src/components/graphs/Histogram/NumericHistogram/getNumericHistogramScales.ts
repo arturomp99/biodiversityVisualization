@@ -14,11 +14,22 @@ import {
   type Series,
 } from "d3";
 
+const getThresholds = (extent: [number, number], step: number) => {
+  let thresholds: number[] = [extent[1]];
+
+  while (thresholds[0] > extent[0]) {
+    thresholds = [thresholds[0] - step, ...thresholds];
+  }
+
+  return thresholds;
+};
+
 export const getNumericHistogramScales = (
   data: NumericHistogramProps<DataType>["data"],
   binFunction: NumericHistogramProps<DataType>["binFunction"],
   horizontalExtent?: NumericHistogramProps<DataType>["xExtent"],
   dimensions?: [number, number],
+  step?: number,
   reducerFunction?: NumericHistogramProps<DataType>["reducerFunction"],
   stackFunction?: NumericHistogramProps<DataType>["stackFunction"]
 ):
@@ -29,6 +40,7 @@ export const getNumericHistogramScales = (
       stackedData:
         | Series<Bin<NumericHistogramDataType<DataType>, number>, string>[]
         | undefined;
+      xExtent: number[];
     }
   | undefined => {
   if (!data) {
@@ -46,10 +58,10 @@ export const getNumericHistogramScales = (
     return;
   }
 
-  const binGenerator = bin<(typeof data)[0], number>().value((dataPoint) =>
-    binFunction(dataPoint)
-  );
-  //.thresholds(thresholdsArray ?? [0]);
+  const binGenerator = bin<(typeof data)[0], number>()
+    .value((dataPoint) => binFunction(dataPoint))
+    .domain(xExtent)
+    .thresholds(getThresholds(xExtent, step ?? 0.1));
   const binnedData = binGenerator(data);
 
   const yMax = max(binnedData, (dataPoint) =>
@@ -90,5 +102,5 @@ export const getNumericHistogramScales = (
         })
         .order(stackOrderAscending)(binnedData)
     : undefined;
-  return { xScale, yScale, binnedData, stackedData };
+  return { xScale, yScale, binnedData, stackedData, xExtent };
 };

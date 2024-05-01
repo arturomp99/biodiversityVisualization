@@ -130,7 +130,11 @@ export const giveSizeToAxes = (
   }
 
   const parent = d3.select(parentRef);
-  parent.select<SVGSVGElement>("#hAxis").call(xAxis);
+  parent
+    .select<SVGSVGElement>("#hAxis")
+    .transition()
+    .duration(dendrogramParameters.transitions.collapseDuration)
+    .call(xAxis);
   parent
     .select<SVGSVGElement>("#vAxis")
     .transition()

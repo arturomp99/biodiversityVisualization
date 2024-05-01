@@ -8,6 +8,7 @@ import { useDataContext } from "src/contexts/dataContext";
 import { NumericHistogramProps } from "src/components/graphs";
 import { DataType } from "src/data/data.types";
 import { NumericHistogram } from "src/components/graphs/Histogram/NumericHistogram/NumericHistogram";
+import { ConfidenceDistributionSettings } from "./ConfidenceDistributionSettings";
 
 export const ConfidenceDistribution = ({
   onBarClick,
@@ -38,9 +39,18 @@ export const ConfidenceDistribution = ({
     });
   }, [data]);
 
+  const [step, setStep] = useState(0.1);
+  const [xExtent, setXExtent] = useState<number[]>();
+
   return (
     <StyledGraphCard $noHover>
-      <StyledGraphTitle>Confidence of detections</StyledGraphTitle>
+      <div className="flex space-x-3 flex-wrap items-center justify-between pr-12">
+        <StyledGraphTitle>Detections methods</StyledGraphTitle>
+        <ConfidenceDistributionSettings
+          onStepChange={setStep}
+          maxValue={xExtent ? xExtent[1] - xExtent[0] : undefined}
+        />
+      </div>
       <StyledDetailChart ref={resizeContainerRef} $height="40vh">
         {!loading &&
           !!histogramData &&
@@ -51,6 +61,8 @@ export const ConfidenceDistribution = ({
               binFunction={(dataPoint) => +(dataPoint["Confidence%"] || 0)}
               isFullInteractive
               onBarClick={onBarClick}
+              onXExtentChange={setXExtent}
+              step={step}
             />,
             dimensions
           )}
