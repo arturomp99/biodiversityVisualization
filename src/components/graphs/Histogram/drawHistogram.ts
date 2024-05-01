@@ -5,6 +5,7 @@ import { getGraphMargins } from "src/utils/getGraphMargins";
 import { ScaleOrdinal } from "d3";
 import { histogramParameters } from "src/data/constants";
 import { addTooltiptToSelection } from "../shared/addTooltip";
+import { Instance } from "tippy.js";
 
 export const drawHistogram = (
   parentRef: SVGSVGElement | null,
@@ -62,7 +63,14 @@ export const drawHistogram = (
       dataPoint.group && colorScale
         ? colorScale(dataPoint.group)
         : histogramParameters.stacked.colorScheme[0]
-    );
+    )
+    .each(function (dataPoint) {
+      (this as typeof this & { _tippy: Instance })._tippy.setContent(
+        tooltipContentGenerator
+          ? tooltipContentGenerator(dataPoint)
+          : `${dataPoint.value} observations`
+      );
+    });
 
   barsEnter.merge(barsUpdate);
   bars.exit().remove();

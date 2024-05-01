@@ -3,7 +3,7 @@ import { ScaleOrdinal } from "d3";
 import { TimelineChartPointType } from "..";
 import { getGraphMargins } from "src/utils/getGraphMargins";
 import { dendrogramParameters, timeLineParameters } from "src/data/constants";
-import tippy from "tippy.js";
+import tippy, { Instance } from "tippy.js";
 import { getTimelineTooltip } from "./interactivity/TimelineTooltip";
 import { timelineClassNames } from "src/data/idClassNames";
 
@@ -36,7 +36,7 @@ export const drawMarkers = (
       colorScale ? colorScale(dataPoint.group) : "black"
     )
     .attr("transform", `translate(${margins.left},${margins.top})`)
-    .attr("cursor", "pointer")
+    // .attr("cursor", "pointer")
     .attr("data-tippy-content", (dataPoint) =>
       getTimelineTooltip(dataPoint.tooltipContent)
     )
@@ -58,7 +58,12 @@ export const drawMarkers = (
     .attr("transform", `translate(${margins.left},${margins.top})`)
     .attr("fill", (dataPoint) =>
       colorScale ? colorScale(dataPoint.group) : "black"
-    );
+    )
+    .each(function (dataPoint) {
+      (this as typeof this & { _tippy: Instance })._tippy.setContent(
+        getTimelineTooltip(dataPoint.tooltipContent)
+      );
+    });
 
   timelineMarkersEnter.merge(timelineMarkersUpdate);
 

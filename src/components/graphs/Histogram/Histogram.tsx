@@ -116,9 +116,8 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
       histogramParameters.axesParameters
     );
     drawHistogram(node.current, scaledData, colorScale, (dataPoint) => {
-      return (
-        dataPoint.value?.toString() ?? dataPoint?.ids?.length.toString() ?? "0"
-      );
+      const count = dataPoint.value ?? dataPoint?.ids?.length ?? 0;
+      return count.toString();
     });
     if (onHover) {
       histogramHoverInteraction(node.current, onHover);
@@ -210,7 +209,10 @@ export const Histogram: FC<HistogramProps<DataType>> = ({
         realDimensions,
         histogramParameters.axesParameters
       );
-      drawHistogram(node.current, scaledData, colorScale);
+      drawHistogram(node.current, scaledData, colorScale, (dataPoint) => {
+        const count = dataPoint.value ?? dataPoint?.ids?.length ?? 0;
+        return count.toString();
+      });
     }, resizeTimeout);
 
     return () => {
