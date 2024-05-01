@@ -178,7 +178,6 @@ export const makeNodesCollapsible = (parentRef: SVGSVGElement) => {
     )
     .on("click", function (_, dataPoint) {
       if (!dataPoint.children) {
-        console.log("CLICKED A LEAF"); // TODO: TRIGGER AN ACTION
         return;
       }
       if (dataPoint.expanded) {
