@@ -3,7 +3,7 @@ import { HistogramPointType } from "..";
 import { histogramClassNames } from "src/data/idClassNames";
 import { getGraphMargins } from "src/utils/getGraphMargins";
 import { ScaleOrdinal } from "d3";
-import { dendrogramParameters, histogramParameters } from "src/data/constants";
+import { histogramParameters } from "src/data/constants";
 import { addTooltiptToSelection } from "../shared/addTooltip";
 import { Instance } from "tippy.js";
 
@@ -16,7 +16,7 @@ export const drawHistogram = (
   const margins = getGraphMargins();
   const bars = d3
     .select(parentRef)
-    .selectAll<SVGRectElement, typeof data>(`.${histogramClassNames.bar}`)
+    .selectAll<SVGRectElement, (typeof data)[0]>(`.${histogramClassNames.bar}`)
     .data(data);
 
   const barsEnter = bars
@@ -24,8 +24,8 @@ export const drawHistogram = (
     .append("rect")
     .attr("class", histogramClassNames.bar)
     .attr("x", (dataPoint) => dataPoint.scaledX0)
-    .attr("y", (dataPoint) => dataPoint.scaledY0)
-    .attr("height", 0)
+    .attr("y", (dataPoint) => dataPoint.scaledY1)
+    .attr("height", (dataPoint) => dataPoint.scaledY0 - dataPoint.scaledY1)
     .attr(
       "width",
       (dataPoint) => (dataPoint.scaledX1 ?? 0) - (dataPoint.scaledX0 ?? 0) || 10
@@ -37,12 +37,6 @@ export const drawHistogram = (
         ? colorScale(dataPoint.group)
         : histogramParameters.stacked.colorScheme[0]
     );
-
-  barsEnter
-    .transition()
-    .duration(dendrogramParameters.transitions.collapseDuration)
-    .attr("y", (dataPoint) => dataPoint.scaledY1)
-    .attr("height", (dataPoint) => dataPoint.scaledY0 - dataPoint.scaledY1);
 
   addTooltiptToSelection<SVGRectElement, (typeof data)[0]>(
     barsEnter,
@@ -66,8 +60,6 @@ export const drawHistogram = (
           : `${dataPoint.value} observations`
       );
     })
-    .transition()
-    .duration(dendrogramParameters.transitions.collapseDuration)
     .attr("x", (dataPoint) =>
       (dataPoint.scaledX1 ?? 0) - (dataPoint.scaledX0 ?? 0) > 0
         ? dataPoint.scaledX0
