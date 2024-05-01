@@ -22,6 +22,8 @@ export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
   binFunction,
   customMargin,
   onBarClick,
+  step,
+  onXExtentChange,
 }) => {
   const node = useRef<SVGSVGElement>(null);
   const scales = useRef(
@@ -30,6 +32,7 @@ export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
       binFunction,
       xExtent,
       undefined,
+      step,
       reducerFunction,
       stackFunction
     )
@@ -49,6 +52,7 @@ export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
       binFunction,
       xExtent,
       realDimensions,
+      step,
       reducerFunction,
       stackFunction
     );
@@ -87,7 +91,7 @@ export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
     if (onBarClick) {
       histogramClickInteraction(node.current, onBarClick);
     }
-  }, [data, colorScale]);
+  }, [data, colorScale, step]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -102,6 +106,7 @@ export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
         binFunction,
         xExtent,
         realDimensions,
+        step,
         reducerFunction,
         stackFunction
       );
@@ -139,6 +144,11 @@ export const NumericHistogram: FC<NumericHistogramProps<DataType>> = ({
       clearTimeout(timeoutId);
     };
   }, [realDimensions]);
+
+  useEffect(
+    () => onXExtentChange && onXExtentChange(scales.current?.xExtent),
+    [scales.current?.xExtent, onXExtentChange]
+  );
 
   return <StyledHistogramContainer ref={node} id="histogram" />;
 };

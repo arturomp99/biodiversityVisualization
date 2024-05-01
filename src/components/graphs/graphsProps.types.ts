@@ -69,6 +69,8 @@ export type NumericHistogramProps<T> = GraphProps & {
   stackFunction?: (dataPoint: NumericHistogramDataType<T>) => string;
   colorScale?: ScaleOrdinal<string, string, never> | undefined;
   onBarClick?: (nasmes: string[]) => void;
+  step?: number;
+  onXExtentChange?: (xExtent: number[] | undefined) => void;
 };
 
 export type GaugeChartProps = GraphProps & {
