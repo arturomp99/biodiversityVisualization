@@ -36,7 +36,7 @@ export const drawMarkers = (
       colorScale ? colorScale(dataPoint.group) : "black"
     )
     .attr("transform", `translate(${margins.left},${margins.top})`)
-    .attr("cursor", "pointer")
+    // .attr("cursor", "pointer")
     .attr("data-tippy-content", (dataPoint) =>
       getTimelineTooltip(dataPoint.tooltipContent)
     )
