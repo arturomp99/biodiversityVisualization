@@ -6,6 +6,8 @@ import {
   DropdownTrigger,
 } from "@nextui-org/react";
 import React, { Key, useEffect, useMemo, useState } from "react";
+import { uniq, capitalize } from "lodash";
+import { scaleOrdinal } from "d3";
 import { StyledGraphCard } from "src/components/shared/containers/Card";
 import { DownArrow } from "src/icons";
 import { StyledDetailChart } from "../../styles";
@@ -23,8 +25,6 @@ import { getLinechartData } from "../getLinechartData";
 import { histogramParameters, lineChartParameters } from "src/data/constants";
 import { DataType } from "src/data/data.types";
 import { DistributionLegend } from "./Legend/DistributionLegend";
-import { uniq } from "lodash";
-import { scaleOrdinal } from "d3";
 
 export const Distribution = ({
   isHistogram,
@@ -57,12 +57,12 @@ export const Distribution = ({
   const stackFunction = useMemo<
     ((dataPoint: HistogramDataType<DataType>) => string) | undefined
   >(() => {
-    if (selectedDropdown === `Location ${type}`)
+    if (selectedDropdown === `${capitalize(type)} per location`)
       return (dataPoint: HistogramDataType<DataType>) =>
         `${dataPoint.position[0].latitude} ${dataPoint.position[0].longitude}`;
-    else if (selectedDropdown === `DROP ${type}`)
+    else if (selectedDropdown === `${capitalize(type)} per DROP`)
       return (dataPoint: HistogramDataType<DataType>) => dataPoint.dropId;
-    else if (selectedDropdown === `Detection method ${type}`)
+    else if (selectedDropdown === `${capitalize(type)} per detection method`)
       return (dataPoint: HistogramDataType<DataType>) =>
         dataPoint.identifiedBy[0];
     return undefined;
@@ -102,13 +102,15 @@ export const Distribution = ({
           onAction={(key: Key) => setSelectedDropdown(key as string)}
         >
           <DropdownItem key={`Total ${type}`}>{`Total ${type}`}</DropdownItem>
-          <DropdownItem key={`Location ${type}`}>
-            {`Location ${type}`}
+          <DropdownItem key={`${capitalize(type)} per location`}>
+            {`${capitalize(type)} per location`}
           </DropdownItem>
-          <DropdownItem key={`DROP ${type}`}>{`DROP ${type}`}</DropdownItem>
+          <DropdownItem key={`${capitalize(type)} per DROP`}>{`${capitalize(
+            type
+          )} per DROP`}</DropdownItem>
           <DropdownItem
-            key={`Detection method ${type}`}
-          >{`Detection method ${type}`}</DropdownItem>
+            key={`${capitalize(type)} per detection method`}
+          >{`${capitalize(type)} per detection method`}</DropdownItem>
         </DropdownMenu>
       </Dropdown>
       <StyledDetailChart ref={resizeContainerRef}>
