@@ -9,7 +9,8 @@ import {
   ConfidenceFilterType,
   DropFilterType,
   FiltersType,
-  PositionFilterType,
+  IdentificationMethodFilterType,
+  LocationFilterType,
   TaxonomicFilterType,
   TemporalFilterType,
   TypeOfFilter,
@@ -39,10 +40,16 @@ export const isConfidenceFilterType = (
   return filter.type === TypeOfFilter.Confidence;
 };
 
-export const isPositionFilterType = (
+export const isLocationFilterType = (
   filter: FiltersType
-): filter is PositionFilterType => {
-  return filter.type === TypeOfFilter.Position;
+): filter is LocationFilterType => {
+  return filter.type === TypeOfFilter.Location;
+};
+
+export const isIdentificationMethodFilterType = (
+  filter: FiltersType
+): filter is IdentificationMethodFilterType => {
+  return filter.type === TypeOfFilter.IdentificationMethod;
 };
 
 export const isDendrogramSettings = (

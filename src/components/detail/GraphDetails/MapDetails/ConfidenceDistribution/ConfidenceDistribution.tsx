@@ -48,7 +48,7 @@ export const ConfidenceDistribution = ({
         <StyledGraphTitle>Confidence distribution</StyledGraphTitle>
         <ConfidenceDistributionSettings
           onStepChange={setStep}
-          maxValue={xExtent ? xExtent[1] - xExtent[0] : undefined}
+          maxValue={xExtent ? xExtent[1] - xExtent[0] || 0.1 : undefined}
         />
       </div>
       <StyledDetailChart ref={resizeContainerRef} $height="40vh">

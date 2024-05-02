@@ -5,4 +5,6 @@ export type FiltersDataType = {
   temporal?: (Date | undefined)[];
   drop?: string[];
   confidence?: number;
+  location?: { latitude: number; longitude: number }[];
+  identificationMethod?: string[];
 };

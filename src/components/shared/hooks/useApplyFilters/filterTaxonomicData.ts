@@ -3,6 +3,8 @@ import {
   ConfidenceFilterType,
   DropFilterType,
   FiltersType,
+  IdentificationMethodFilterType,
+  LocationFilterType,
   TaxonomicFilterType,
   TemporalFilterType,
   TypeOfFilter,
@@ -88,6 +90,36 @@ const applyConfidenceFilter = (
   return filteredData;
 };
 
+const applyLocationFilter = (
+  data: DataType[],
+  filters: LocationFilterType[]
+) => {
+  if (!filters.length) return data;
+  return data.filter((dataEntry) =>
+    dataEntry.position.some((dataEntryPosition) =>
+      filters.some(
+        (filter) =>
+          +dataEntryPosition.latitude === filter.latitude &&
+          +dataEntryPosition.longitude === filter.longitude
+      )
+    )
+  );
+};
+
+const applyMethodFilter = (
+  data: DataType[],
+  filters: IdentificationMethodFilterType[]
+) => {
+  if (!filters.length) return data;
+  return data.filter((dataEntry) =>
+    dataEntry.identifiedBy.every((dataEntryIdentificationMethod) =>
+      filters.some(
+        (filter) => dataEntryIdentificationMethod === filter.methodId
+      )
+    )
+  );
+};
+
 export const filterTaxonomicData = (
   data: DataType[],
   filters: FiltersType[]
@@ -104,6 +136,12 @@ export const filterTaxonomicData = (
   const confidenceFilters = filters.filter(
     (filter) => filter.type === TypeOfFilter.Confidence
   ) as ConfidenceFilterType[];
+  const locationFilters = filters.filter(
+    (filter) => filter.type === TypeOfFilter.Location
+  ) as LocationFilterType[];
+  const methodFilters = filters.filter(
+    (filter) => filter.type === TypeOfFilter.IdentificationMethod
+  ) as IdentificationMethodFilterType[];
 
   const taxonomicFilteredData = applyTaxonomicFilter(data, taxonomicFilters);
   const temporalFilteredData = applyTemporalFilter(
@@ -115,5 +153,13 @@ export const filterTaxonomicData = (
     dropFilteredData,
     confidenceFilters
   );
-  return confidenceFilteredData;
+  const locationFilteredData = applyLocationFilter(
+    confidenceFilteredData,
+    locationFilters
+  );
+  const identificationMethodFilteredData = applyMethodFilter(
+    locationFilteredData,
+    methodFilters
+  );
+  return identificationMethodFilteredData;
 };

@@ -3,9 +3,10 @@ import { TaxonomicLevelsType } from "./data.types";
 export enum TypeOfFilter {
   Taxonomic = "Taxonomic",
   Temporal = "Temporal",
+  Location = "Location",
   Drop = "Drop",
   Confidence = "Confidence",
-  Position = "Position",
+  IdentificationMethod = "Method",
 }
 
 export type FiltersBaseType = {
@@ -22,6 +23,15 @@ export type TemporalFilterType = FiltersBaseType & {
   maxTime: number;
 };
 
+export type LocationFilterType = FiltersBaseType & {
+  latitude: number;
+  longitude: number;
+};
+
+export type IdentificationMethodFilterType = FiltersBaseType & {
+  methodId: string;
+};
+
 export type DropFilterType = FiltersBaseType & {
   dropId: string;
 };
@@ -30,14 +40,10 @@ export type ConfidenceFilterType = FiltersBaseType & {
   confidenceLevel: number;
 };
 
-export type PositionFilterType = FiltersBaseType & {
-  latitude: number;
-  longitude: number;
-};
-
 export type FiltersType =
   | TaxonomicFilterType
   | TemporalFilterType
   | DropFilterType
+  | IdentificationMethodFilterType
   | ConfidenceFilterType
-  | PositionFilterType;
+  | LocationFilterType;
