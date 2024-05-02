@@ -8,6 +8,7 @@ import { StyledBarChartContainer } from "../StackedBarChart/styles";
 import { drawBars } from "./drawBars";
 import { addTooltip } from "../shared/addTooltip";
 import { BarChartPointType } from "../graphsPoints.types";
+import { barChartClickInteraction } from "./interaction/barChartClickInteraction";
 
 export const BarChart: FC<BarChartProps> = ({
   dimensions,
@@ -16,6 +17,7 @@ export const BarChart: FC<BarChartProps> = ({
   customMargin,
   isFullInteractive,
   isLog,
+  onBarClick,
 }) => {
   const node = createRef<SVGSVGElement>();
   const scalingRef = useRef(getBarChartScales(data));
@@ -54,6 +56,9 @@ export const BarChart: FC<BarChartProps> = ({
         node.current,
         (dataPoint) => `${dataPoint.tooltipContent?.numDetections} detections`
       );
+    }
+    if (onBarClick) {
+      barChartClickInteraction(node.current, onBarClick);
     }
   }, [data]);
 

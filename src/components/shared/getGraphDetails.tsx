@@ -13,7 +13,12 @@ export const getGraphDetails = (
   detailProps: GraphDetailsProps
 ) => {
   return (
-    (graphName === DashboardGraphName.DENDROGRAM && <DendrogramDetails />) ||
+    (graphName === DashboardGraphName.DENDROGRAM && (
+      <DendrogramDetails
+        showCatalogHandler={detailProps.showCatalogHandler}
+        catalogScientificNames={detailProps.catalogScientificNames}
+      />
+    )) ||
     (graphName === DashboardGraphName.TIMELINE && (
       <TimeLineDetails
         isHistogram

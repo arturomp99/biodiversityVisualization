@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useGetSpeciesRichnessData } from "./useGetSpeciesRishnessData";
+import { useGetSpeciesEvennessData } from "./useGetSpeciesEvennessData";
 import { useObserveResize } from "src/components/shared/hooks/useObserveResize";
 import { StyledDetailChart } from "../../styles";
 import { renderGraph } from "src/components/graphs/shared/utils/renderGraph";
@@ -9,15 +9,20 @@ import { themeFont } from "src/data/theme";
 import { StyledGraphCard } from "src/components/shared/containers/Card";
 import { fontSize } from "src/data/constants";
 import { StyledGraphSettings } from "src/components/dashboard/dashboardGraphSettings/styles";
-import { SpeciesRichnessSettings } from "./SpeciesRichnessSettings";
+import { SpeciesEvennessSettings } from "./SpeciesEvennessSettings";
+import { GraphDetailsProps } from "../../GraphDetails";
 
 const StyledTitle = styled.p`
   font-size: ${themeFont.h4.size};
   font-weight: ${themeFont.h3.weight};
 `;
 
-export const SpeciesRichness = () => {
-  const { data, loading } = useGetSpeciesRichnessData();
+export const SpeciesEvenness = ({
+  showCatalogHandler,
+}: {
+  showCatalogHandler?: GraphDetailsProps["showCatalogHandler"];
+}) => {
+  const { data, loading } = useGetSpeciesEvennessData();
   const { containerRef: resizeContainerRef, dimensions } = useObserveResize();
   const [isLog, setIsLog] = useState<boolean>(true);
 
@@ -36,12 +41,13 @@ export const SpeciesRichness = () => {
                 customMargin={{ bottom: 10 * fontSize }}
                 isFullInteractive
                 isLog={isLog}
+                onBarClick={showCatalogHandler}
               />,
               dimensions
             )}
         </>
         <StyledGraphSettings $isRightCorner>
-          <SpeciesRichnessSettings isLogCallback={setIsLog} />
+          <SpeciesEvennessSettings isLogCallback={setIsLog} />
         </StyledGraphSettings>
       </StyledDetailChart>
     </StyledGraphCard>
