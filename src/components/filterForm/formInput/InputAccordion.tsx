@@ -10,14 +10,20 @@ import { useFiltersContext } from "src/contexts/filtersContext";
 import {
   isConfidenceFilterType,
   isDropFilterType,
+  isIdentificationMethodFilterType,
+  isLocationFilterType,
   isTemporalFilterType,
 } from "src/utils/bodyguards";
 import {
   ConfidenceFilterType,
   DropFilterType,
+  LocationFilterType,
   TemporalFilterType,
+  IdentificationMethodFilterType,
 } from "src/data/filters.types";
 import { MemoConfidenceInput } from "./ConfidenceInput";
+import { MemoLocationInput } from "./LocationInput";
+import { MemoMethodInput } from "./MethodInput";
 
 export const InputAccordion = () => {
   const { filtersData } = useDataContext();
@@ -43,6 +49,33 @@ export const InputAccordion = () => {
             filters.filter((filter) =>
               isTemporalFilterType(filter)
             ) as TemporalFilterType[]
+          }
+        />
+      </AccordionItem>
+      <AccordionItem aria-label="Location" title={"Location"}>
+        <MemoLocationInput
+          filtersData={filtersData?.location}
+          addFilter={addFilter}
+          removeFilter={removeFilter}
+          selectedFilters={
+            filters.filter((filter) =>
+              isLocationFilterType(filter)
+            ) as LocationFilterType[]
+          }
+        />
+      </AccordionItem>
+      <AccordionItem
+        aria-label="Identification method"
+        title={"Identification method"}
+      >
+        <MemoMethodInput
+          filtersData={filtersData?.identificationMethod}
+          addFilter={addFilter}
+          removeFilter={removeFilter}
+          selectedFilters={
+            filters.filter((filter) =>
+              isIdentificationMethodFilterType(filter)
+            ) as IdentificationMethodFilterType[]
           }
         />
       </AccordionItem>

@@ -6,6 +6,8 @@ import { FiltersType } from "src/data/filters.types";
 import {
   isConfidenceFilterType,
   isDropFilterType,
+  isIdentificationMethodFilterType,
+  isLocationFilterType,
   isTaxonomicFilterType,
   isTemporalFilterType,
 } from "src/utils/bodyguards";
@@ -26,6 +28,12 @@ const getFilterString = (filter: FiltersType) => {
   }
   if (isConfidenceFilterType(filter)) {
     return `Confidence > ${(filter.confidenceLevel * 100) | 0}%`;
+  }
+  if (isLocationFilterType(filter)) {
+    return `Latitude: ${filter.latitude} Longitude: ${filter.longitude}`;
+  }
+  if (isIdentificationMethodFilterType(filter)) {
+    return `Identified by: ${filter.methodId}`;
   }
   return "unrecognized filter";
 };
