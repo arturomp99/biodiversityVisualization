@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { BarChartDataType } from "src/components/graphs";
 import { useDataContext } from "src/contexts/dataContext";
 
-export const useGetSpeciesRichnessData = () => {
+export const useGetSpeciesEvennessData = () => {
   const { complexData } = useDataContext();
-  const [speciesRichnessData, setSpeciesRichnessData] = useState<
+  const [speciesEvennessData, setSpeciesEvennessData] = useState<
     BarChartDataType[] | undefined
   >();
   useEffect(() => {
-    setSpeciesRichnessData((previousData) => {
+    setSpeciesEvennessData((previousData) => {
       if (!complexData.data) {
         return previousData;
       }
@@ -22,5 +22,5 @@ export const useGetSpeciesRichnessData = () => {
     });
   }, [complexData.data]);
 
-  return { data: speciesRichnessData, loading: complexData.loading };
+  return { data: speciesEvennessData, loading: complexData.loading };
 };
