@@ -22,13 +22,12 @@ const getXScale = (data: string[]) => {
 const getScales = <T extends TimelineChartDataType[]>(
   data: T
 ): TimeLineScalesType | undefined => {
-  const animalsValues = data.flatMap((dataPoint) => dataPoint.species);
-
   const dateStrings = data.flatMap((dataPoint) => dataPoint.eventDate);
   const xScale = getXScale(dateStrings);
   if (!xScale) return;
 
-  const yScale = d3.scaleBand().domain(animalsValues);
+  const speciesValues = data.flatMap((dataPoint) => dataPoint.species);
+  const yScale = d3.scaleBand().domain(speciesValues);
 
   return [xScale, yScale];
 };

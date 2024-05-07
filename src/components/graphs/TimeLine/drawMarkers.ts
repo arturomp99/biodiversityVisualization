@@ -48,7 +48,6 @@ export const drawMarkers = (
     });
 
   const timelineMarkersUpdate = timelineMarkers
-    .attr("data-tippy-content", "HOLA")
     .transition()
     .duration(dendrogramParameters.transitions.collapseDuration)
     .attr("x", (dataPoint) => dataPoint.scaledX)

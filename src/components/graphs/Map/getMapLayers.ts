@@ -36,7 +36,7 @@ export const getGeoJsonLayers = (
         }
         return {
           color: colorScale(key / data.length),
-          opacity: 0.7,
+          opacity: 0.4,
         };
       },
 

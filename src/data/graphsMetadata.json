@@ -3,17 +3,17 @@
     {
       "id": "Dendrogram",
       "title": "Taxonomy",
-      "description": "Dendrogram showing all of the observations in a tree view. It shows the taxonomic classification of collected species"
+      "description": "Information of the classification of biodiversity"
     },
     {
       "id": "Timeline",
       "title": "Timeline",
-      "description": "This is a timeline."
+      "description": "Temporal information of the identification events"
     },
     {
       "id": "OnGround",
-      "title": "On-ground activity",
-      "description": "It shows the data from the operations on-ground. On the left-hand a map with the drone paths. On the right hand a series of collected signals by the sensors."
+      "title": "On-site activity",
+      "description": "Information of the experiments performed on-site"
     }
   ]
 }
