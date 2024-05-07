@@ -3,11 +3,11 @@ import { StyledInfoIcon } from "../shared/containers/Card/styles";
 import { InfoIcon } from "src/icons/InfoIcon";
 import Tippy from "@tippyjs/react";
 
-export const GraphInfo = (props: { info: string }) => {
-  const { info } = props;
+export const GraphInfo = (props: { info: string; align?: string }) => {
+  const { info, align } = props;
   return (
     <Tippy content={info}>
-      <StyledInfoIcon>
+      <StyledInfoIcon $align={align}>
         <InfoIcon />
       </StyledInfoIcon>
     </Tippy>

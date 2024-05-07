@@ -82,6 +82,6 @@ export const TitleLayout = styled.div`
   gap: ${themeSizes.elementsMargins.sm};
 `;
 
-export const StyledInfoIcon = styled.div`
-  align-self: flex-start;
+export const StyledInfoIcon = styled.div<{ $align?: string }>`
+  align-self: ${({ $align }) => ($align ? $align : "flex-start")};
 `;

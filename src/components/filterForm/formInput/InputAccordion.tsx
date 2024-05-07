@@ -24,6 +24,7 @@ import {
 import { MemoConfidenceInput } from "./ConfidenceInput";
 import { MemoLocationInput } from "./LocationInput";
 import { MemoMethodInput } from "./MethodInput";
+import { GraphInfo } from "src/components/dashboard/GraphInfo";
 
 export const InputAccordion = () => {
   const { filtersData } = useDataContext();
@@ -79,7 +80,18 @@ export const InputAccordion = () => {
           }
         />
       </AccordionItem>
-      <AccordionItem aria-label="DROP" title={"DROP"}>
+      <AccordionItem
+        aria-label="DROP"
+        title={
+          <div className="flex flex-row gap-1">
+            <p>DROP</p>
+            <GraphInfo
+              info="Deep-Rainforest Observation Platform is an autonomous system of sensors and sampling tools developed by Providence+ team and used to pick data"
+              align="center"
+            />
+          </div>
+        }
+      >
         <MemoDropInput
           filtersData={filtersData?.drop}
           addFilter={addFilter}
