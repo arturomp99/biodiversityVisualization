@@ -14,7 +14,7 @@ export const ControlledAutocomplete: FC<ControlledAutocompleteProps> = ({
   loading,
   onValueChanged,
 }) => {
-  const [value, setValue] = useState<Key>();
+  const [value, setValue] = useState<Key | null>();
 
   useEffect(() => {
     onValueChanged(value as number);

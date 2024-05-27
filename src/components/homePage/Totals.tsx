@@ -29,7 +29,7 @@ export const Totals = () => {
       ) : (
         <>
           <StyledTitle>{totalObservations} observations</StyledTitle>
-          <StyledTitle>{totalSpecies} identified species</StyledTitle>
+          <StyledTitle>{totalSpecies} species</StyledTitle>
         </>
       )}
     </StyledSection1>
