@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { Welcome } from "src/components/homePage/Welcome";
 import { Totals } from "src/components/homePage/Totals";
-import { Spacer } from "@nextui-org/react";
-import { About } from "src/components/homePage/About";
 
 const WelcomeImage = styled.div`
   width: 100%;

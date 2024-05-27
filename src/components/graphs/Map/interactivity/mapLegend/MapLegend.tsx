@@ -12,14 +12,6 @@ import { mapChartParameters } from "src/data/constants";
 import styled from "styled-components";
 import { ScaleSequential } from "d3";
 
-const StyledMapLegendContainer = styled.div`
-  display: block;
-  position: absolute;
-  top: 2rem;
-  right: 3rem;
-  z-index: 100;
-`;
-
 const StyledCheckbox = styled(Checkbox)<{ customColor: string }>`
   & > span {
     color: ${({ customColor }) => customColor};
@@ -48,43 +40,41 @@ export const MapLegend: FC<
   }
 > = ({ keys, colorScale, onValueChange }) => {
   return (
-    <StyledMapLegendContainer>
-      <Popover>
-        <PopoverTrigger>
-          <Button color="success" variant="ghost" className="text-black">
-            Layers
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent>
-          <CheckboxGroup defaultValue={[...keys, "detections"]}>
-            {keys.map((dataKey, index) => (
-              <StyledCheckbox
-                color="default"
-                customColor={colorScale(index / keys.length)}
-                value={dataKey}
-                key={index}
-                onValueChange={(isSelected: boolean) => {
-                  onValueChange(isSelected, true, index);
-                }}
-              >
-                {dataKey}
-              </StyledCheckbox>
-            ))}
-            <Checkbox
+    <Popover>
+      <PopoverTrigger>
+        <Button color="success" variant="ghost" className="text-black">
+          Layers
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <CheckboxGroup defaultValue={[...keys, "detections"]}>
+          {keys.map((dataKey, index) => (
+            <StyledCheckbox
               color="default"
-              value="detections"
+              customColor={colorScale(index / keys.length)}
+              value={dataKey}
+              key={index}
               onValueChange={(isSelected: boolean) => {
-                onValueChange(isSelected, false, 0);
+                onValueChange(isSelected, true, index);
               }}
             >
-              <StyledDetectionsLabel>
-                <img src={mapChartParameters.iconsData.detection.url} />
-                Detections
-              </StyledDetectionsLabel>
-            </Checkbox>
-          </CheckboxGroup>
-        </PopoverContent>
-      </Popover>
-    </StyledMapLegendContainer>
+              {dataKey}
+            </StyledCheckbox>
+          ))}
+          <Checkbox
+            color="default"
+            value="detections"
+            onValueChange={(isSelected: boolean) => {
+              onValueChange(isSelected, false, 0);
+            }}
+          >
+            <StyledDetectionsLabel>
+              <img src={mapChartParameters.iconsData.detection.url} />
+              Detections
+            </StyledDetectionsLabel>
+          </Checkbox>
+        </CheckboxGroup>
+      </PopoverContent>
+    </Popover>
   );
 };

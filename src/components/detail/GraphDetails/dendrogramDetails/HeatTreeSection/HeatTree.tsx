@@ -32,12 +32,12 @@ export const HeatTree = () => {
       });
   }, [taxonomic]);
 
-  const rankSelectHandler = useCallback((selectedValue: Key) => {
+  const rankSelectHandler = useCallback((selectedValue: Key | null) => {
     setSelectedTaxon(undefined);
     setSelectedTaxonRank(selectedValue as TaxonomicLevelsType);
   }, []);
 
-  const taxonSelectHandler = useCallback((taxon: Key) => {
+  const taxonSelectHandler = useCallback((taxon: Key | null) => {
     setSelectedTaxon(taxon as string);
   }, []);
 

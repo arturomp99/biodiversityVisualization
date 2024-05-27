@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import L from "leaflet";
 import { GraphProps } from "../graphsProps.types";
-import { StyledMapContainer } from "./styles";
+import { StyledMapActionsContainer, StyledMapContainer } from "./styles";
 import { mapIdNames } from "src/data/idClassNames";
 import { useDataContext } from "src/contexts/dataContext";
 import { mapChartParameters } from "src/data/constants";
@@ -17,6 +17,7 @@ import { getDetectionsLayer, getGeoJsonLayers } from "./getMapLayers";
 import { MapLegend } from "./interactivity/mapLegend/MapLegend";
 import { drawMapLayers } from "./drawMapLayers";
 import { MapChartDataType } from "../graphsData.types";
+import { Button } from "@nextui-org/react";
 
 export const Map: FC<
   GraphProps & { markers?: MapChartDataType[]; noDrones?: boolean }
@@ -119,19 +120,34 @@ export const Map: FC<
   return (
     <>
       <StyledMapContainer ref={node} id={`${mapIdNames.container}`} />
-      {!!geoJsonData &&
-        geoJsonData.data &&
-        mapScalesRef.current &&
-        !noDrones && (
-          <MapLegend
-            keys={[
-              ...geoJsonData.data.map((_, index) => `Drone path ${index}`),
-            ]}
-            onValueChange={onLegendChangeHandler}
-            colorScale={mapScalesRef.current.dronePathColorScale}
-            filterable
-          />
-        )}
+      <StyledMapActionsContainer>
+        <Button
+          color="success"
+          variant="ghost"
+          className="text-black"
+          disabled={!map || !mapLayers.current.geojson}
+          onPress={() =>
+            map &&
+            mapLayers.current.geojson &&
+            map.fitBounds(mapLayers.current.geojson.geoJsonLayer.getBounds())
+          }
+        >
+          Center
+        </Button>
+        {!!geoJsonData &&
+          geoJsonData.data &&
+          mapScalesRef.current &&
+          !noDrones && (
+            <MapLegend
+              keys={[
+                ...geoJsonData.data.map((_, index) => `Drone path ${index}`),
+              ]}
+              onValueChange={onLegendChangeHandler}
+              colorScale={mapScalesRef.current.dronePathColorScale}
+              filterable
+            />
+          )}
+      </StyledMapActionsContainer>
     </>
   );
 };
